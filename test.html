@@ -3,32 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conectar a MetaMask</title>
-    <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
-</head>
-<body>
-    <h1>Bienvenido a Mi DApp</h1>
-    <button id="connectButton">Conectar Wallet</button>
-
-    <script>
-        async function initWeb3() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    const userAddress = accounts[0];
-                    console.log('Conectado a la red: ' + userAddress);
-                    alert('Conectado a la red: ' + userAddress);
-                } catch (error) {
-                    console.error('Error al conectar con MetaMask:', error);
-                    alert('Error al conectar con MetaMask. Asegúrate de que está instalada y habilitada.');
-                }
-            } else {
-                alert('Por favor, instala MetaMask para continuar.');
-                window.location.href = "https://metamask.io/download.html"; // Enlace para descargar MetaMask
-            }
+    <title>Conectar Wallet (Base sin QR)</title>
+    <style>
+        /* Estilos de la modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
         }
 
-        document.getElementById('connectButton').addEventListener('click', initWeb3);
-    </script>
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover, .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Botón para abrir la modal -->
+<button id="openModal">Conectar Wallet</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Conectar a MetaMask (Base)</h2>
+        <p>Presiona el botón para conectar tu billetera.</p>
+        <button id="connectButton">Conectar Wallet</button>
+        <p id="status"></p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.6.6/dist/umd/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/web3@1.7.3/dist/web3.min.js"></script>
+<script src="wallet.js"></script>
 </body>
 </html>
