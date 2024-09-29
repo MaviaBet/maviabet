@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conectar a MetaMask</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+    <h1>Bienvenido a Mi DApp</h1>
+    <button id="connectButton">Conectar Wallet</button>
+
+    <script>
+        async function initWeb3() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const userAddress = accounts[0];
+                    console.log('Conectado a la red: ' + userAddress);
+                    alert('Conectado a la red: ' + userAddress);
+                } catch (error) {
+                    console.error('Error al conectar con MetaMask:', error);
+                    alert('Error al conectar con MetaMask. Asegúrate de que está instalada y habilitada.');
+                }
+            } else {
+                alert('Por favor, instala MetaMask para continuar.');
+                window.location.href = "https://metamask.io/download.html"; // Enlace para descargar MetaMask
+            }
+        }
+
+        document.getElementById('connectButton').addEventListener('click', initWeb3);
+    </script>
+</body>
+</html>
