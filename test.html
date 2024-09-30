@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Wallet para la Red Base</title>
     <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
+    <script src="https://unpkg.com/@walletconnect/web3-provider/dist/umd/index.min.js"></script>
 </head>
 <body>
     <h1>Mi Wallet para la Red Base</h1>
@@ -18,27 +19,24 @@
         let account;
 
         document.getElementById("connectWallet").onclick = async () => {
-            if (typeof window.ethereum !== 'undefined') {
-                // Solicitar conexión
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const walletConnectProvider = new WalletConnectProvider.default({
+                infuraId: "5Pm403n2JyG6Ewmz8PyLiQVHkgMXetQw", // Tu nodo de Alchemy
+            });
 
-                // Crear proveedor y firmante
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                signer = provider.getSigner();
-                account = await signer.getAddress();
+            // Conectar WalletConnect
+            await walletConnectProvider.enable();
+            provider = new ethers.providers.Web3Provider(walletConnectProvider);
+            signer = provider.getSigner();
+            account = await signer.getAddress();
 
-                // Mostrar información de la cuenta
-                document.getElementById("accountInfo").innerText = `Conectado: ${account}`;
-                document.getElementById("sendTransaction").style.display = "block";
-            } else {
-                alert("Por favor, instala MetaMask o una wallet compatible.");
-            }
+            document.getElementById("accountInfo").innerText = `Conectado: ${account}`;
+            document.getElementById("sendTransaction").style.display = "block";
         };
 
         document.getElementById("sendTransaction").onclick = async () => {
             const tx = {
                 to: "0xC6755Bf72Eb0F376B990327ab8b94fE2730f4de7", // Cambia esto por la dirección de destino
-                value: ethers.utils.parseEther("0.00000001") // Enviar 0.00000001 TOKEN
+                value: ethers.utils.parseEther("0.00000001") // Enviar 1 TOKEN
             };
 
             try {
