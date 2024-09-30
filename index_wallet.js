@@ -380,5 +380,3 @@ function reducirHash(cadena) {
     }
     return cadena;  // Si el hash es muy corto, lo devuelve tal cual
 }
-//0x3e3c3d9e7301f58511907e3c391506aa8d918fc5a042b14edd31859861622ad9
-//hole business original problem assault empty harbor hotel sniff pistol clay segment
