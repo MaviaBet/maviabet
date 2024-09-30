@@ -3,46 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seleccionar Wallet</title>
+    <title>Conectar a MetaMask</title>
     <script src="https://cdn.jsdelivr.net/npm/@walletconnect/client/dist/WalletConnect.min.js"></script>
+    <style>
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+            color: green;
+        }
+    </style>
 </head>
 <body>
-    <h1>Seleccionar Wallet</h1>
-    <select id="walletSelect">
-        <option value="metamask">MetaMask</option>
-        <option value="trustWallet">Trust Wallet</option>
-        <option value="argent">Argent</option>
-        <!-- Agrega más wallets según sea necesario -->
-    </select>
-    <button id="connect">Conectar Wallet</button>
+    <h1>Conectar a MetaMask</h1>
+    <button id="connectMetaMask">Conectar MetaMask</button>
+    <div id="status">Estado de conexión: No conectado</div>
 
     <script>
         const connector = new WalletConnect({
             bridge: "https://bridge.walletconnect.org",
         });
 
-        document.getElementById("connect").onclick = async () => {
-            const selectedWallet = document.getElementById("walletSelect").value;
-
-            // Puedes realizar ajustes según la wallet seleccionada, si es necesario
+        document.getElementById("connectMetaMask").onclick = async () => {
             if (!connector.connected) {
                 await connector.createSession();
             }
 
-            console.log("Conectando a:", selectedWallet);
             const uri = connector.uri;
-            console.log("URI para la wallet:", uri);
-            // Aquí puedes mostrar el URI o cualquier otro mensaje
+            window.open(uri, '_self');
         };
 
         // Escuchar eventos de conexión
         connector.on("connect", (error, payload) => {
             if (error) {
-                throw error;
+                updateStatus("Error de conexión: " + error.message);
+                return;
             }
             const { accounts } = payload.params[0];
-            console.log("Conectado:", accounts);
+            updateStatus("Conectado: " + accounts[0]);
         });
+
+        const updateStatus = (message) => {
+            document.getElementById("status").innerText = "Estado de conexión: " + message;
+        };
     </script>
 </body>
 </html>
