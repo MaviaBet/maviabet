@@ -3,32 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conectar Wallet TON</title>
+    <title>Conectar a Wallet TON</title>
+    <!-- Cargar la librería de TonConnect -->
     <script src="https://unpkg.com/@tonconnect/sdk@latest"></script>
 </head>
 <body>
-    <h1>Conectar Wallet de TON</h1>
-    
-    <button id="connectButton">Conectar Wallet</button>
-    <p id="walletInfo"></p>
+    <h1>Conectar a Wallet TON</h1>
+    <button id="connectWalletButton">Conectar Wallet TON</button>
+    <p id="walletAddress"></p>
 
     <script>
-        // Inicializar TonConnect
+        // Adaptación del código a JavaScript basado en tu archivo TypeScript
+        
+        // Inicializar TonConnect SDK
         const tonConnect = new TonConnect();
-
+        
         // Obtener referencia al botón
-        const connectButton = document.getElementById('connectButton');
-        const walletInfo = document.getElementById('walletInfo');
+        const connectButton = document.getElementById('connectWalletButton');
+        const walletInfo = document.getElementById('walletAddress');
 
-        // Función para conectar a la wallet
+        // Función para conectar a la wallet TON
         connectButton.addEventListener('click', async () => {
             try {
-                // Intentar conectar a la wallet
                 await tonConnect.connectWallet();
                 const wallet = tonConnect.connectedWallet;
-                
+
                 if (wallet) {
-                    // Si se conecta exitosamente, mostrar información de la wallet
+                    // Mostrar la dirección de la wallet conectada
                     walletInfo.textContent = `Conectado a la wallet: ${wallet.address}`;
                 } else {
                     walletInfo.textContent = 'No se pudo conectar a la wallet.';
@@ -39,7 +40,7 @@
             }
         });
 
-        // Desconectar si es necesario
+        // Opción para desconectar la wallet al cerrar la página
         window.addEventListener('beforeunload', () => {
             tonConnect.disconnect();
         });
