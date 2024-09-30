@@ -3,25 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conectar a MetaMask en Móvil</title>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.5.3/dist/ethers.min.js"></script>
+    <title>Conectar MetaMask vía WalletConnect</title>
+    <script src="https://unpkg.com/@walletconnect/client@1.7.3/dist/umd/index.min.js"></script>
+    <script src="https://unpkg.com/ethers/dist/ethers.min.js"></script>
 </head>
 <body>
-    <h1>Conectar MetaMask en el Móvil</h1>
-    <button onclick="connectMetaMask()">Conectar MetaMask</button>
+    <h1>Conectar con MetaMask</h1>
+    <button onclick="connectWalletConnect()">Conectar con MetaMask vía WalletConnect</button>
     <script>
-        async function connectMetaMask() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    console.log("Conectado a la cuenta: ", account);
-                } catch (error) {
-                    console.error("El usuario rechazó la conexión a MetaMask", error);
-                }
-            } else {
-                alert("MetaMask no está instalado en este dispositivo");
-            }
+      async function connectWalletConnect() {
+        const walletConnect = new WalletConnect({
+          bridge: "https://bridge.walletconnect.org",
+        });
+
+        if (!walletConnect.connected) {
+          walletConnect.createSession().then(() => {
+            const deepLink = `https://metamask.app.link/wc?uri=${encodeURIComponent(walletConnect.uri)}`;
+            window.location.href = deepLink; // Redirige al deep link de MetaMask móvil
+          });
         }
+
+        walletConnect.on("connect", (error, payload) => {
+          if (error) throw error;
+
+          const { accounts, chainId } = payload.params[0];
+          console.log("Cuentas conectadas:", accounts, "Chain ID:", chainId);
+        });
+
+        walletConnect.on("disconnect", (error, payload) => {
+          if (error) throw error;
+
+          console.log("Desconectado de WalletConnect");
+        });
+      }
     </script>
 </body>
 </html>
