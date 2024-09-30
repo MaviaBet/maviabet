@@ -3,75 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TON Wallet Connector</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tonconnect/sdk"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-    </style>
+    <title>Conectar Wallet TON</title>
+    <script src="https://unpkg.com/@tonconnect/sdk@latest"></script>
 </head>
 <body>
-    <h1>Conectar a TON Wallet</h1>
+    <h1>Conectar Wallet de TON</h1>
+    
     <button id="connectButton">Conectar Wallet</button>
-    <div id="walletStatus" style="margin-top: 20px;"></div>
-    <button id="sendTransactionButton" style="display:none;">Enviar Transacción</button>
+    <p id="walletInfo"></p>
 
     <script>
         // Inicializar TonConnect
         const tonConnect = new TonConnect();
 
+        // Obtener referencia al botón
         const connectButton = document.getElementById('connectButton');
-        const walletStatus = document.getElementById('walletStatus');
-        const sendTransactionButton = document.getElementById('sendTransactionButton');
-        let wallet = null;
+        const walletInfo = document.getElementById('walletInfo');
 
+        // Función para conectar a la wallet
         connectButton.addEventListener('click', async () => {
             try {
-                // Conectar a la wallet
-                wallet = await tonConnect.connectWallet();
+                // Intentar conectar a la wallet
+                await tonConnect.connectWallet();
+                const wallet = tonConnect.connectedWallet;
+                
                 if (wallet) {
-                    const walletAddress = wallet.account.address;
-                    const network = wallet.account.chain;
-                    walletStatus.innerHTML = `Conectado a la wallet: ${walletAddress}<br>Red: ${network}`;
-                    sendTransactionButton.style.display = 'inline-block';
+                    // Si se conecta exitosamente, mostrar información de la wallet
+                    walletInfo.textContent = `Conectado a la wallet: ${wallet.address}`;
+                } else {
+                    walletInfo.textContent = 'No se pudo conectar a la wallet.';
                 }
             } catch (error) {
                 console.error('Error al conectar la wallet:', error);
-                walletStatus.innerHTML = 'Error al conectar la wallet.';
+                walletInfo.textContent = 'Error al conectar la wallet.';
             }
         });
 
-        sendTransactionButton.addEventListener('click', async () => {
-            if (wallet) {
-                await sendTransaction(wallet.account.address, "1000000000"); // Enviar 1 TON (ajusta según sea necesario)
-            }
+        // Desconectar si es necesario
+        window.addEventListener('beforeunload', () => {
+            tonConnect.disconnect();
         });
-
-        async function sendTransaction(to, value) {
-            try {
-                await tonConnect.sendTransaction({
-                    messages: [
-                        {
-                            address: to,
-                            amount: value.toString(),
-                            payload: null,
-                        },
-                    ],
-                    validUntil: Date.now() + 5 * 60 * 1000, // 5 minutos para aprobar
-                });
-                alert('Transacción enviada con éxito');
-            } catch (error) {
-                console.error('Error al enviar la transacción:', error);
-            }
-        }
     </script>
 </body>
 </html>
