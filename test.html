@@ -3,45 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conectar MetaMask y Alchemy</title>
-    <script src="https://unpkg.com/@walletconnect/client@1.7.3/dist/umd/index.min.js"></script>
+    <title>Conectar WalletConnect a MetaMask en la Red Base</title>
+    <script src="https://unpkg.com/@walletconnect/web3-provider@1.7.0/dist/umd/index.min.js"></script>
     <script src="https://unpkg.com/ethers/dist/ethers.min.js"></script>
 </head>
 <body>
-    <h1>Conectar MetaMask vía WalletConnect con Alchemy</h1>
-    <button onclick="connectWalletConnect()">Conectar con MetaMask vía WalletConnect</button>
-    <script>
-      async function connectWalletConnect() {
-        const walletConnect = new WalletConnect({
-          bridge: "https://bridge.walletconnect.org",
+<h1>Conectar WalletConnect a MetaMask en la Red Base</h1>
+
+<button onclick="connectWallet()">Conectar con MetaMask vía WalletConnect</button>
+
+<script>
+    async function connectWallet() {
+        // Crear un nuevo proveedor de WalletConnect
+        const provider = new WalletConnectProvider.default({
+            rpc: {
+                8453: "https://mainnet.base.org/rpc" // Chain ID para Base
+            },
+            qrcode: false, // Desactivar QR code
+            relays: [
+                {
+                    protocol: "wss",
+                    url: "wss://relay.walletconnect.com" // Servidor de relay
+                }
+            ]
         });
 
-        if (!walletConnect.connected) {
-          walletConnect.createSession().then(() => {
-            const deepLink = `https://metamask.app.link/wc?uri=${encodeURIComponent(walletConnect.uri)}`;
-            window.location.href = deepLink; // Redirige a MetaMask móvil
-          });
-        }
+        // Conectar al proveedor
+        await provider.enable();
 
-        walletConnect.on("connect", async (error, payload) => {
-          if (error) throw error;
+        // Crear un nuevo signer con ethers.js
+        const ethersProvider = new ethers.providers.Web3Provider(provider);
+        const signer = ethersProvider.getSigner();
 
-          const { accounts, chainId } = payload.params[0];
-          console.log("Cuentas conectadas:", accounts, "Chain ID:", chainId);
-
-          // Conectar con Alchemy
-          const provider = new ethers.providers.JsonRpcProvider("https://base-mainnet.g.alchemy.com/v2/5Pm403n2JyG6Ewmz8PyLiQVHkgMXetQw");
-          const signer = provider.getSigner(accounts[0]);
-          console.log("Conectado con el signer:", signer);
-
-          // Ahora puedes realizar interacciones con la blockchain
-        });
-
-        walletConnect.on("disconnect", (error, payload) => {
-          if (error) throw error;
-          console.log("Desconectado de WalletConnect");
-        });
-      }
-    </script>
+        const accounts = await signer.getAddress();
+        console.log("Conectado con la cuenta:", accounts);
+    }
+</script>
 </body>
 </html>
