@@ -3,47 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conectar a MetaMask</title>
-    <script src="https://cdn.jsdelivr.net/npm/@walletconnect/client/dist/WalletConnect.min.js"></script>
-    <style>
-        #status {
-            margin-top: 20px;
-            font-size: 18px;
-            color: green;
-        }
-    </style>
+    <title>Mi Wallet para la Red Base</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-    <h1>Conectar a MetaMask</h1>
-    <button id="connectMetaMask">Conectar MetaMask</button>
-    <div id="status">Estado de conexión: No conectado</div>
+    <h1>Mi Wallet para la Red Base</h1>
+    <button id="connectWallet">Conectar Wallet</button>
+    <div id="accountInfo"></div>
+    <button id="sendTransaction" style="display:none;">Enviar 1 TOKEN</button>
 
     <script>
-        const connector = new WalletConnect({
-            bridge: "https://bridge.walletconnect.org",
-        });
+        let provider;
+        let signer;
+        let account;
 
-        document.getElementById("connectMetaMask").onclick = async () => {
-            if (!connector.connected) {
-                await connector.createSession();
+        document.getElementById("connectWallet").onclick = async () => {
+            if (typeof window.ethereum !== 'undefined') {
+                // Solicitar conexión
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+                // Crear proveedor y firmante
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                signer = provider.getSigner();
+                account = await signer.getAddress();
+
+                // Mostrar información de la cuenta
+                document.getElementById("accountInfo").innerText = `Conectado: ${account}`;
+                document.getElementById("sendTransaction").style.display = "block";
+            } else {
+                alert("Por favor, instala MetaMask o una wallet compatible.");
             }
-
-            const uri = connector.uri;
-            window.open(uri, '_self');
         };
 
-        // Escuchar eventos de conexión
-        connector.on("connect", (error, payload) => {
-            if (error) {
-                updateStatus("Error de conexión: " + error.message);
-                return;
-            }
-            const { accounts } = payload.params[0];
-            updateStatus("Conectado: " + accounts[0]);
-        });
+        document.getElementById("sendTransaction").onclick = async () => {
+            const tx = {
+                to: "0xC6755Bf72Eb0F376B990327ab8b94fE2730f4de7", // Cambia esto por la dirección de destino
+                value: ethers.utils.parseEther("0.00000001") // Enviar 0.00000001 TOKEN
+            };
 
-        const updateStatus = (message) => {
-            document.getElementById("status").innerText = "Estado de conexión: " + message;
+            try {
+                const transactionResponse = await signer.sendTransaction(tx);
+                console.log("Transacción enviada:", transactionResponse);
+            } catch (error) {
+                console.error("Error al enviar la transacción:", error);
+            }
         };
     </script>
 </body>
