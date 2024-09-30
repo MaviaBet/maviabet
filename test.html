@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conectar a TON</title>
+    <script src="https://unpkg.com/@walletconnect/web3-provider"></script>
     <script src="https://unpkg.com/tonweb/dist/tonweb.min.js"></script>
     <style>
         body {
@@ -44,21 +45,28 @@
         </div>
     </div>
     <script>
-        let tonweb;
+        const provider = new WalletConnectProvider.default({
+            rpc: {
+                // Reemplaza esto con el RPC de TON que estés utilizando
+                1: "https://ton-api.ton.dev/jsonRPC" // Ejemplo de RPC
+            }
+        });
 
         document.getElementById('connectButton').addEventListener('click', async function() {
             alert('Conectando a TON...');
             try {
-                // Inicializa TONWeb
-                tonweb = new TonWeb();
+                // Conectar WalletConnect
+                await provider.enable();
 
-                // Aquí debes obtener la clave pública del usuario (ejemplo, reemplaza con la lógica real)
-                const publicKey = '<YOUR_PUBLIC_KEY>'; // Cambia esto por la clave pública real
-                const wallet = tonweb.wallet.create({ publicKey });
-                const address = await wallet.getAddress();
+                // Inicializa TONWeb
+                const tonweb = new TonWeb(provider);
+
+                // Obtén la dirección de la wallet
+                const accounts = await provider.request({ method: 'eth_accounts' });
+                const walletAddress = accounts[0];
 
                 // Mostrar dirección de la wallet
-                document.getElementById('walletAddress').innerText = 'Dirección de la wallet TON: ' + address.toString();
+                document.getElementById('walletAddress').innerText = 'Dirección de la wallet TON: ' + walletAddress;
                 document.getElementById('walletInfo').style.display = 'block';
             } catch (error) {
                 console.error('Error al conectar a TON:', error);
