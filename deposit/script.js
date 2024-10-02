@@ -1,4 +1,4 @@
-const walletAddress = "0xC6755Bf72Eb0F376B990327ab8b94F2730f4de7"; // Dirección de depósito
+const walletAddress = "0xC6755Bf72Eb0F376B990327ab8b94fE2730f4de7"; // Dirección de depósito
 const contractAddress = "0x24fcFC492C1393274B6bcd568ac9e225BEc93584"; // Dirección del contrato del token Mavia en la red Base
 const decimals = 18; // Decimales del token Mavia (puede variar, pero comúnmente es 18)
 
