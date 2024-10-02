@@ -23,7 +23,8 @@ function updateQR() {
 }
 
 // Evento que escucha la entrada de Mavia y actualiza el QR y los rubíes en tiempo real
-document.getElementById('maviaAmount').addEventListener('input', updateQR);
+document.getElementById('maviaAmount').addEventListener('input', updateQR); // Para escritorio
+document.getElementById('maviaAmount').addEventListener('change', updateQR); // Para móviles
 
 function generateQR() {
     updateQR();
