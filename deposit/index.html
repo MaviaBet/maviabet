@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deposit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Deposit</h2>
+  <canvas id="qrcode"></canvas> <!-- QR arriba -->
+  <input type="number" id="maviaAmount" class="input-field" placeholder="Enter the amount of Mavia">
+  <div class="output-field">Rubi: <span id="rubiesAmount">0</span></div>
+  <button class="button deposit-button" onclick="generateQR()">Deposit</button>
+</div>
+
+<!-- Modal para mostrar opciones después de generar el QR -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Open MetaMask</h2>
+    <img src="https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png" alt="MetaMask" class="metamask-icon">
+    <p>Choose an option:</p>
+    <button class="button" id="scanQR" onclick="closeModal()">Scan QR</button>
+    <button class="button" id="openLink">Open Link</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
