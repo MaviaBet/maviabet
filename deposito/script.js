@@ -6,44 +6,34 @@ function toTokenAmount(value, decimals) {
     return (value * Math.pow(10, decimals)).toString();
 }
 
-document.getElementById('maviaAmount').addEventListener('input', function () {
+function updateQR() {
     let maviaAmount = document.getElementById('maviaAmount').value;
     let rubies = (maviaAmount * 100).toFixed(2); // Redondea a 2 decimales
     document.getElementById('rubiesAmount').textContent = rubies; // Actualiza el valor de rubíes
-});
-
-function generateQR() {
-    let maviaAmount = document.getElementById('maviaAmount').value;
-    let rubies = (maviaAmount * 100).toFixed(2); // Redondea a 2 decimales
-    document.getElementById('rubiesAmount').textContent = rubies;
 
     if (maviaAmount > 0) {
         let tokenAmount = toTokenAmount(maviaAmount, decimals);
         let qrData = `https://metamask.app.link/send/${contractAddress}@8453/transfer?address=${walletAddress}&uint256=${tokenAmount}`;
 
+        // Actualiza el QR en tiempo real
         QRCode.toCanvas(document.getElementById('qrcode'), qrData, function (error) {
             if (error) console.error(error);
         });
-
-        // Mostrar el modal después de generar el QR
-        showModal(qrData);
-    } else {
-        alert('Please enter a valid amount of Mavia.');
     }
 }
 
+// Evento que escucha la entrada de Mavia y actualiza el QR y los rubíes en tiempo real
+document.getElementById('maviaAmount').addEventListener('input', updateQR);
+
+function generateQR() {
+    updateQR();
+    showModal();
+}
+
 // Funciones para mostrar y ocultar el modal
-function showModal(qrData) {
+function showModal() {
     let modal = document.getElementById('modal');
-    let openLinkBtn = document.getElementById('openLink');
-
     modal.style.display = "block";
-
-    // Asigna el enlace al botón "Abrir Link"
-    openLinkBtn.onclick = function() {
-        window.open(qrData, '_blank');
-        closeModal(); // Cierra el modal al abrir el enlace
-    }
 }
 
 function closeModal() {
