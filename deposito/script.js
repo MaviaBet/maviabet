@@ -1,4 +1,4 @@
-const walletAddress = "0xC6755Bf72Eb0F376B990327ab8b94fE2730f4de7"; // Dirección de depósito
+const walletAddress = "0xC6755Bf72Eb0F376B990327ab8b94F2730f4de7"; // Dirección de depósito
 const contractAddress = "0x24fcFC492C1393274B6bcd568ac9e225BEc93584"; // Dirección del contrato del token Mavia en la red Base
 const decimals = 18; // Decimales del token Mavia (puede variar, pero comúnmente es 18)
 
@@ -19,16 +19,26 @@ function updateQR() {
         QRCode.toCanvas(document.getElementById('qrcode'), qrData, function (error) {
             if (error) console.error(error);
         });
+
+        return qrData; // Retorna el QR data para usarlo al abrir el enlace
     }
 }
 
 // Evento que escucha la entrada de Mavia y actualiza el QR y los rubíes en tiempo real
-document.getElementById('maviaAmount').addEventListener('input', updateQR); // Para escritorio
+document.getElementById('maviaAmount').addEventListener('input', () => {
+    const qrData = updateQR(); // Llama a la función y obtiene el qrData
+    if (qrData) {
+        document.getElementById('openLink').onclick = function() {
+            window.open(qrData, '_blank'); // Abre el enlace en una nueva pestaña
+        };
+    }
+});
+
 document.getElementById('maviaAmount').addEventListener('change', updateQR); // Para móviles
 
 function generateQR() {
-    updateQR();
-    showModal();
+    const qrData = updateQR(); // Asegúrate de que se genera el QR
+    showModal(qrData); // Pasa el qrData al modal
 }
 
 // Funciones para mostrar y ocultar el modal
