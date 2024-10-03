@@ -5,39 +5,26 @@ let chatId;
 
 // Acceder a los datos del usuario proporcionados por Telegram
 // Comprobar si window.Telegram.WebApp está definido
-if (window.Telegram && window.Telegram.WebApp) {
-window.Telegram.WebApp.ready(function() {
-    // Obtener los datos del chat_id del usuario
-    const initData = window.Telegram.WebApp.initDataUnsafe;
-    chatId = initData.chat.id;  // Aquí tienes el chat_id del usuario
-
- // Verificar si el chat_id es null
-            let formattedChatId;
-    let chatIdElement;
-            if (chatId === null) {
-                formattedChatId = "Chat ID not available [A]";  // Mensaje alternativo
-            } else {
-                // Formatear el chat_id a "123...789"
-                formattedChatId = formatChatId(chatId);
-                  // Mostrar el chat_id formateado al lado de "User : "
-    chatIdElement = document.getElementById("chat_id");
-    chatIdElement.textContent = "User : " + formattedChatId;
-            }
-
-    
-
-    
-    // Obtener la dirección de la wallet desde la URL
-   // const params = new URLSearchParams(window.location.search);
-  //walletAddress = params.get("wallet_address");
-
-});
-}else{
-    // Manejo del caso en que window.Telegram.WebApp no esté disponible
-    const chatIdElement = document.getElementById("chat_id");
-    chatIdElement.textContent = "Telegram WebApp not available";
-    showAlertAndClose();  // Mostrar alerta y cerrar la ventana
+function initialize() { 
+// Obtener la dirección de la wallet desde la URL
+const params = new URLSearchParams(window.location.search);
+chatId=  params.get("chat_id");  
+walletAddress = params.get("wallet_address");
+///////////////////////////////////////////////////
+let formattedChatId;
+let formattedWalletAddress;
+const chatIdElement = document.getElementById("chat_id");
+const walletAddressElement = document.getElementById("wallet_Address");
+ if (chatId === null) {
+formattedChatId = "Chat ID not available [A]";  // Mensaje alternativo
+} else {
+// Formatear el chat_id a "123...789"
+formattedChatId = formatChatId(chatId);
 }
+chatIdElement.textContent = "User : " + formattedChatId;
+walletAddressElement.textContent = formattedWalletAddress;
+});
+
 
 // Función para mostrar un diálogo y cerrar la ventana
 function showAlertAndClose() {
