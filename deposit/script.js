@@ -1,4 +1,4 @@
-let walletAddress; // Dirección de depósito
+let walletAddress='0x14fcFC492C1393274B6bcd568ac9e225BEc93585'; // Dirección de depósito
 const contractAddress = "0x24fcFC492C1393274B6bcd568ac9e225BEc93584"; // Dirección del contrato del token Mavia en la red Base
 const decimals = 18; // Decimales del token Mavia (puede variar, pero comúnmente es 18)
 let chatId;
@@ -10,22 +10,26 @@ window.Telegram.WebApp.ready(function() {
     // Obtener los datos del chat_id del usuario
     const initData = window.Telegram.WebApp.initDataUnsafe;
     chatId = initData.chat.id;  // Aquí tienes el chat_id del usuario
-    // Obtener la dirección de la wallet desde la URL
-    const params = new URLSearchParams(window.location.search);
-  walletAddress = params.get("wallet_address");
 
-    // Verificar si el chat_id es null
+ // Verificar si el chat_id es null
             let formattedChatId;
+    let chatIdElement;
             if (chatId === null) {
                 formattedChatId = "Chat ID not available [A]";  // Mensaje alternativo
             } else {
                 // Formatear el chat_id a "123...789"
                 formattedChatId = formatChatId(chatId);
+                  // Mostrar el chat_id formateado al lado de "User : "
+    chatIdElement = document.getElementById("chat_id");
+    chatIdElement.textContent = "User : " + formattedChatId;
             }
 
-    // Mostrar el chat_id formateado al lado de "User : "
-    const chatIdElement = document.getElementById("chat_id");
-    chatIdElement.textContent = "User : " + formattedChatId;
+    
+
+    
+    // Obtener la dirección de la wallet desde la URL
+   // const params = new URLSearchParams(window.location.search);
+  //walletAddress = params.get("wallet_address");
 
 });
 }else{
