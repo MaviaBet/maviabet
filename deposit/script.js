@@ -23,7 +23,7 @@ formattedChatId = formatChatId(chatId);
 }
 chatIdElement.textContent = "User : " + formattedChatId;
 walletAddressElement.textContent = formattedWalletAddress;
-});
+}
 
 
 // Función para mostrar un diálogo y cerrar la ventana
