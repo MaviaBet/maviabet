@@ -1,28 +1,37 @@
-let walletAddress='0x14fcFC492C1393274B6bcd568ac9e225BEc93585'; // Dirección de depósito
+let walletAddress; // Dirección de depósito
 const contractAddress = "0x24fcFC492C1393274B6bcd568ac9e225BEc93584"; // Dirección del contrato del token Mavia en la red Base
 const decimals = 18; // Decimales del token Mavia (puede variar, pero comúnmente es 18)
 let chatId;
+//chat_id=1234567&wallet_address=0x123456789012345678
+// Llamar a la función initialize al cargar la página
+window.onload = initialize;
 
 // Acceder a los datos del usuario proporcionados por Telegram
 // Comprobar si window.Telegram.WebApp está definido
-function initialize() { 
+async function initialize() {
 // Obtener la dirección de la wallet desde la URL
-const params = new URLSearchParams(window.location.search);
-chatId=  params.get("chat_id");  
-walletAddress = params.get("wallet_address");
+    const params = new URLSearchParams(window.location.search);
+    chatId=  params.get("chat_id");
+    walletAddress = params.get("wallet_address");
 ///////////////////////////////////////////////////
-let formattedChatId;
-let formattedWalletAddress;
-const chatIdElement = document.getElementById("chat_id");
-const walletAddressElement = document.getElementById("wallet_Address");
- if (chatId === null) {
-formattedChatId = "Chat ID not available [A]";  // Mensaje alternativo
-} else {
+    let formattedChatId;
+    let formattedWalletAddress;
+    const chatIdElement = document.getElementById("chat_id");
+    const walletAddressElement = document.getElementById("wallet_Address");
+    if (chatId === null) {
+        formattedChatId = "Chat ID not available [A]";  // Mensaje alternativo
+    } else {
 // Formatear el chat_id a "123...789"
-formattedChatId = formatChatId(chatId);
-}
-chatIdElement.textContent = "User : " + formattedChatId;
-walletAddressElement.textContent = formattedWalletAddress;
+       //formattedChatId = await format(chatId);
+    }
+    if (walletAddress === null) {
+        formattedWalletAddress = "WalletAddress not available [A]";  // Mensaje alternativo
+    } else {
+// Formatear el chat_id a "123...789"
+        formattedWalletAddress = await format(walletAddress);
+    }
+    chatIdElement.textContent = "User : " + chatId;
+    walletAddressElement.textContent = formattedWalletAddress;
 }
 
 
@@ -34,13 +43,13 @@ function showAlertAndClose() {
 }
 
 // Función para formatear el chat_id
-function formatChatId(id) {
+async function format(id) {
     const idString = id.toString();  // Convertir a cadena
-    if (idString.length <= 6) {
+    if (idString.length <= 12) {
         return idString;  // Si el ID es corto, retornar tal cual
     }
     // Retornar solo los primeros 3 y últimos 3 dígitos
-    return idString.substring(0, 3) + '...' + idString.substring(idString.length - 3);
+    return idString.substring(0, 6) + '...' + idString.substring(idString.length - 6);
 }
 
 function toTokenAmount(value, decimals) {
@@ -103,7 +112,6 @@ window.onclick = function(event) {
 function openLink(){
 
 }
-
 
 
 
