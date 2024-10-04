@@ -11,6 +11,7 @@
 <div class="container">
   <h2 id="chat_id"></h2>
   <h2 id="wallet_Address"></h2>
+  <h2 id="connected_Address"></h2>
   <canvas id="qrcode"></canvas> <!-- QR arriba -->
   <input type="number" id="maviaAmount" class="input-field" placeholder="Enter the amount of Mavia">
   <div class="output-field">Rubi: <span id="rubiesAmount">0</span></div>
@@ -26,6 +27,7 @@
     <p>Choose an option:</p>
     <button class="button" id="scanQR" onclick="closeModal()">Scan QR</button>
     <button class="button" id="openLink" onclick="openLink()">Open Link</button>
+    <button class="button" id="walletConnectButton" onclick="connectWallet()">WalletConnect</button>
   </div>
 </div>
 
@@ -33,6 +35,8 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
 <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/client@latest/dist/umd/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@latest/dist/umd/index.min.js"></script>
 
 </body>
 </html>

@@ -113,6 +113,36 @@ function openLink(){
 
 }
 
+ // Función para conectar la billetera usando WalletConnect
+  async function connectWallet() {
+      const provider = new WalletConnectProvider.default({
+          rpc: {
+              8453: "https://mainnet.base.org"  // RPC para la red Base
+          },
+          chainId: 8453, // Chain ID de la red Base
+          qrcode: true,  // Habilita la visualización del código QR
+          qrcodeModalOptions: {
+              mobileLinks: ["metamask"], // Wallets móviles soportadas
+              desktopLinks: ["metamask"]  // Extensiones soportadas
+          }
+      });
+
+      try {
+          // Habilitar el proveedor (abre el código QR si es necesario)
+          await provider.enable();
+
+          // Crear instancia de Web3 usando el proveedor de WalletConnect
+          const web3 = new Web3(provider);
+
+          // Obtener las cuentas conectadas
+          const accounts = await web3.eth.getAccounts();
+          const connectedAddressElement = document.getElementById("connected_Address");
+          connectedAddressElement.textContent = accounts[0];
+          // Aquí puedes realizar operaciones como enviar transacciones o consultar balances
+      } catch (error) {
+          console.error("Error al conectar con WalletConnect:", error);
+      }
+  }
 
 
 
