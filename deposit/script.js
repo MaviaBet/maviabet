@@ -5,7 +5,7 @@ let chatId;
 //chat_id=1234567&wallet_address=0x123456789012345678
 
 // Define la versión
-const version = "v1.0.1"; // Cambia este valor cuando necesites actualizar la versión
+const version = "v1.0.2"; // Cambia este valor cuando necesites actualizar la versión
 
 // Función para cargar la versión en el DOM
 function loadVersion() {
@@ -125,6 +125,24 @@ function openLink(){
 
 }
 
+// Función para conectar con MetaMask
+async function connectToMetaMask() {
+    // Verifica si MetaMask está instalada
+    if (typeof window.ethereum !== 'undefined') {
+        try {
+            // Solicita la conexión a MetaMask
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const account=accounts[0];
+            document.getElementById("account_Address").textContent = await format(account); // Muestra la cuenta en la interfaz
+        } catch (error) {
+            console.error('Error al conectar con MetaMask:', error);
+            alert('Por favor, permite el acceso a tu cuenta de MetaMask.'); // Mensaje para el usuario
+        }
+    } else {
+        alert('MetaMask no está instalado. Por favor, instálalo desde https://metamask.io');
+        // Aquí puedes redirigir a la página de instalación si lo deseas
+    }
+}
 
 
 
