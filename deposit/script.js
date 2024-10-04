@@ -3,6 +3,17 @@ const contractAddress = "0x24fcFC492C1393274B6bcd568ac9e225BEc93584"; // Direcci
 const decimals = 18; // Decimales del token Mavia (puede variar, pero comúnmente es 18)
 let chatId;
 //chat_id=1234567&wallet_address=0x123456789012345678
+
+// Define la versión
+const version = "v1.0.1"; // Cambia este valor cuando necesites actualizar la versión
+
+// Función para cargar la versión en el DOM
+function loadVersion() {
+    const versionElement = document.getElementById("version");
+    versionElement.textContent = version; // Asigna la versión al elemento
+}
+
+
 // Llamar a la función initialize al cargar la página
 window.onload = initialize;
 
@@ -32,6 +43,7 @@ async function initialize() {
     }
     chatIdElement.textContent = "User : " + chatId;
     walletAddressElement.textContent = formattedWalletAddress;
+    loadVersion();
 }
 
 
@@ -113,36 +125,6 @@ function openLink(){
 
 }
 
- // Función para conectar la billetera usando WalletConnect
-  async function connectWallet() {
-      const provider = new WalletConnectProvider.default({
-          rpc: {
-              8453: "https://mainnet.base.org"  // RPC para la red Base
-          },
-          chainId: 8453, // Chain ID de la red Base
-          qrcode: true,  // Habilita la visualización del código QR
-          qrcodeModalOptions: {
-              mobileLinks: ["metamask"], // Wallets móviles soportadas
-              desktopLinks: ["metamask"]  // Extensiones soportadas
-          }
-      });
-
-      try {
-          // Habilitar el proveedor (abre el código QR si es necesario)
-          await provider.enable();
-
-          // Crear instancia de Web3 usando el proveedor de WalletConnect
-          const web3 = new Web3(provider);
-
-          // Obtener las cuentas conectadas
-          const accounts = await web3.eth.getAccounts();
-          const connectedAddressElement = document.getElementById("connected_Address");
-          connectedAddressElement.textContent = accounts[0];
-          // Aquí puedes realizar operaciones como enviar transacciones o consultar balances
-      } catch (error) {
-          console.error("Error al conectar con WalletConnect:", error);
-      }
-  }
 
 
 
