@@ -3,19 +3,17 @@ const contractAddress = "0x24fcFC492C1393274B6bcd568ac9e225BEc93584"; // Direcci
 const decimals = 18; // Decimales del token Mavia (puede variar, pero comúnmente es 18)
 let chatId;
 //chat_id=1234567&wallet_address=0x123456789012345678
+// Llamar a la función initialize al cargar la página
+window.onload = initialize;
 
 // Define la versión
-const version = "v1.0.2"; // Cambia este valor cuando necesites actualizar la versión
+const version = "v1.0.0"; // Cambia este valor cuando necesites actualizar la versión
 
 // Función para cargar la versión en el DOM
 function loadVersion() {
     const versionElement = document.getElementById("version");
     versionElement.textContent = version; // Asigna la versión al elemento
 }
-
-
-// Llamar a la función initialize al cargar la página
-window.onload = initialize;
 
 // Acceder a los datos del usuario proporcionados por Telegram
 // Comprobar si window.Telegram.WebApp está definido
@@ -125,24 +123,7 @@ function openLink(){
 
 }
 
-// Función para conectar con MetaMask
-async function connectToMetaMask() {
-    // Verifica si MetaMask está instalada
-    if (typeof window.ethereum !== 'undefined') {
-        try {
-            // Solicita la conexión a MetaMask
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const account=accounts[0];
-            document.getElementById("account_Address").textContent = await format(account); // Muestra la cuenta en la interfaz
-        } catch (error) {
-            console.error('Error al conectar con MetaMask:', error);
-            alert('Por favor, permite el acceso a tu cuenta de MetaMask.'); // Mensaje para el usuario
-        }
-    } else {
-        alert('MetaMask no está instalado. Por favor, instálalo desde https://metamask.io');
-        // Aquí puedes redirigir a la página de instalación si lo deseas
-    }
-}
+
 
 
 

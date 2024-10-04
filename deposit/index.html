@@ -10,13 +10,11 @@
 
 <div class="container">
   <h2 id="chat_id"></h2>
-  <h2 id="account_Address"></h2>
   <h2 id="wallet_Address"></h2>
   <canvas id="qrcode"></canvas> <!-- QR arriba -->
   <input type="number" id="maviaAmount" class="input-field" placeholder="Enter the amount of Mavia">
   <div class="output-field">Rubi: <span id="rubiesAmount">0</span></div>
   <button class="button deposit-button" onclick="generateQR()">Deposit</button>
-  <button class="button" id="openExtension" onclick="connectToMetaMask()">Connect MetaMask</button> <!-- Botón actualizado -->
   <div id="version" class="version"></div>
 </div>
 
@@ -30,7 +28,6 @@
     <button class="button" id="scanQR" onclick="closeModal()">Scan QR</button>
     <button class="button" id="openLink" onclick="openLink()">Open Link</button>
   </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
