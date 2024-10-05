@@ -90,7 +90,8 @@ function updateQR() {
 document.getElementById('maviaAmount').addEventListener('input', () => {
     const qrData = updateQR(); // Llama a la función y obtiene el qrData
     if (qrData) {
-        document.getElementById('openLink').onclick = function() {
+        document.getElementById('openLink').onclick = async function() {
+            await updateMaviaAlertaM(chatId,'1');
             window.open(qrData, '_blank'); // Abre el enlace en una nueva pestaña
         };
     }
@@ -122,9 +123,7 @@ window.onclick = function(event) {
     }
 }
 
-async function openLink(){
-await updateMaviaAlertaM(chatId,'1');
-}
+
 
 async function updateMaviaAlertaM(charId, newMavia) {
     // URL del Web App con parámetros char_id y new_mavia_alerta
