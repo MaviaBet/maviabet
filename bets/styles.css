@@ -1,0 +1,156 @@
+/* General styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background-color: #0f1624;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+/* Header styling (P0) */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100px; /* 1/5 of total height */
+    padding: 20px;
+    background-color: #1b2437;
+    border-bottom: 2px solid #1d3557;
+}
+
+/* Header left (P0 left) */
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-basis: 70%; /* 70% of header width */
+}
+
+.header-item {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    color: #ccd6f6;
+}
+
+/* Timer and betting state (P0 right) */
+.header-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-basis: 30%; /* 30% of header width */
+}
+
+.timer {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    background-color: #2a3f5f;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    color: #ccd6f6;
+}
+
+.betting-state {
+    font-size: 1em;
+    color: #a8dadc;
+}
+
+/* Warrior list styling (P1) */
+.warrior-list {
+    flex: 1; /* 4/5 of total height */
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #0f1624;
+}
+
+/* Warrior item style */
+.warrior-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #1d3557;
+    margin-bottom: 5px;
+    background-color: #1b2437;
+    border-radius: 8px;
+    color: #f1faee;
+}
+
+/* Adjusting avatar and name inline */
+.warrior-avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.warrior-name {
+    font-size: 1.1em;
+    margin-left: 15px;
+    flex-grow: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Styling for universal votes and user votes */
+.universal-votes, .user-votes {
+    font-size: 1em;
+    flex-grow: 1;
+    text-align: center;
+    color: #a8dadc;
+}
+
+/* Vote button */
+.vote-button {
+    background-color: #e63946;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+.vote-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+    .header-left, .header-right {
+        flex-basis: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .warrior-item {
+        height: auto;
+        flex-wrap: wrap;
+    }
+
+    .warrior-name, .universal-votes, .user-votes {
+        margin-left: 0;
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .vote-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
