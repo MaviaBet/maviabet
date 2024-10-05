@@ -115,13 +115,13 @@ let rubi;
             });
             if (!response.ok) {
                 console.error(`HTTP error! Status: ${response.status}`);
-                return null;
+                return `HTTP error! Status: ${response.status}`;
             }
               // O .json() si es JSON
             return await response.text();
         } catch (error) {
             console.error('Error fetching rubi:', error);
-            return null;
+            return 'Error fetching rubi:'+error;
         }
     }
 
