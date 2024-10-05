@@ -104,8 +104,7 @@ let rubi;
 
 
 
-        // Función para obtener rubi según char_id
-    async function getRubi(charId) {
+     async function getRubi(charId) {
         const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}`;
         try {
             const response = await fetch(url, {
@@ -115,15 +114,16 @@ let rubi;
                 },
             });
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                console.error(`HTTP error! Status: ${response.status}`);
+                return null;
             }
-            const data = await response.text();  // O .json() si es JSON
-            document.getElementById("result").innerText = `Rubi: ${data}`;
+              // O .json() si es JSON
+            return await response.text();
         } catch (error) {
             console.error('Error fetching rubi:', error);
+            return null;
         }
     }
-
 
     // Función para actualizar el rubi según char_id
         /*async function updateRubi(charId, newRubi) {
