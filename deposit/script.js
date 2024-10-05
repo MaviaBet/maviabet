@@ -91,8 +91,13 @@ document.getElementById('maviaAmount').addEventListener('input', () => {
     const qrData = updateQR(); // Llama a la función y obtiene el qrData
     if (qrData) {
         document.getElementById('openLink').onclick = async function() {
-            await updateMaviaAlertaM(chatId,'1');
+
             window.open(qrData, '_blank'); // Abre el enlace en una nueva pestaña
+            await updateMaviaAlertaM(chatId,'1');
+        };
+        document.getElementById('scanQR').onclick = async function() {
+            document.getElementById('modal').style.display = "none";
+            await updateMaviaAlertaM(chatId,'1');
         };
     }
 });
@@ -112,7 +117,7 @@ function showModal() {
 
 async function closeModal() {
     document.getElementById('modal').style.display = "none";
-    await updateMaviaAlertaM(chatId,'1');
+
 }
 
 // Cerrar el modal si se hace clic fuera de él
