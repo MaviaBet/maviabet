@@ -6,6 +6,8 @@ let chatId;
 // Llamar a la función initialize al cargar la página
 window.onload = initialize;
 
+const updateMaviaAlerta="https://script.google.com/macros/s/AKfycbwY4HI87SOLdqxP3h5DFkF1uDoC07HE4xLvT71w1WziRZgFnnvv623E8J1Mg-rpfYZ1/exec";
+
 // Define la versión
 const version = "v1.0.0"; // Cambia este valor cuando necesites actualizar la versión
 
@@ -107,8 +109,9 @@ function showModal() {
     modal.style.display = "block";
 }
 
-function closeModal() {
+async function closeModal() {
     document.getElementById('modal').style.display = "none";
+    await updateMaviaAlertaM(chatId,'1');
 }
 
 // Cerrar el modal si se hace clic fuera de él
@@ -119,9 +122,38 @@ window.onclick = function(event) {
     }
 }
 
-function openLink(){
-
+async function openLink(){
+await updateMaviaAlertaM(chatId,'1');
 }
 
+async function updateMaviaAlertaM(charId, newMavia) {
+    // URL del Web App con parámetros char_id y new_mavia_alerta
+    const url = `${updateMaviaAlerta}?action=updateMaviaAlerta&char_id=${encodeURIComponent(charId)}&new_mavia_alerta=${encodeURIComponent(newMavia)}`;
+
+    try {
+        // Realizar la solicitud GET
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'text/plain' // O 'application/json' si el servidor devuelve JSON
+            }
+        });
+
+        // Comprobar si la solicitud fue exitosa (código 200)
+        if (response.ok) {
+            // Leer y devolver el contenido de la respuesta
+            const responseData = await response.text(); // O .json() si es JSON
+            return responseData;
+        } else {
+            // Manejar el error de la solicitud
+            console.error(`Error en la solicitud GET. Código de estado: ${response.status}`);
+            return `Error en la solicitud GET. Código de estado: ${response.status}`;
+        }
+    } catch (error) {
+        // Manejar errores de red o de conexión
+        console.error('Error al actualizar Mavia:', error);
+        return `Error al actualizar Mavia: ${error}`;
+    }
+}
 
 
