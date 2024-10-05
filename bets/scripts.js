@@ -68,7 +68,7 @@ let rubi;
         // Cronómetro
         const timerElement = document.createElement('div');
         timerElement.classList.add('timer');
-        timerElement.textContent = `Tiempo restante: ${bettingTime}s`;
+        timerElement.textContent = formatTime(bettingTime);
         headerRight.appendChild(timerElement);
 
         // Estado de bets
@@ -168,7 +168,7 @@ let rubi;
             universalVotesElement.textContent = warrior.universalVotes;
             userVotesElement.textContent = warrior.userVotes;
 
-            console.log(`Apostaste por el guerrero: ${warrior.name}. Votos universales: ${warrior.universalVotes}, Votos del usuario: ${warrior.userVotes}`);
+            //console.log(`Apostaste por el guerrero: ${warrior.name}. Votos universales: ${warrior.universalVotes}, Votos del usuario: ${warrior.userVotes}`);
         }
     }
 
@@ -188,7 +188,7 @@ let rubi;
         countdownInterval = setInterval(function() {
             if (bettingTime > 0) {
                 bettingTime--;
-                timerElement.textContent = `Remaining time : ${bettingTime}s`;
+                timerElement.textContent = formatTime(bettingTime);
             } else {
                 clearInterval(countdownInterval);
                 endBetting();
@@ -228,7 +228,7 @@ let rubi;
         bettingTime = 30;  // Restablecer el tiempo de bets
         const timerElement = document.querySelector('.timer');
         const bettingStateElement = document.querySelector('.betting-state');
-        timerElement.textContent = `Remaining time : ${bettingTime}s`;
+        timerElement.textContent = formatTime(bettingTime);
         bettingStateElement.textContent = bettingStates[currentState];
 
         // Deshabilitar los botones de apostar
@@ -248,7 +248,21 @@ let rubi;
     setTimeout(startBettingCountdown, 10000);  // Simulación de preparación durante 3 segundos
 
 
+    function formatTime(seconds) {
+        // Calcula horas, minutos y segundos
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
 
+        // Formatea a dos dígitos
+        const formattedTime = [
+            String(hours).padStart(2, '0'),
+            String(minutes).padStart(2, '0'),
+            String(secs).padStart(2, '0')
+        ].join(':');
+
+        return formattedTime;
+    }
 
 });
 
