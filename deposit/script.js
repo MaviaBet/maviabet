@@ -125,6 +125,3 @@ function openLink(){
 
 
 
-
-
-
