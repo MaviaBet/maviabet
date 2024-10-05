@@ -154,3 +154,9 @@ html, body {
         margin-top: 10px;
     }
 }
+.version {
+    font-size: 12px;      /* Tamaño de fuente pequeño */
+    color: #C1C8D0;       /* Color gris claro */
+    margin-top: 15px;     /* Espaciado superior */
+    text-align: center;    /* Centrado dentro del contenedor */
+}

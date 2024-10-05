@@ -2,27 +2,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const getRubiByCharId="https://script.google.com/macros/s/AKfycbzVBIrKtExCzvxr_I-Ay_uBEt4ZswURfOt5K_3Uqd7ouObXWJeJOIyaGCjJ19KmmBcvfw/exec";
 
-    // Estados de apuestas
+    // Estados de bets
     const bettingStates = [
-        'Preparando apuestas...',  // Estado 0: preparación
-        'Apuestas en curso...',     // Estado 1: apuestas activas
-        'Apuestas finalizadas...',  // Estado 2: apuestas cerradas
-        'Mostrando resultados...'   // Estado 3: resultados
+        'Preparing bets...',  // Estado 0: preparación
+        'Betting in progress...',     // Estado 1: bets activas
+        'Finalized bets...',  // Estado 2: bets cerradas
+        'Showing results...'   // Estado 3: resultados
     ];
-    let currentState = 0;  // Inicialmente en "Preparando apuestas"
+    let currentState = 0;  // Inicialmente en "Preparando bets"
 
     // Configuración del cronómetro
-    let bettingTime = 30;  // Tiempo de apuestas en segundos
+    let bettingTime = 30;  // Tiempo de bets en segundos
     let countdownInterval;
 
     // Datos de guerreros (P1)
     const warriors = [
-        { id: 1, name: 'Guerrero 1', avatar: 'avatar1.png', universalVotes: 100, userVotes: 5 },
-        { id: 2, name: 'Guerrero 2', avatar: 'avatar2.png', universalVotes: 200, userVotes: 3 },
-        { id: 3, name: 'Guerrero 3', avatar: 'avatar3.png', universalVotes: 150, userVotes: 4 },
-        { id: 4, name: 'Guerrero 4', avatar: 'avatar4.png', universalVotes: 300, userVotes: 7 },
-        { id: 5, name: 'Guerrero 5', avatar: 'avatar5.png', universalVotes: 240, userVotes: 2 },
-        { id: 6, name: 'Guerrero 6', avatar: 'avatar6.png', universalVotes: 110, userVotes: 1 },
+        { id: 1, name: 'Player 1', avatar: 'avatar1.png', universalVotes: 100, userVotes: 5 },
+        { id: 2, name: 'Player 2', avatar: 'avatar2.png', universalVotes: 200, userVotes: 3 },
+        { id: 3, name: 'Player 3', avatar: 'avatar3.png', universalVotes: 150, userVotes: 4 },
+        { id: 4, name: 'Player 4', avatar: 'avatar4.png', universalVotes: 300, userVotes: 7 },
+        { id: 5, name: 'Player 5', avatar: 'avatar5.png', universalVotes: 240, userVotes: 2 },
+        { id: 6, name: 'Player 6', avatar: 'avatar6.png', universalVotes: 110, userVotes: 1 },
     ];
 
 let chatId;
@@ -48,15 +48,20 @@ let rubi;
         // Cargar el encabezado (Datos verticalmente)
         const headerLeft = document.createElement('div');
         headerLeft.classList.add('header-left');
-        for (let i = 0; i < headerData.length; i++) {
-            const headerItem = document.createElement('div');
-            headerItem.classList.add('header-item');
-            headerItem.textContent = headerData[i];
-            headerLeft.appendChild(headerItem);
-        }
+
+            const headerItem0 = document.createElement('div');
+            headerItem0.classList.add('header-item');
+            headerItem0.textContent = 'User : '+headerData[0];
+            headerLeft.appendChild(headerItem0);
+
+       const headerItem1 = document.createElement('div');
+       headerItem1.classList.add('header-item');
+       headerItem1.textContent = 'Rubi : '+headerData[1];
+       headerLeft.appendChild(headerItem1);
+
         header.appendChild(headerLeft);
 
-        // Cargar el cronómetro y estado de apuestas (Parte derecha)
+        // Cargar el cronómetro y estado de bets (Parte derecha)
         const headerRight = document.createElement('div');
         headerRight.classList.add('header-right');
 
@@ -66,7 +71,7 @@ let rubi;
         timerElement.textContent = `Tiempo restante: ${bettingTime}s`;
         headerRight.appendChild(timerElement);
 
-        // Estado de apuestas
+        // Estado de bets
         const bettingStateElement = document.createElement('div');
         bettingStateElement.classList.add('betting-state');
         bettingStateElement.textContent = bettingStates[currentState];
@@ -95,16 +100,24 @@ let rubi;
         for (let i = 0; i < voteButtons.length; i++) {
             voteButtons[i].addEventListener('click', function() {
                 const warriorId = this.getAttribute('data-id');
-                if (currentState === 1) {  // Solo permitir apuestas en el estado de apuestas activas
+                if (currentState === 1) {  // Solo permitir bets en el estado de bets activas
                     addVoteToWarrior(warriorId);
                 }
             });
         }
+       loadVersion();
     }
 
+// Define la versión
+    const version = "v1.0.0"; // Cambia este valor cuando necesites actualizar la versión
 
+// Función para cargar la versión en el DOM
+    function loadVersion() {
+        const versionElement = document.getElementById("version");
+        versionElement.textContent = version; // Asigna la versión al elemento
+    }
 
-     async function getRubi(charId) {
+    async function getRubi(charId) {
         const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}`;
         try {
             const response = await fetch(url, {
@@ -117,7 +130,7 @@ let rubi;
                 console.error(`HTTP error! Status: ${response.status}`);
                 return `HTTP error! Status: ${response.status}`;
             }
-              // O .json() si es JSON
+            // O .json() si es JSON
             return await response.text();
         } catch (error) {
             console.error('Error fetching rubi:', error);
@@ -161,7 +174,7 @@ let rubi;
 
     // Función para iniciar el cronómetro
     function startBettingCountdown() {
-        currentState = 1;  // Estado de apuestas activas
+        currentState = 1;  // Estado de bets activas
         const timerElement = document.querySelector('.timer');
         const bettingStateElement = document.querySelector('.betting-state');
         bettingStateElement.textContent = bettingStates[currentState];
@@ -183,9 +196,9 @@ let rubi;
         }, 1000);
     }
 
-    // Función para finalizar las apuestas
+    // Función para finalizar las bets
     function endBetting() {
-        currentState = 2;  // Estado de apuestas finalizadas
+        currentState = 2;  // Estado de bets finalizadas
         const bettingStateElement = document.querySelector('.betting-state');
         bettingStateElement.textContent = bettingStates[currentState];
 
@@ -209,13 +222,13 @@ let rubi;
         setTimeout(resetBettingCycle, 5000);
     }
 
-    // Función para reiniciar el ciclo de apuestas
+    // Función para reiniciar el ciclo de bets
     function resetBettingCycle() {
-        currentState = 0;  // Estado de preparando apuestas
-        bettingTime = 30;  // Restablecer el tiempo de apuestas
+        currentState = 0;  // Estado de preparando bets
+        bettingTime = 30;  // Restablecer el tiempo de bets
         const timerElement = document.querySelector('.timer');
         const bettingStateElement = document.querySelector('.betting-state');
-        timerElement.textContent = `Tiempo restante: ${bettingTime}s`;
+        timerElement.textContent = `Remaining time : ${bettingTime}s`;
         bettingStateElement.textContent = bettingStates[currentState];
 
         // Deshabilitar los botones de apostar
@@ -231,7 +244,7 @@ let rubi;
     // Iniciar la página la primera vez
     loadPage();
 
-    // Iniciar el ciclo de apuestas
+    // Iniciar el ciclo de bets
     setTimeout(startBettingCountdown, 3000);  // Simulación de preparación durante 3 segundos
 
 
