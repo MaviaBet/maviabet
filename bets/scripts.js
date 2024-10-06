@@ -1,6 +1,9 @@
-document.addEventListener('DOMContentLoaded', function() {
+const getRubiByCharId="https://script.google.com/macros/s/AKfycbzVBIrKtExCzvxr_I-Ay_uBEt4ZswURfOt5K_3Uqd7ouObXWJeJOIyaGCjJ19KmmBcvfw/exec";
+const getMaviaAlerta="https://script.google.com/macros/s/AKfycbw2lfuWWe03tAXNbddtpTeaaFKaod0_Nv0y5NqjQV4Huji1FoGpJRFbepAGUU5WRNFV/exec";
+let chatId;
+let rubi;
 
-    const getRubiByCharId="https://script.google.com/macros/s/AKfycbzVBIrKtExCzvxr_I-Ay_uBEt4ZswURfOt5K_3Uqd7ouObXWJeJOIyaGCjJ19KmmBcvfw/exec";
+document.addEventListener('DOMContentLoaded', function() {
 
     // Estados de bets
     const bettingStates = [
@@ -25,10 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
         { id: 6, name: 'Player 6', avatar: 'user.png', universalVotes: 110, userVotes: 1 },
     ];
 
-let chatId;
-let rubi;
+
     // Datos del encabezado (P0)
-    let headerData;
+    //let headerData;
 
     // Función para cargar los datos en la página
    async function loadPage() {
@@ -37,31 +39,37 @@ let rubi;
         chatId=params.get("chat_id");
         rubi=await getRubi(chatId);
 
-       headerData=[chatId, rubi];
+      // headerData=[chatId, rubi];
 
         // Limpiar el encabezado y la lista de guerreros antes de recargar
-        const header = document.querySelector('.header');
-        const warriorListContainer = document.querySelector('.warrior-list');
-        header.innerHTML = ''; // Limpia el contenido del encabezado
-        warriorListContainer.innerHTML = ''; // Limpia la lista de guerreros
+        //
 
         // Cargar el encabezado (Datos verticalmente)
-        const headerLeft = document.createElement('div');
-        headerLeft.classList.add('header-left');
+        //const headerLeft = document.createElement('div');
+        //headerLeft.classList.add('header-left');
 
-            const headerItem0 = document.createElement('div');
-            headerItem0.classList.add('header-item');
-            headerItem0.textContent = 'User : '+headerData[0];
-            headerLeft.appendChild(headerItem0);
+            //const headerItem0 = document.createElement('div');
+           // headerItem0.classList.add('header-item');
+            //headerItem0.textContent = 'User : '+headerData[0];
+            //headerLeft.appendChild(headerItem0);
 
-       const headerItem1 = document.createElement('div');
-       headerItem1.classList.add('header-item');
-       headerItem1.textContent = 'Rubi : '+headerData[1];
-       headerLeft.appendChild(headerItem1);
+       //const headerItem1 = document.createElement('div');
+       //headerItem1.classList.add('header-item');
+       //headerItem1.textContent = 'Rubi : '+headerData[1];
+       //headerLeft.appendChild(headerItem1);
 
-        header.appendChild(headerLeft);
+        //header.appendChild(headerLeft);
 
-        // Cargar el cronómetro y estado de bets (Parte derecha)
+       const userElement = document.getElementById('header-user');
+       const rubiElement = document.getElementById('header-rubi');
+       userElement.textContent = 'User : ' + chatId;
+       rubiElement.textContent = 'Rubi : ' + rubi;
+
+       const warriorListContainer = document.querySelector('.warrior-list');
+       //header.innerHTML = ''; // Limpia el contenido del encabezado
+       warriorListContainer.innerHTML = ''; // Limpia la lista de guerreros
+
+       // Cargar el cronómetro y estado de bets (Parte derecha)
         const headerRight = document.createElement('div');
         headerRight.classList.add('header-right');
 
@@ -77,6 +85,7 @@ let rubi;
         bettingStateElement.textContent = bettingStates[currentState];
         headerRight.appendChild(bettingStateElement);
 
+       const header = document.querySelector('.header');
         header.appendChild(headerRight);
 
         // Generar la lista de guerreros
@@ -117,26 +126,7 @@ let rubi;
         versionElement.textContent = version; // Asigna la versión al elemento
     }
 
-    async function getRubi(charId) {
-        const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}`;
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'text/plain', // O 'application/json' si es JSON
-                },
-            });
-            if (!response.ok) {
-                console.error(`HTTP error! Status: ${response.status}`);
-                return `HTTP error! Status: ${response.status}`;
-            }
-            // O .json() si es JSON
-            return await response.text();
-        } catch (error) {
-            console.error('Error fetching rubi:', error);
-            return 'Error fetching rubi:'+error;
-        }
-    }
+
 
     // Función para actualizar el rubi según char_id
         /*async function updateRubi(charId, newRubi) {
@@ -269,4 +259,60 @@ let rubi;
 
 
 
+setInterval(async function() {
+    if(chatId!==undefined){
+const mavia_alerta=await checkUpdateRubi(chatId);
+if(mavia_alerta==='2'){
 
+const rubi=await getRubi(chatId);
+    const userElement = document.getElementById('header-user');
+    const rubiElement = document.getElementById('header-rubi');
+    userElement.textContent = 'User : ' + chatId;
+    rubiElement.textContent = 'Rubi : ' + rubi;
+}
+}
+}, 10*1000); // Escanear cada 60 segundos
+
+
+   async function checkUpdateRubi(charId) {
+        const url = `${getMaviaAlerta}?action=getMaviaAlerta&char_id=${charId}`;
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'text/plain', // O 'application/json' si es JSON
+                },
+            });
+            if (!response.ok) {
+                console.error(`HTTP error! Status: ${response.status}`);
+                return `HTTP error! Status: ${response.status}`;
+            }
+            // O .json() si es JSON
+            return await response.text();
+        } catch (error) {
+            console.error('Error fetching rubi:', error);
+            return 'Error fetching rubi:'+error;
+        }
+    }
+
+
+ async function getRubi(charId) {
+        const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}`;
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'text/plain', // O 'application/json' si es JSON
+                },
+            });
+            if (!response.ok) {
+                console.error(`HTTP error! Status: ${response.status}`);
+                return `HTTP error! Status: ${response.status}`;
+            }
+            // O .json() si es JSON
+            return await response.text();
+        } catch (error) {
+            console.error('Error fetching rubi:', error);
+            return 'Error fetching rubi:'+error;
+        }
+    }
