@@ -49,7 +49,7 @@ async function initialize() {
 
 // Función para mostrar un diálogo y cerrar la ventana
 function showAlertAndClose() {
-    alert("Chat ID is not available. It is not possible to make the deposit.");
+    //alert("Chat ID is not available. It is not possible to make the deposit.");
     //TODO ELIMINAR ESTA LINEA DE CODIGO PARA PRUEBAS
     //window.close();  // Cierra la ventana
 }
