@@ -54,17 +54,17 @@ transferButton.addEventListener('click', function () {
     const recipientAddress = recipientAddressInput.value.trim();
 
     if (rubiIngresado <= 0) {
-       // alert('Please enter a valid amount of rubies.');
+        showModalAlert('Please enter a valid amount of rubies.');
         return;
     }
 
     if (rubiIngresado > totalRubi) {
-       // alert('You do not have enough rubies for this transfer.');
+        showModalAlert('You do not have enough rubies for this transfer.');
         return;
     }
 
     if (!/^0x[a-fA-F0-9]{40}$/.test(recipientAddress)) {
-       // alert('Please enter a valid Mavia address.');
+        showModalAlert('Please enter a valid Mavia address.');
         return;
     }
 
@@ -103,7 +103,7 @@ confirmWithdrawButton.addEventListener('click', function () {
     // Por ejemplo, interactuar con un contrato inteligente o una API backend
 
     // Simulación de la transferencia
-   // alert(`You have transferred ${maviaTransferir.toFixed(2)} Mavia to the address ${recipientAddress}.`);
+    showModalAlert(`You have transferred ${maviaTransferir.toFixed(2)} Mavia to the address ${recipientAddress}.`);
 
     // Actualizar el total de rubíes disponibles
     totalRubi -= rubiIngresado;
@@ -120,5 +120,31 @@ confirmWithdrawButton.addEventListener('click', function () {
 
 // Inicializar al cargar la página
 window.onload = initialize;
+
+
+
+
+
+function showModalAlert(message) {
+    const modal = document.getElementById("errorModal");
+    const modalMessage = document.getElementById("modalMessage");
+    modalMessage.textContent = message; // Cambia el texto del mensaje
+    modal.style.display = "block"; // Mostrar el modal
+}
+
+function closeModalAlert() {
+    const modal = document.getElementById("errorModal");
+    modal.style.display = "none"; // Ocultar el modal
+}
+
+
+// Asegúrate de cerrar el modal si el usuario hace clic fuera de él
+window.onclick = function(event) {
+    const modal = document.getElementById("errorModal");
+    if (event.target === modal) {
+        closeModalAlert();
+    }
+};
+
 
 //0x467dF40a94fF60e14055d2aDf1991E5CE8e59999
