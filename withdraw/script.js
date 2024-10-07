@@ -54,17 +54,17 @@ transferButton.addEventListener('click', function () {
     const recipientAddress = recipientAddressInput.value.trim();
 
     if (rubiIngresado <= 0) {
-        alert('Please enter a valid amount of rubies.');
+       // alert('Please enter a valid amount of rubies.');
         return;
     }
 
     if (rubiIngresado > totalRubi) {
-        alert('You do not have enough rubies for this transfer.');
+       // alert('You do not have enough rubies for this transfer.');
         return;
     }
 
     if (!/^0x[a-fA-F0-9]{40}$/.test(recipientAddress)) {
-        alert('Please enter a valid Mavia address.');
+       // alert('Please enter a valid Mavia address.');
         return;
     }
 
@@ -103,7 +103,7 @@ confirmWithdrawButton.addEventListener('click', function () {
     // Por ejemplo, interactuar con un contrato inteligente o una API backend
 
     // Simulación de la transferencia
-    alert(`You have transferred ${maviaTransferir.toFixed(2)} Mavia to the address ${recipientAddress}.`);
+   // alert(`You have transferred ${maviaTransferir.toFixed(2)} Mavia to the address ${recipientAddress}.`);
 
     // Actualizar el total de rubíes disponibles
     totalRubi -= rubiIngresado;
