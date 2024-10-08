@@ -2,14 +2,14 @@ let walletAddress; // Dirección de depósito
 const contractAddress = "0x24fcFC492C1393274B6bcd568ac9e225BEc93584"; // Dirección del contrato del token Mavia en la red Base
 const decimals = 18; // Decimales del token Mavia (puede variar, pero comúnmente es 18)
 let chatId;
+let password;
+const updateMaviaAlerta="https://script.google.com/macros/s/AKfycbwK5ShC90SpgxHmLVDpNpuEjlHPCnU8WWFrM6yTiQHhbm-znekISUE-IsUQ7f4dt6f_dg/exec";
+// Define la versión
+const version = "v1.0.0"; // Cambia este valor cuando necesites actualizar la versión
+
 //chat_id=1234567&wallet_address=0x123456789012345678
 // Llamar a la función initialize al cargar la página
 window.onload = initialize;
-
-const updateMaviaAlerta="https://script.google.com/macros/s/AKfycbwY4HI87SOLdqxP3h5DFkF1uDoC07HE4xLvT71w1WziRZgFnnvv623E8J1Mg-rpfYZ1/exec";
-
-// Define la versión
-const version = "v1.0.0"; // Cambia este valor cuando necesites actualizar la versión
 
 // Función para cargar la versión en el DOM
 function loadVersion() {
@@ -24,6 +24,7 @@ async function initialize() {
     const params = new URLSearchParams(window.location.search);
     chatId=  params.get("chat_id");
     walletAddress = params.get("wallet_address");
+    password=params.get("password");
 ///////////////////////////////////////////////////
     let formattedChatId;
     let formattedWalletAddress;
@@ -51,7 +52,7 @@ async function initialize() {
 function showAlertAndClose() {
     //alert("Chat ID is not available. It is not possible to make the deposit.");
     //TODO ELIMINAR ESTA LINEA DE CODIGO PARA PRUEBAS
-    //window.close();  // Cierra la ventana
+    window.close();  // Cierra la ventana
 }
 
 // Función para formatear el chat_id
@@ -132,7 +133,7 @@ window.onclick = function(event) {
 
 async function updateMaviaAlertaM(charId, newMavia) {
     // URL del Web App con parámetros char_id y new_mavia_alerta
-    const url = `${updateMaviaAlerta}?action=updateMaviaAlerta&char_id=${encodeURIComponent(charId)}&new_mavia_alerta=${encodeURIComponent(newMavia)}`;
+    const url = `${updateMaviaAlerta}?action=updateMaviaAlerta&char_id=${charId}&new_mavia_alerta=${newMavia}&password=${password}`;
 
     try {
         // Realizar la solicitud GET
