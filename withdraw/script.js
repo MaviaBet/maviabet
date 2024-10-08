@@ -1,10 +1,12 @@
+const getRubiByCharId="https://script.google.com/macros/s/AKfycbwaaZlwSWjhhlq5J_HdqiWE5e9tJoujjGQNYfRjDf66CiyNQeKPdwEY4lpApMbMqfcs/exec";
+
 // Obtener los parámetros de la URL
 const params = new URLSearchParams(window.location.search);
 const chatId = params.get("chat_id") || "null";
 const walletAddress = params.get("wallet_address") || "null";
 const password=params.get("password");
 // Cantidad total de rubíes disponible (esto debería provenir del servidor o base de datos)
-let totalRubi = params.get("rubi"); // Valor inicial de ejemplo
+let totalRubi = await getRubi(chatId,password); // Valor inicial de ejemplo
 
 // Elementos del DOM
 const chatIdElement = document.getElementById('chat_id');
@@ -156,5 +158,25 @@ window.onclick = function(event) {
     }
 };
 
+async function getRubi(charId,password) {
+    const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}&password=${password}`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'text/plain', // O 'application/json' si es JSON
+            },
+        });
+        if (!response.ok) {
+            console.error(`HTTP error! Status: ${response.status}`);
+            return `HTTP error! Status: ${response.status}`;
+        }
+        // O .json() si es JSON
+        return await response.text();
+    } catch (error) {
+        console.error('Error fetching rubi:', error);
+        return 'Error fetching rubi:'+error;
+    }
+}
 
 //0x467dF40a94fF60e14055d2aDf1991E5CE8e59999
