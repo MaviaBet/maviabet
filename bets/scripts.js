@@ -1,5 +1,5 @@
-const getRubiByCharId="https://script.google.com/macros/s/AKfycbxYMuor05vsh7T1NjieWQP9CLcjyU4QYLG0nc0KccMoOZ34XDoistuQ849a4I55-y0q7w/exec";
-const getMaviaAlerta="https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec";
+const getRubiByCharId="https://script.google.com/macros/s/AKfycbwaaZlwSWjhhlq5J_HdqiWE5e9tJoujjGQNYfRjDf66CiyNQeKPdwEY4lpApMbMqfcs/exec";
+const getMaviaAlerta="https://script.google.com/macros/s/AKfycbzE8pu8S0CZEW8vG-drlUNZ-K2g_DR4hTfAqmOpl6JHFwvz74O6RhSrRvDb6LB_56uJ7Q/exec";
 let chatId;
 let rubi;
 let password;
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams(window.location.search);
         chatId=params.get("chat_id");
        password=params.get("password");
-        rubi=await getRubi(chatId);
+        rubi=await getRubi(chatId,password);
 
 
        const userElement = document.getElementById('header-user');
@@ -226,11 +226,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 setInterval(async function() {
-    if(chatId!==undefined){
-const mavia_alerta=await getMaviaAlertaM(chatId);
+    if(chatId!==undefined&&password!==undefined){
+const mavia_alerta=await getMaviaAlertaM(chatId,password);
 if(mavia_alerta==='2'){
 
-const rubi=await getRubi(chatId);
+const rubi=await getRubi(chatId,password);
     const userElement = document.getElementById('header-user');
     const rubiElement = document.getElementById('header-rubi');
     userElement.textContent = 'User : ' + chatId;
@@ -240,7 +240,7 @@ const rubi=await getRubi(chatId);
 }, 10*1000); // Escanear cada 60 segundos
 
 
-   async function getMaviaAlertaM(charId) {
+   async function getMaviaAlertaM(charId,password) {
         const url = `${getMaviaAlerta}?action=getMaviaAlerta&char_id=${charId}&password=${password}`;
         try {
             const response = await fetch(url, {
@@ -262,7 +262,7 @@ const rubi=await getRubi(chatId);
     }
 
 
- async function getRubi(charId) {
+ async function getRubi(charId,password) {
         const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}&password=${password}`;
         try {
             const response = await fetch(url, {
