@@ -2,9 +2,9 @@
 const params = new URLSearchParams(window.location.search);
 const chatId = params.get("chat_id") || "null";
 const walletAddress = params.get("wallet_address") || "null";
-
+const password=params.get("password");
 // Cantidad total de rubíes disponible (esto debería provenir del servidor o base de datos)
-let totalRubi = 1000; // Valor inicial de ejemplo
+let totalRubi = params.get("rubi"); // Valor inicial de ejemplo
 
 // Elementos del DOM
 const chatIdElement = document.getElementById('chat_id');
@@ -29,10 +29,20 @@ function convertirRubiAMavia(rubi) {
 }
 
 // Inicializar los datos del usuario en el DOM
-function initialize() {
+async function initialize() {
     chatIdElement.textContent = `User: ${chatId}`;
-    walletAddressElement.textContent = `Wallet: ${walletAddress}`;
+    walletAddressElement.textContent = `Wallet: ${await format(walletAddress)}`;
     totalRubiDisplay.textContent = totalRubi.toFixed(2);
+}
+
+// Función para formatear el chat_id
+async function format(id) {
+    const idString = id.toString();  // Convertir a cadena
+    if (idString.length <= 12) {
+        return idString;  // Si el ID es corto, retornar tal cual
+    }
+    // Retornar solo los primeros 3 y últimos 3 dígitos
+    return idString.substring(0, 6) + '...' + idString.substring(idString.length - 6);
 }
 
 // Actualizar los valores en tiempo real
@@ -49,7 +59,7 @@ rubiInput.addEventListener('input', function () {
 });
 
 // Acción al hacer clic en el botón de transferencia
-transferButton.addEventListener('click', function () {
+transferButton.addEventListener('click', async function () {
     const rubiIngresado = parseFloat(rubiInput.value) || 0;
     const recipientAddress = recipientAddressInput.value.trim();
 
@@ -72,7 +82,7 @@ transferButton.addEventListener('click', function () {
 
     // Llenar los datos en el modal
     confirmChatId.textContent = chatId;
-    confirmWalletAddress.textContent = walletAddress;
+    confirmWalletAddress.textContent = await format(walletAddress);
     confirmRubi.textContent = rubiIngresado.toFixed(2);
     confirmMavia.textContent = maviaTransferir.toFixed(2);
     confirmRecipientAddress.textContent = recipientAddress;
