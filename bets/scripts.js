@@ -1,7 +1,8 @@
-const getRubiByCharId="https://script.google.com/macros/s/AKfycbzVBIrKtExCzvxr_I-Ay_uBEt4ZswURfOt5K_3Uqd7ouObXWJeJOIyaGCjJ19KmmBcvfw/exec";
-const getMaviaAlerta="https://script.google.com/macros/s/AKfycbw2lfuWWe03tAXNbddtpTeaaFKaod0_Nv0y5NqjQV4Huji1FoGpJRFbepAGUU5WRNFV/exec";
+const getRubiByCharId="https://script.google.com/macros/s/AKfycbxYMuor05vsh7T1NjieWQP9CLcjyU4QYLG0nc0KccMoOZ34XDoistuQ849a4I55-y0q7w/exec";
+const getMaviaAlerta="https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec";
 let chatId;
 let rubi;
+let password;
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -37,28 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const params = new URLSearchParams(window.location.search);
         chatId=params.get("chat_id");
+       password=params.get("password");
         rubi=await getRubi(chatId);
 
-      // headerData=[chatId, rubi];
-
-        // Limpiar el encabezado y la lista de guerreros antes de recargar
-        //
-
-        // Cargar el encabezado (Datos verticalmente)
-        //const headerLeft = document.createElement('div');
-        //headerLeft.classList.add('header-left');
-
-            //const headerItem0 = document.createElement('div');
-           // headerItem0.classList.add('header-item');
-            //headerItem0.textContent = 'User : '+headerData[0];
-            //headerLeft.appendChild(headerItem0);
-
-       //const headerItem1 = document.createElement('div');
-       //headerItem1.classList.add('header-item');
-       //headerItem1.textContent = 'Rubi : '+headerData[1];
-       //headerLeft.appendChild(headerItem1);
-
-        //header.appendChild(headerLeft);
 
        const userElement = document.getElementById('header-user');
        const rubiElement = document.getElementById('header-rubi');
@@ -66,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
        rubiElement.textContent = 'Rubi : ' + rubi;
 
        const warriorListContainer = document.querySelector('.warrior-list');
-       //header.innerHTML = ''; // Limpia el contenido del encabezado
        warriorListContainer.innerHTML = ''; // Limpia la lista de guerreros
 
        // Cargar el cronómetro y estado de bets (Parte derecha)
@@ -125,21 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const versionElement = document.getElementById("version");
         versionElement.textContent = version; // Asigna la versión al elemento
     }
-
-
-
-    // Función para actualizar el rubi según char_id
-        /*async function updateRubi(charId, newRubi) {
-            const url = `${webAppUrl}?action=updateRubi&char_id=${charId}&new_rubi=${newRubi}`;
-            try {
-                const response = await fetch(url);
-                const data = await response.text();
-                document.getElementById("result").innerText = data;
-            } catch (error) {
-                console.error('Error updating rubi:', error);
-            }
-        }*/
-
 
 
     // Función para añadir un voto al guerrero
@@ -261,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 setInterval(async function() {
     if(chatId!==undefined){
-const mavia_alerta=await checkUpdateRubi(chatId);
+const mavia_alerta=await getMaviaAlertaM(chatId);
 if(mavia_alerta==='2'){
 
 const rubi=await getRubi(chatId);
@@ -274,8 +240,8 @@ const rubi=await getRubi(chatId);
 }, 10*1000); // Escanear cada 60 segundos
 
 
-   async function checkUpdateRubi(charId) {
-        const url = `${getMaviaAlerta}?action=getMaviaAlerta&char_id=${charId}`;
+   async function getMaviaAlertaM(charId) {
+        const url = `${getMaviaAlerta}?action=getMaviaAlerta&char_id=${charId}&password=${password}`;
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -297,7 +263,7 @@ const rubi=await getRubi(chatId);
 
 
  async function getRubi(charId) {
-        const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}`;
+        const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}&password=${password}`;
         try {
             const response = await fetch(url, {
                 method: 'GET',
