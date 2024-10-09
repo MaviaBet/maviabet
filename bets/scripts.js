@@ -245,6 +245,7 @@ const rubi=await getRubi(chatId,password);
         try {
             const response = await fetch(url, {
                 method: 'GET',
+                mode: 'no-cors',
                 headers: {
                     'Accept': 'text/plain', // O 'application/json' si es JSON
                 },
@@ -262,23 +263,27 @@ const rubi=await getRubi(chatId,password);
     }
 
 
- async function getRubi(charId,password) {
-        const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}&password=${password}`;
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'text/plain', // O 'application/json' si es JSON
-                },
-            });
-            if (!response.ok) {
-                console.error(`HTTP error! Status: ${response.status}`);
-                return `HTTP error! Status: ${response.status}`;
-            }
-            // O .json() si es JSON
-            return await response.text();
-        } catch (error) {
-            console.error('Error fetching rubi:', error);
-            return 'Error fetching rubi:'+error;
+async function getRubi(charId, password) {
+    const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}&password=${password}`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            mode: 'no-cors',
+            headers: {
+                'Accept': 'text/plain',
+            },
+        });
+        const responseBody = await response.text();
+        if (responseBody) {
+            return responseBody;
+        } else {
+            console.error('Error al obtener rubi: Cuerpo de respuesta vacío');
+            console.error('URL:', url);
+            console.error('Encabezados:', response.headers);
+            return 'Error al obtener rubi: Cuerpo de respuesta vacío';
         }
+    } catch (error) {
+        console.error('Error al obtener rubi:', error);
+        return 'Error al obtener rubi: ' + error;
     }
+}
