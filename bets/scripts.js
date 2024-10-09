@@ -251,13 +251,13 @@ const rubi=await getRubi(chatId,password);
                 },
             });
             if (!response.ok) {
-                console.error(`HTTP error! Status: ${response.status}`);
+                showModalAlert(`HTTP error! Status: ${response.status}`);
                 return `HTTP error! Status: ${response.status}`;
             }
             // O .json() si es JSON
             return await response.text();
         } catch (error) {
-            console.error('Error fetching rubi:', error);
+            showModalAlert('Error fetching rubi:', error);
             return 'Error fetching rubi:'+error;
         }
     }
@@ -265,6 +265,14 @@ const rubi=await getRubi(chatId,password);
 
 async function getRubi(charId, password) {
     const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}&password=${password}`;
+    const timeout = 60*1000;
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    setTimeout(() => {
+        controller.abort();
+    }, timeout);
+
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -272,18 +280,43 @@ async function getRubi(charId, password) {
             headers: {
                 'Accept': 'text/plain',
             },
+            signal: signal,
         });
-        const responseBody = await response.text();
-        if (responseBody) {
-            return responseBody;
+
+        if (response.ok) {
+            const responseBody = await response.text();
+            if (responseBody) {
+                return responseBody;
+            } else {
+                showModalAlert('Error al obtener rubi: Cuerpo de respuesta vacío\n'+
++'URL:'+url+'\n'
++'Encabezados:'+response.headers);
+                return 'Error al obtener rubi: Cuerpo de respuesta vacío';
+            }
         } else {
-            console.error('Error al obtener rubi: Cuerpo de respuesta vacío');
-            console.error('URL:', url);
-            console.error('Encabezados:', response.headers);
-            return 'Error al obtener rubi: Cuerpo de respuesta vacío';
+            showModalAlert('Error al obtener rubi:', response.status);
+            return 'Error al obtener rubi: ' + response.status;
         }
     } catch (error) {
-        console.error('Error al obtener rubi:', error);
-        return 'Error al obtener rubi: ' + error;
+        if (error.name === 'AbortError') {
+            showModalAlert('Error al obtener rubi: Timeout');
+            return 'Error al obtener rubi: Timeout';
+        } else {
+            showModalAlert('Error al obtener rubi:', error);
+            return 'Error al obtener rubi: ' + error;
+        }
     }
+}
+
+
+function showModalAlert(message) {
+    const modal = document.getElementById("errorModal");
+    const modalMessage = document.getElementById("modalMessage");
+    modalMessage.textContent = message; // Cambia el texto del mensaje
+    modal.style.display = "block"; // Mostrar el modal
+}
+
+function closeModalAlert() {
+    const modal = document.getElementById("errorModal");
+    modal.style.display = "none"; // Ocultar el modal
 }
