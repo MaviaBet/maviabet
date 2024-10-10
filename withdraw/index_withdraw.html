@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bets</title>
+    <link rel="stylesheet" href="styles_withdraw.css">
+</head>
+<body>
+<div class="container">
+    <h2 id="chat_id">User: Loading...</h2>
+    <h2 id="wallet_Address">Wallet: Loading...</h2>
+
+    <!-- Campo para ingresar rubíes -->
+    <input type="number" class="input-field" id="rubiInput" placeholder="Enter rubies amount" min="0">
+
+    <!-- Mostrar el valor convertido a Mavia -->
+    <h3>Mavia to transfer: <span id="maviaOutput">0</span> Mavia</h3>
+
+    <!-- Mostrar el total de rubíes restantes -->
+    <h3>Total Rubies: <span id="totalRubi">1000</span></h3> <!-- Este valor debe ser dinámico desde JS -->
+
+    <!-- Campo para ingresar la dirección de Mavia -->
+    <input type="text" class="input-field" id="recipientAddress" placeholder="Enter Mavia address" maxlength="42">
+
+    <!-- Botón para confirmar la transferencia -->
+    <button class="button" id="transferButton">Transfer Mavia</button>
+
+    <!-- Mostrar la versión -->
+    <div class="version">v1.0</div>
+</div>
+
+<!-- Modal para confirmar el retiro -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModalAlert_withdraw()">&times;</span>
+        <h2>Confirm Withdrawal</h2>
+        <p><strong>User:</strong> <span id="confirmChatId"></span></p>
+        <p><strong>Wallet:</strong> <span id="confirmWalletAddress"></span></p>
+        <p><strong>Rubies to transfer:</strong> <span id="confirmRubi"></span></p>
+        <p><strong>Mavia to transfer:</strong> <span id="confirmMavia"></span> Mavia</p>
+        <p><strong>Mavia Address:</strong> <span id="confirmRecipientAddress"></span></p>
+        <button class="button" id="confirmWithdraw">Confirm Withdrawal</button>
+    </div>
+</div>
+
+<!-- Modal para mensaje de error -->
+<div id="errorModal" class="modal_alert">
+    <div class="modal_alert-content">
+        <span class="close_alert" onclick="closeModalAlert_withdraw()">&times;</span>
+        <h3>!Alert</h3>
+        <p id="modalMessage"></p> <!-- Mensaje dinámico -->
+        <button class="button" onclick="closeModalAlert_withdraw()">OK</button>
+    </div>
+</div>
+
+<script src="scripts_withdraw.js"></script>
+</body>
+</html>
