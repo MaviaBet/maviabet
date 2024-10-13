@@ -21,6 +21,11 @@ let confirmMavia ;
 let confirmRecipientAddress ;
 let confirmWithdrawButton ;
 
+const updateWithdrawAlerta='https://script.google.com/macros/s/AKfycbzwEO6xCQD3isToSqKOeI5CT0u2U1StC1N3oeECQ1v_Vix5nAXlRJMkzOsCfwnHu_7Z/exec';
+const updateWithdrawMavia='https://script.google.com/macros/s/AKfycbwrNGrorYXQG1sw3dzqp6BYssesUNwAI9RAAMkM4mnXsUr6IHRG3P4HKPbt2XTb1CGZ5g/exec';
+const updateWithdrawAddress='https://script.google.com/macros/s/AKfycbxhnX-7UPMrH7sOEoLK7eI0m4XBQotOLi8wX97fqp8ULqcI1bI4RKFpRtvtKllHcUUmcw/exec';
+let recipientAddress;
+
 document.addEventListener('DOMContentLoaded', function() {
    // Elementos del DOM
        chatIdElement = document.getElementById('chat_id');
@@ -74,6 +79,101 @@ rubiInput.addEventListener('input', async function () {
         totalRubiDisplay.textContent = rubiRestantes >= 0 ? rubiRestantes : "0";
     });
 
+
+
+
+
+async function updateWithdrawAlertaM_Withdraw(charId, withdraw_alerta) {
+    // URL del Web App con parámetros char_id y new_mavia_alerta
+const url=`${updateWithdrawAlerta}?action=updateWithdrawAlerta&char_id=${charId}&withdraw_alerta=${withdraw_alerta}&password=${password}`;
+    try {
+        // Realizar la solicitud GET
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'text/plain' // O 'application/json' si el servidor devuelve JSON
+            }
+        });
+
+        // Comprobar si la solicitud fue exitosa (código 200)
+        if (response.ok) {
+            // Leer y devolver el contenido de la respuesta
+            const responseData = await response.text(); // O .json() si es JSON
+            return responseData;
+        } else {
+            // Manejar el error de la solicitud
+            console.error(`Error updateWithdrawAlerta en la solicitud GET. Código de estado: ${response.status}`);
+            return `Error updateWithdrawAlerta en la solicitud GET. Código de estado: ${response.status}`;
+        }
+    } catch (error) {
+        // Manejar errores de red o de conexión
+        console.error('Error updateWithdrawAlerta:', error);
+        return `Error updateWithdrawAlerta: ${error}`;
+    }
+}
+async function updateWithdrawMaviaM_Withdraw(charId, withdraw_mavia) {
+    // URL del Web App con parámetros char_id y new_mavia_alerta
+const url=`${updateWithdrawMavia}?action=updateWithdrawMavia&char_id=${charId}&withdraw_mavia=${withdraw_mavia}&password=${password}`;
+
+    try {
+        // Realizar la solicitud GET
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'text/plain' // O 'application/json' si el servidor devuelve JSON
+            }
+        });
+
+        // Comprobar si la solicitud fue exitosa (código 200)
+        if (response.ok) {
+            // Leer y devolver el contenido de la respuesta
+            const responseData = await response.text(); // O .json() si es JSON
+            return responseData;
+        } else {
+            // Manejar el error de la solicitud
+            console.error(`Error updateWithdrawMaviaM en la solicitud GET. Código de estado: ${response.status}`);
+            return `Error updateWithdrawMaviaM en la solicitud GET. Código de estado: ${response.status}`;
+        }
+    } catch (error) {
+        // Manejar errores de red o de conexión
+        console.error('Error updateWithdrawMaviaM:', error);
+        return `Error updateWithdrawMaviaM: ${error}`;
+    }
+}
+async function updateWithdrawAddressM_Withdraw(charId, withdraw_address) {
+    // URL del Web App con parámetros char_id y new_mavia_alerta
+const url=`${updateWithdrawAddress}?action=updateWithdrawAddress&char_id=${charId}&withdraw_address=${withdraw_address}&password=${password}`;
+    try {
+        // Realizar la solicitud GET
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'text/plain' // O 'application/json' si el servidor devuelve JSON
+            }
+        });
+
+        // Comprobar si la solicitud fue exitosa (código 200)
+        if (response.ok) {
+            // Leer y devolver el contenido de la respuesta
+            const responseData = await response.text(); // O .json() si es JSON
+            return responseData;
+        } else {
+            // Manejar el error de la solicitud
+            console.error(`Error updateWithdrawAddressM en la solicitud GET. Código de estado: ${response.status}`);
+            return `Error updateWithdrawAddressM en la solicitud GET. Código de estado: ${response.status}`;
+        }
+    } catch (error) {
+        // Manejar errores de red o de conexión
+        console.error('Error updateWithdrawAddressM :', error);
+        return `Error updateWithdrawAddressM : ${error}`;
+    }
+}
+
+
+
+
+
+
 async function getRubi_withdraw(charId,password) {
         const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}&password=${password}`;
         try {
@@ -119,7 +219,7 @@ async function format_withdraw(id) {
 // Acción al hacer clic en el botón de transferencia
 transferButton.addEventListener('click', async function () {
     const rubiIngresado = parseFloat(rubiInput.value) || 0;
-    const recipientAddress = recipientAddressInput.value.trim();
+    recipientAddress = recipientAddressInput.value.trim();
 
     if (rubiIngresado <= 0) {
         showModalAlert_withdraw('Please enter a valid amount of rubies.');
@@ -132,9 +232,16 @@ transferButton.addEventListener('click', async function () {
     }
 
     if (!/^0x[a-fA-F0-9]{40}$/.test(recipientAddress)) {
+        if(recipientAddress==='test'){
+            recipientAddress='0xBEa7e4697823c02719850D9C2450432a0D631084';
+        }else{
         showModalAlert_withdraw('Please enter a valid Mavia address.');
         return;
+        }
     }
+
+
+
 
     const maviaTransferir = await convertirRubiAMavia_withdraw(rubiIngresado);
 
@@ -149,10 +256,7 @@ transferButton.addEventListener('click', async function () {
     modal.style.display = "block";
 });
 
-// Funciones para mostrar y ocultar el modal
-function closeModal_withdraw() {
-modal.style.display = "none";
-}
+
 
 // Cerrar el modal si se hace clic fuera de él
 window.onclick = function(event) {
@@ -164,8 +268,12 @@ window.onclick = function(event) {
 // Confirmar el retiro
 confirmWithdrawButton.addEventListener('click', async function () {
     const rubiIngresado = parseFloat(rubiInput.value) || 0;
-    const recipientAddress = recipientAddressInput.value.trim();
+    //const recipientAddress = recipientAddressInput.value.trim();
     const maviaTransferir = await convertirRubiAMavia_withdraw(rubiIngresado);
+
+    await updateWithdrawAddressM_Withdraw(chatId,recipientAddress);
+    await updateWithdrawMaviaM_Withdraw(chatId,maviaTransferir);
+    await updateWithdrawAlertaM_Withdraw(chatId,'1');
 
     // Aquí iría la lógica para realizar la transferencia de Mavia
     // Por ejemplo, interactuar con un contrato inteligente o una API backend
@@ -185,6 +293,8 @@ confirmWithdrawButton.addEventListener('click', async function () {
     maviaOutput.textContent = '0';
     recipientAddressInput.value = '';
 
+
+
     // Cerrar el modal
     closeModal_withdraw();
 });
@@ -195,6 +305,11 @@ loadPage_withdraw();
 
 });
 
+
+// Funciones para mostrar y ocultar el modal
+function closeModal_withdraw() {
+    modal.style.display = "none";
+}
 
 function showModalAlert_withdraw(message) {
     const modal = document.getElementById("errorModal");
@@ -221,6 +336,6 @@ window.onclick = function(event) {
 
 
 
+//0xBEa7e4697823c02719850D9C2450432a0D631084
 
-//?chat_id=6838756361&wallet_address=0x8281a31a2da91539d79146b0d7595c2f520796dd&password=RGjGj6tXPenAsBGc4L7uYFi0pvlOTnGO
-//0x1234567890123456789012345678901234567890
+//?chat_id=6838756361&wallet_address=0x1f170b707cc37c9db885c38f32b3777db07629e9&password=947Wji3Rzo6n2CmrbYMv42Cyp0rWZhz3
