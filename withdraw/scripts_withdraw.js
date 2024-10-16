@@ -26,6 +26,14 @@ const updateWithdrawMavia='https://script.google.com/macros/s/AKfycbwrNGrorYXQG1
 const updateWithdrawAddress='https://script.google.com/macros/s/AKfycbxhnX-7UPMrH7sOEoLK7eI0m4XBQotOLi8wX97fqp8ULqcI1bI4RKFpRtvtKllHcUUmcw/exec';
 let recipientAddress;
 
+let alertDialog ;
+let closeBtn;
+let progressBarInner ;
+let progressText ;
+let overlay;
+
+let percentage = 0;
+
 document.addEventListener('DOMContentLoaded', function() {
    // Elementos del DOM
        chatIdElement = document.getElementById('chat_id');
@@ -43,6 +51,14 @@ document.addEventListener('DOMContentLoaded', function() {
        confirmMavia = document.getElementById('confirmMavia');
        confirmRecipientAddress = document.getElementById('confirmRecipientAddress');
        confirmWithdrawButton = document.getElementById('confirmWithdraw');
+
+alertDialog = document.getElementById('alert-dialog');
+closeBtn = document.getElementById('close-btn');
+progressBarInner = document.querySelector('.progress-bar-inner');
+progressText = document.getElementById('progress-text');
+overlay = document.getElementById('overlay');
+percentage = 0;
+
 
 // Función para cargar los datos en la página
 async function loadPage_withdraw() {
@@ -267,14 +283,20 @@ window.onclick = function(event) {
 
 // Confirmar el retiro
 confirmWithdrawButton.addEventListener('click', async function () {
+    
+    showDialog();
     const rubiIngresado = parseFloat(rubiInput.value) || 0;
+    updateProgressBar(20); // Update the progress bar to 20%
     //const recipientAddress = recipientAddressInput.value.trim();
     const maviaTransferir = await convertirRubiAMavia_withdraw(rubiIngresado);
-
+    updateProgressBar(40); // Update the progress bar to 40%
     await updateWithdrawAddressM_Withdraw(chatId,recipientAddress);
+    updateProgressBar(60); // Update the progress bar to 60%
     await updateWithdrawMaviaM_Withdraw(chatId,maviaTransferir);
+    updateProgressBar(80); // Update the progress bar to 80%
     await updateWithdrawAlertaM_Withdraw(chatId,'1');
-
+    updateProgressBar(100); // Update the progress bar to 100%
+    closeDialog();
     // Aquí iría la lógica para realizar la transferencia de Mavia
     // Por ejemplo, interactuar con un contrato inteligente o una API backend
 
@@ -293,17 +315,38 @@ confirmWithdrawButton.addEventListener('click', async function () {
     maviaOutput.textContent = '0';
     recipientAddressInput.value = '';
 
-
-
     // Cerrar el modal
     closeModal_withdraw();
 });
 
 // Iniciar la página la primera vez
-    // noinspection JSIgnoredPromiseFromCall
+// noinspection JSIgnoredPromiseFromCall
 loadPage_withdraw();
 
 });
+
+
+
+
+// Function to show the dialog
+function showDialog(){
+    overlay.style.display = 'block'; /* Muestra el overlay */
+    alertDialog.style.display = 'block'; /* Muestra la barra de progreso */
+}
+
+// Function to close the dialog
+function closeDialog() {
+    overlay.style.display = 'none'; /* Oculta el overlay */
+    alertDialog.style.display = 'none'; /* Oculta la barra de progreso */
+}
+
+// Function to update the progress bar
+function updateProgressBar(percentage) {
+progressBarInner.style.width = `${percentage}%`;
+progressText.textContent = `${percentage}% Complete`;
+}
+
+
 
 
 // Funciones para mostrar y ocultar el modal
@@ -339,3 +382,4 @@ window.onclick = function(event) {
 //0xBEa7e4697823c02719850D9C2450432a0D631084
 
 //?chat_id=6838756361&wallet_address=0x1f170b707cc37c9db885c38f32b3777db07629e9&password=947Wji3Rzo6n2CmrbYMv42Cyp0rWZhz3
+
