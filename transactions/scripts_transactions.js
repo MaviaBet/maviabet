@@ -56,7 +56,7 @@ let to__=datas[3];
 let amount_=datas[4]/Math.pow(10, 18);
 let type_;
 
-if(walletAddress===from_){
+if(myAddress.toLowerCase()===from_.toLowerCase()){
 type_='withdraw';
 }else{
 type_='deposit';
@@ -230,4 +230,4 @@ async function getDate(data) {
 //}
 
 
-//?chat_id=6838756361&wallet_address=0xe7f7b219fea99ec4b351be88bc8b6cf5e1a5d0ba&password=UGbeeCeyivDzUp2bOoHdIhCcDFXoz8An
+//?chat_id=6838756361&wallet_address=0xe7f7b219fea99ec4b351be88bc8b6cf5e1a5d0ba&my_address=0x55F701D40222b645bAD3778079CC45B81B97D568&password=UGbeeCeyivDzUp2bOoHdIhCcDFXoz8An
