@@ -1,0 +1,84 @@
+// Manejar solicitudes GET para la eliminación
+function doGet(e) {
+  var action = e.parameter.action;
+  var char_id = e.parameter.char_id;
+  var password = e.parameter.password; // Decodifica el parámetro de la URL
+var hash = e.parameter.hash; // Decodifica el parámetro de la URL
+
+  if (action == 'getStatusGoogleDrive' && char_id != null && password==GetPasswordLib2.getPasswordByCharId(char_id)&&hash !=null) {
+    return ContentService.createTextOutput(getStatusGoogleDrive(char_id,hash));
+  }
+
+  return ContentService.createTextOutput("Invalid action or missing parameters");
+}
+
+
+
+function getStatusGoogleDrive(char_id,hash) {
+  var file = DriveApp.getFilesByName('transactions_data.txt').next();  // Obtén el archivo por nombre
+
+    var content = file.getBlob().getDataAsString();  // Obtener el contenido como texto
+
+  var lines = content.split('\n');  // Dividir el archivo en líneas
+
+  for (var i = 0; i < lines.length; i++) {
+    var data = lines[i].split(',');
+
+    if (data[0] == char_id) {  // Si char_id coincide
+
+      var result= data.slice(1);  // Obtener las transferencias actuales
+
+      for (var i1 = 0; i1 < result.length; i1++) {
+
+     var hash2=result[i1].split('.');
+
+      if(hash==hash2[0]){
+
+return checkTransactionStatus(hash);
+
+      }
+
+      }
+
+
+    }
+  }
+
+  return 'Char ID not found';  // Si no se encuentra el char_id
+
+}
+
+
+function getStatus(url) {
+  // Usa UrlFetchApp para hacer una solicitud HTTP
+  var response = UrlFetchApp.fetch(url);
+  var b = JSON.parse(response.getContentText()); // Analiza la respuesta JSON
+
+  var status_final;
+  var status = b.result.status;
+
+  // Determina el estado según la respuesta
+  if (status === '0') {
+    status_final = 'fail';
+  } else if (status === '1') {
+    status_final = 'success';
+  } else {
+    status_final = 'pending';
+  }
+
+  return status_final;
+}
+
+
+function checkTransactionStatus(hash_) {
+  var apiKey = '1F3YRI76MJPE3J399AAPIEGFFPCXSJI3QI'; // Reemplaza con tu clave de API de BscScan
+  var api_status = `https://api.basescan.org/api?module=transaction&action=gettxreceiptstatus&txhash=${hash_}&apikey=${apiKey}`;
+
+  return getStatus(api_status);
+}
+
+
+
+
+
+
