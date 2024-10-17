@@ -114,8 +114,8 @@ const url=`${updateWithdrawAlerta}?action=updateWithdrawAlerta&char_id=${charId}
         // Comprobar si la solicitud fue exitosa (código 200)
         if (response.ok) {
             // Leer y devolver el contenido de la respuesta
-            const responseData = await response.text(); // O .json() si es JSON
-            return responseData;
+             // O .json() si es JSON
+            return await response.text();
         } else {
             // Manejar el error de la solicitud
             console.error(`Error updateWithdrawAlerta en la solicitud GET. Código de estado: ${response.status}`);
@@ -143,8 +143,8 @@ const url=`${updateWithdrawMavia}?action=updateWithdrawMavia&char_id=${charId}&w
         // Comprobar si la solicitud fue exitosa (código 200)
         if (response.ok) {
             // Leer y devolver el contenido de la respuesta
-            const responseData = await response.text(); // O .json() si es JSON
-            return responseData;
+             // O .json() si es JSON
+            return await response.text();
         } else {
             // Manejar el error de la solicitud
             console.error(`Error updateWithdrawMaviaM en la solicitud GET. Código de estado: ${response.status}`);
@@ -171,8 +171,8 @@ const url=`${updateWithdrawAddress}?action=updateWithdrawAddress&char_id=${charI
         // Comprobar si la solicitud fue exitosa (código 200)
         if (response.ok) {
             // Leer y devolver el contenido de la respuesta
-            const responseData = await response.text(); // O .json() si es JSON
-            return responseData;
+             // O .json() si es JSON
+            return await response.text();
         } else {
             // Manejar el error de la solicitud
             console.error(`Error updateWithdrawAddressM en la solicitud GET. Código de estado: ${response.status}`);
@@ -213,9 +213,9 @@ async function getRubi_withdraw(charId,password) {
         }
     }
 
-async function sleep_withdraw(ms) {
-return new Promise(resolve => setTimeout(resolve, ms));
-}
+//async function sleep_withdraw(ms) {
+//return new Promise(resolve => setTimeout(resolve, ms));
+//}
 
 // Función para convertir rubíes a Mavia
 async function convertirRubiAMavia_withdraw(rubi) {
@@ -276,7 +276,7 @@ transferButton.addEventListener('click', async function () {
 
 // Cerrar el modal si se hace clic fuera de él
 window.onclick = function(event) {
-    if (event.target == modal) {
+    if (event.target === modal) {
         closeModal_withdraw();
     }
 }
