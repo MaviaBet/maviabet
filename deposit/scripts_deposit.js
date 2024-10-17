@@ -27,16 +27,10 @@ async function initialize_Deposit() {
     walletAddress = params.get("wallet_address");
     password=params.get("password");
 ///////////////////////////////////////////////////
-    let formattedChatId;
     let formattedWalletAddress;
     const chatIdElement = document.getElementById("chat_id");
     const walletAddressElement = document.getElementById("wallet_Address");
-    if (chatId === null) {
-        formattedChatId = "Chat ID not available [A]";  // Mensaje alternativo
-    } else {
-// Formatear el chat_id a "123...789"
-       //formattedChatId = await format(chatId);
-    }
+
     if (walletAddress === null) {
         formattedWalletAddress = "WalletAddress not available [A]";  // Mensaje alternativo
     } else {
@@ -46,14 +40,6 @@ async function initialize_Deposit() {
     chatIdElement.textContent = "User : " + chatId;
     walletAddressElement.textContent = formattedWalletAddress;
     loadVersion_Deposit();
-}
-
-
-// Función para mostrar un diálogo y cerrar la ventana
-function showAlertAndClose_Deposit() {
-    //alert("Chat ID is not available. It is not possible to make the deposit.");
-    //TODO ELIMINAR ESTA LINEA DE CODIGO PARA PRUEBAS
-    window.close();  // Cierra la ventana
 }
 
 
@@ -75,14 +61,15 @@ function toTokenAmount_Deposit(value, decimals) {
 
 function updateQR_Deposit() {
     let maviaAmount = document.getElementById('maviaAmount').value;
-    let rubi = (maviaAmount * 100).toFixed(2); // Redondea a 2 decimales
-    document.getElementById('rubiesAmount').textContent = rubi; // Actualiza el valor de rubíes
+     // Redondea a 2 decimales
+    document.getElementById('rubiesAmount').textContent = (maviaAmount * 100).toFixed(2); // Actualiza el valor de rubíes
 
     if (maviaAmount > 0) {
         let tokenAmount = toTokenAmount_Deposit(maviaAmount, decimals);
         let qrData = `https://metamask.app.link/send/${contractAddress}@8453/transfer?address=${walletAddress}&uint256=${tokenAmount}`;
 
         // Actualiza el QR en tiempo real
+        // noinspection JSUnresolvedReference
         QRCode.toCanvas(document.getElementById('qrcode'), qrData, function (error) {
             if (error) console.error(error);
         });
@@ -133,7 +120,8 @@ document.getElementById('modal').style.display = "none";
 // Cerrar el modal si se hace clic fuera de él
 window.onclick = function(event) {
     let modal = document.getElementById('modal');
-    if (event.target == modal) {
+    if (event.target === modal) {
+        // noinspection JSIgnoredPromiseFromCall
         closeModal_Deposit();
     }
 }
@@ -155,8 +143,8 @@ async function updateMaviaAlerta_Deposit(charId, newMavia) {
         // Comprobar si la solicitud fue exitosa (código 200)
         if (response.ok) {
             // Leer y devolver el contenido de la respuesta
-            const responseData = await response.text(); // O .json() si es JSON
-            return responseData;
+             // O .json() si es JSON
+            return await response.text();
         } else {
             // Manejar el error de la solicitud
             console.error(`Error en la solicitud GET. Código de estado: ${response.status}`);
