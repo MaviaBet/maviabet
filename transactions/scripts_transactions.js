@@ -2,7 +2,8 @@
 window.onload = function() {
     localStorage.clear();
     sessionStorage.clear();
-    load();
+    // noinspection JSIgnoredPromiseFromCall
+    load_transactions();
     //history.clearStorage();
 };
 
@@ -14,7 +15,7 @@ const get_transactions="https://script.google.com/macros/s/AKfycbw3nT2CPyHuB4z05
 const getStatusGoogleDrive="https://script.google.com/macros/s/AKfycbyQ7yYShnu8NwmEw3CC4tTFupHhB6382P2WiOaObpf8BwKaC3KfWlGK7OJzxI9ffeRk/exec";
 //let div_log;
 
-async function load(){
+async function load_transactions(){
 
 const params = new URLSearchParams(window.location.search);
 chat_id=params.get("chat_id");
@@ -27,7 +28,7 @@ myAddress=params.get("my_address");
 // Creamos la lista de transacciones
 const transactionList = document.getElementById('transaction-list');
 
-const transactions=await getTransactions(chat_id,password);
+const transactions=await getTransactions_transactions(chat_id,password);
 let hashes = transactions.split(",");
 hashes = hashes.reverse();
 
@@ -49,8 +50,8 @@ const transactions_data=hashes[i];//await getTransactionsData(chat_id,password,h
 let datas = transactions_data.split(".");
 
 let hash_=datas[0];
-let date_ = await getDate(datas[1]);
-let status_=await getStatusGoogleDriveM(chat_id,password,hash_);
+let date_ = await getDate_transactions(datas[1]);
+let status_=await getStatusGoogleDriveM_transactions(chat_id,password,hash_);
 let from_=datas[2];
 let to__=datas[3];
 let amount_=datas[4]/Math.pow(10, 18);
@@ -74,28 +75,28 @@ type_='deposit';
     };
 }
 
-await createTransactionList();
+await createTransactionList_transactions();
 
 // Creamos la lista de transacciones
-    async function createTransactionList() {
+    async function createTransactionList_transactions() {
         for (const transaction of transactions_list) {
             const transactionItem = document.createElement('div');
             transactionItem.className = 'transaction-item';
             transactionItem.innerHTML = `
       <span class="date"><span class="label">type : </span>${transaction.type}</span>
       <span class="date"><span class="label">date : </span>${transaction.date}</span>
-      <span class="status" style="color: ${await getColorByStatus(transaction.status)}"><span class="label">status : </span>${transaction.status}</span>
-      <span class="hash"><span class="label">hash : </span>${await format(transaction.hash)}
+      <span class="status" style="color: ${await getColorByStatus_transactions(transaction.status)}"><span class="label">status : </span>${transaction.status}</span>
+      <span class="hash"><span class="label">hash : </span>${await format_transactions(transaction.hash)}
         <button class="copy-button" data-copy="${transaction.hash}">
           <img src="copy-icon.png" alt="Copiar" class="copy-icon" width="16" height="16">
         </button>
       </span>
-      <span class="from"><span class="label">from : </span>${await format(transaction.from)}
+      <span class="from"><span class="label">from : </span>${await format_transactions(transaction.from)}
         <button class="copy-button" data-copy="${transaction.from}">
           <img src="copy-icon.png" alt="Copiar" class="copy-icon" width="16" height="16">
         </button>
       </span>
-      <span class="to"><span class="label">to : </span>${await format(transaction.to_)}
+      <span class="to"><span class="label">to : </span>${await format_transactions(transaction.to_)}
         <button class="copy-button" data-copy="${transaction.to_}">
           <img src="copy-icon.png" alt="Copiar" class="copy-icon" width="16" height="16">
         </button>
@@ -122,7 +123,7 @@ await createTransactionList();
     }
 
 
-   async function getColorByStatus(status) {
+   async function getColorByStatus_transactions(status) {
         switch (status) {
             case 'pending':
                 return '#f7dc6f'; // Color para el estatus pendiente
@@ -138,7 +139,7 @@ await createTransactionList();
 
 
 
-async function getTransactions(charId,password) {
+async function getTransactions_transactions(charId,password) {
 const url = `${get_transactions}?action=getTransactions&char_id=${charId}&password=${password}`;
 
 
@@ -166,7 +167,7 @@ const url = `${get_transactions}?action=getTransactions&char_id=${charId}&passwo
 
 
 
-async function getStatusGoogleDriveM(charId,password,hash) {
+async function getStatusGoogleDriveM_transactions(charId,password,hash) {
 const url = `${getStatusGoogleDrive}?action=getStatusGoogleDrive&char_id=${charId}&password=${password}&hash=${hash}`;
 
     //div_log.innerHTML =url;
@@ -193,7 +194,7 @@ const url = `${getStatusGoogleDrive}?action=getStatusGoogleDrive&char_id=${charI
 
 
  // Función para formatear el chat_id
-async function format(id) {
+async function format_transactions(id) {
     const idString = id.toString();  // Convertir a cadena
     if (idString.length <= 12) {
         return idString;  // Si el ID es corto, retornar tal cual
@@ -203,7 +204,7 @@ async function format(id) {
 }
 
 
-async function getDate(data) {
+async function getDate_transactions(data) {
     return new Date(data * 1000).toLocaleString('en-GB', {
         hour12: false, // Desactiva el formato de 12 horas
         year: 'numeric',
