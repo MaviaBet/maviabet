@@ -104,7 +104,7 @@ function loadVersion_Bets() {
 
 // Función para añadir un voto al guerrero
 function addVoteToWarrior_Bets(warriorId) {
-        const warrior = warriors.find(warrior => warrior.id == warriorId);
+        const warrior = warriors.find(warrior => warrior.id === warriorId);
         if (warrior) {
             // Incrementar los votos universales y los votos del usuario
             warrior.universalVotes += 1;
@@ -192,6 +192,7 @@ function resetBettingCycle_Bets() {
     }
 
 // Iniciar la página la primera vez
+// noinspection JSIgnoredPromiseFromCall
 loadPage_Bets();
 
 // Iniciar el ciclo de bets
@@ -204,19 +205,15 @@ function formatTime_Bets(seconds) {
         const secs = seconds % 60;
 
         // Formatea a dos dígitos
-        const formattedTime = [
+    return [
             String(hours).padStart(2, '0'),
             String(minutes).padStart(2, '0'),
             String(secs).padStart(2, '0')
         ].join(':');
-
-        return formattedTime;
     }
 
-});
 
-
-setInterval(async function() {
+ setInterval(async function() {
     if(chatId!==undefined&&password!==undefined){
 const mavia_alerta=await getMaviaAlerta_Bets(chatId,password);
 if(mavia_alerta==='2'){
@@ -231,31 +228,21 @@ const rubi=await getRubi_Bets(chatId,password);
 }, 10*1000); // Escanear cada 60 segundos
 
 
+
 async function getMaviaAlerta_Bets(charId,password) {
         const url = `${getMaviaAlerta}?action=getMaviaAlerta&char_id=${charId}&password=${password}`;
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'text/plain', // O 'application/json' si es JSON
-                },
-            });
-            if (!response.ok) {
-                console.error(`HTTP error! Status: ${response.status}`);
-                return `HTTP error! Status: ${response.status}`;
-            }
-            // O .json() si es JSON
-            return await response.text();
-        } catch (error) {
-            console.error('Error fetching rubi:', error);
-            return 'Error fetching rubi:'+error;
-        }
+       return await load_url_Bets(url);
     }
 
 
 async function getRubi_Bets(charId, password) {
         const url = `${getRubiByCharId}?action=getRubi&char_id=${charId}&password=${password}`;
-        try {
+       return await load_url_Bets(url);
+    }
+    
+
+    async function load_url_Bets(url){
+ try {
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -269,7 +256,13 @@ async function getRubi_Bets(charId, password) {
             // O .json() si es JSON
             return await response.text();
         } catch (error) {
-            console.error('Error fetching rubi:', error);
-            return 'Error fetching rubi:'+error;
+            console.error('Error fetching :', error);
+            return 'Error fetching :'+error;
         }
     }
+
+});
+
+
+
+
