@@ -1,3 +1,7 @@
+
+const get_transactions='https://script.google.com/macros/s/AKfycbw3nT2CPyHuB4z05ymar7DF3KP-qR6pHn7Wvhp6P9k4TzWjelRHv7_momcVVrsMk_T5/exec';
+const getStatusGoogleDrive='https://script.google.com/macros/s/AKfycbyQ7yYShnu8NwmEw3CC4tTFupHhB6382P2WiOaObpf8BwKaC3KfWlGK7OJzxI9ffeRk/exec';
+
 // Borramos el cache y demás para que sea como la primera vez que se abrió la página
 window.onload = function() {
     localStorage.clear();
@@ -11,8 +15,6 @@ let chat_id;
 let password;
 let walletAddress;
 let myAddress;
-const get_transactions="https://script.google.com/macros/s/AKfycbw3nT2CPyHuB4z05ymar7DF3KP-qR6pHn7Wvhp6P9k4TzWjelRHv7_momcVVrsMk_T5/exec";
-const getStatusGoogleDrive="https://script.google.com/macros/s/AKfycbyQ7yYShnu8NwmEw3CC4tTFupHhB6382P2WiOaObpf8BwKaC3KfWlGK7OJzxI9ffeRk/exec";
 //let div_log;
 
 async function load_transactions(){
