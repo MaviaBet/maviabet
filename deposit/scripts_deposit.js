@@ -1,10 +1,13 @@
+
+const updateMaviaAlerta='https://script.google.com/macros/s/AKfycbwK5ShC90SpgxHmLVDpNpuEjlHPCnU8WWFrM6yTiQHhbm-znekISUE-IsUQ7f4dt6f_dg/exec';
+const getMaviaAlerta='https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec';
+
+
 let walletAddress; // Dirección de depósito
 const contractAddress = "0x24fcFC492C1393274B6bcd568ac9e225BEc93584"; // Dirección del contrato del token Mavia en la red Base
 const decimals = 18; // Decimales del token Mavia (puede variar, pero comúnmente es 18)
 let chatId;
 let password;
-const updateMaviaAlerta="https://script.google.com/macros/s/AKfycbwK5ShC90SpgxHmLVDpNpuEjlHPCnU8WWFrM6yTiQHhbm-znekISUE-IsUQ7f4dt6f_dg/exec";
-const getMaviaAlerta="https://script.google.com/macros/s/AKfycbzE8pu8S0CZEW8vG-drlUNZ-K2g_DR4hTfAqmOpl6JHFwvz74O6RhSrRvDb6LB_56uJ7Q/exec";
 // Define la versión
 const version = "v1.0.0"; // Cambia este valor cuando necesites actualizar la versión
 
@@ -14,6 +17,7 @@ let progressText ;
 let overlay;
 let percentage = 0;
 
+let div_log;
 
 //chat_id=1234567&wallet_address=0x123456789012345678
 // Llamar a la función initialize_Deposit al cargar la página
@@ -41,6 +45,7 @@ progressText = document.getElementById('progress-text');
 overlay = document.getElementById('overlay');
 percentage = 0;
 
+div_log= document.getElementById('log');
 
     let formattedWalletAddress;
     const chatIdElement = document.getElementById("chat_id");
@@ -131,7 +136,7 @@ if (!isNaN(valorNumerico) && valorNumerico === 0) {
     const depositoPendiente=await getMaviaAlerta_Deposit(chatId,password);
     updateProgressBar_deposit(100); // Update the progress bar to 100%
     closeDialog_deposit();
-
+div_log.innerHTML =depositoPendiente;
         if(depositoPendiente==='0'){
             showModal_Deposit(qrData); // Pasa el qrData al modal
         }else{
@@ -234,3 +239,9 @@ function updateProgressBar_deposit(percentage) {
 progressBarInner.style.width = `${percentage}%`;
 progressText.textContent = `${percentage}% Complete`;
 }
+
+
+//?chat_id=6838756361&wallet_address=0x013e92e405ce9930e6b64bb0dc269f2c9bfbd149&password=MsfKSlmz5SHjjdUOmUB9mIpnp3x6GaWR
+
+//https://script.google.com/macros/s/AKfycbzE8pu8S0CZEW8vG-drlUNZ-K2g_DR4hTfAqmOpl6JHFwvz74O6RhSrRvDb6LB_56uJ7Q/exec?action=getMaviaAlerta&char_id=6838756361&password=MsfKSlmz5SHjjdUOmUB9mIpnp3x6GaWR
+//https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec?action=getMaviaAlerta&char_id=6838756361&password=MsfKSlmz5SHjjdUOmUB9mIpnp3x6GaWR
