@@ -1,4 +1,10 @@
-const getRubiByCharId="https://script.google.com/macros/s/AKfycbwaaZlwSWjhhlq5J_HdqiWE5e9tJoujjGQNYfRjDf66CiyNQeKPdwEY4lpApMbMqfcs/exec";
+
+const getRubiByCharId='https://script.google.com/macros/s/AKfycbwaaZlwSWjhhlq5J_HdqiWE5e9tJoujjGQNYfRjDf66CiyNQeKPdwEY4lpApMbMqfcs/exec';
+const updateWithdrawAlerta='https://script.google.com/macros/s/AKfycbzwEO6xCQD3isToSqKOeI5CT0u2U1StC1N3oeECQ1v_Vix5nAXlRJMkzOsCfwnHu_7Z/exec';
+const updateWithdrawMavia='https://script.google.com/macros/s/AKfycbwrNGrorYXQG1sw3dzqp6BYssesUNwAI9RAAMkM4mnXsUr6IHRG3P4HKPbt2XTb1CGZ5g/exec';
+const updateWithdrawAddress='https://script.google.com/macros/s/AKfycbxhnX-7UPMrH7sOEoLK7eI0m4XBQotOLi8wX97fqp8ULqcI1bI4RKFpRtvtKllHcUUmcw/exec';
+const getMaviaAlerta='https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec';
+
 let chatId;
 let rubi;
 let rubiIngresado;
@@ -21,9 +27,6 @@ let confirmMavia ;
 let confirmRecipientAddress ;
 let confirmWithdrawButton ;
 
-const updateWithdrawAlerta='https://script.google.com/macros/s/AKfycbzwEO6xCQD3isToSqKOeI5CT0u2U1StC1N3oeECQ1v_Vix5nAXlRJMkzOsCfwnHu_7Z/exec';
-const updateWithdrawMavia='https://script.google.com/macros/s/AKfycbwrNGrorYXQG1sw3dzqp6BYssesUNwAI9RAAMkM4mnXsUr6IHRG3P4HKPbt2XTb1CGZ5g/exec';
-const updateWithdrawAddress='https://script.google.com/macros/s/AKfycbxhnX-7UPMrH7sOEoLK7eI0m4XBQotOLi8wX97fqp8ULqcI1bI4RKFpRtvtKllHcUUmcw/exec';
 let recipientAddress;
 
 let alertDialog ;
@@ -34,7 +37,6 @@ let overlay;
 
 let percentage = 0;
 
-const getMaviaAlerta="https://script.google.com/macros/s/AKfycbzE8pu8S0CZEW8vG-drlUNZ-K2g_DR4hTfAqmOpl6JHFwvz74O6RhSrRvDb6LB_56uJ7Q/exec";
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -420,5 +422,5 @@ window.onclick = function(event) {
 
 //0xBEa7e4697823c02719850D9C2450432a0D631084
 
-//?chat_id=6838756361&wallet_address=0x1f170b707cc37c9db885c38f32b3777db07629e9&password=947Wji3Rzo6n2CmrbYMv42Cyp0rWZhz3
+//?chat_id=6838756361&wallet_address=0x013e92e405ce9930e6b64bb0dc269f2c9bfbd149&password=MsfKSlmz5SHjjdUOmUB9mIpnp3x6GaWR
 
