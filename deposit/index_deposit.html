@@ -30,6 +30,31 @@
   </div>
 </div>
 
+
+<!-- Modal para mensajes-->
+<div id="errorModal" class="modal_alert">
+    <div class="modal_alert-content">
+        <h3>!Alert</h3>
+        <p id="modalMessage"></p> <!-- Mensaje dinámico -->
+        <button class="button" onclick="closeModalAlert_deposit()">OK</button>
+    </div>
+</div>
+
+
+<!--Barra de progreso-->
+<div class="alert-dialog" id="alert-dialog">
+    <div class="alert-body">
+        <div class="progress-bar">
+            <div class="progress-bar-inner" style="width: 0%;"></div>
+        </div>
+        <p id="progress-text">0% Complete</p>
+    </div>
+</div>
+<!--Para que el usuario no interactue con la web-->
+<div class="overlay" id="overlay"></div>
+<!--Barra de progreso-->
+
+
 <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>

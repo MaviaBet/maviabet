@@ -127,3 +127,121 @@ h2 {
     margin-top: 15px;     /* Espaciado superior */
     text-align: center;    /* Centrado dentro del contenedor */
 }
+
+
+
+
+
+/* Estilos del modal */
+.modal_alert {
+    display: none; /* Inicialmente oculto */
+    position: fixed; /* Posición fija para cubrir toda la pantalla */
+    z-index: 1; /* Asegura que el modal esté por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo de la pantalla */
+    height: 100%; /* Alto completo de la pantalla */
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+}
+
+/* Estilo para el contenido del modal */
+.modal_alert-content {
+    background-color: #1D2A44; /* Fondo azul oscuro para el contenido del modal */
+    color: #FFFFFF; /* Texto blanco */
+    margin: 10% auto; /* Centrado verticalmente */
+    padding: 20px;
+    border: 2px solid #888; /* Borde gris claro */
+    width: 80%; /* Ancho del modal */
+    max-width: 400px; /* Ancho máximo */
+    text-align: center; /* Centrado de texto */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/* Estilos para el botón de cerrar */
+.close_alert {
+    color: #aaa; /* Color gris claro */
+    float: right; /* Alineado a la derecha */
+    font-size: 28px; /* Tamaño grande */
+    font-weight: bold; /* Negrita */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+.close_alert:hover,
+.close_alert:focus {
+    color: white; /* Cambia a blanco al hacer hover */
+    text-decoration: none; /* Sin subrayado */
+}
+
+/* Estilos para el botón de confirmar en el modal */
+.modal_alert-content .button {
+    background-color: #316DD1; /* Azul brillante para el botón */
+    margin-top: 1rem; /* Espacio superior */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+.modal_alert-content .button:hover {
+    background-color: #3A7FE5; /* Azul más brillante al hacer hover */
+}
+
+
+
+
+
+
+
+/* Agrega los siguientes estilos para crear un overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Trae el overlay al frente */
+    display: none; /* Oculta el overlay por defecto */
+}
+
+
+.alert-dialog {
+    display: none; /* Hide the dialog by default */
+    position: fixed; /* Position the dialog absolutely */
+    top: 50%; /* Center the dialog vertically */
+    left: 50%; /* Center the dialog horizontally */
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Bring the dialog to the front */
+    background-color: #1b2437; /* dark blue */
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    margin: 40px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.alert-body {
+    padding: 20px;
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: #a8dadc; /* light green-blue */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-inner {
+    background-color: #e63946; /* red-orange */
+    height: 100%;
+    transition: width 0.5s;
+}
+
+.progress-bar-inner[style*="width: 100%"] {
+    background-color: #f1faee; /* white */
+}
+
+
+.close-btn:hover {
+    color: #e63946; /* red-orange */
+}
