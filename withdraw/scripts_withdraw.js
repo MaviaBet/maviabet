@@ -34,6 +34,9 @@ let overlay;
 
 let percentage = 0;
 
+const getMaviaAlerta="https://script.google.com/macros/s/AKfycbzE8pu8S0CZEW8vG-drlUNZ-K2g_DR4hTfAqmOpl6JHFwvz74O6RhSrRvDb6LB_56uJ7Q/exec";
+
+
 document.addEventListener('DOMContentLoaded', function() {
    // Elementos del DOM
        chatIdElement = document.getElementById('chat_id');
@@ -94,6 +97,32 @@ rubiInput.addEventListener('input', async function () {
         }
         totalRubiDisplay.textContent = rubiRestantes >= 0 ? rubiRestantes : "0";
     });
+
+
+async function getMaviaAlerta_Withdraw(charId,password) {
+        const url = `${getMaviaAlerta}?action=getMaviaAlerta&char_id=${charId}&password=${password}`;
+       return await load_url_Withdraw(url);
+    }
+
+async function load_url_Withdraw(url){
+ try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'text/plain', // O 'application/json' si es JSON
+                },
+            });
+            if (!response.ok) {
+                console.error(`HTTP error! Status : ${response.status}`);
+                return `HTTP error! Status : ${response.status}`;
+            }
+            // O .json() si es JSON
+            return await response.text();
+        } catch (error) {
+            console.error('Error fetching :', error);
+            return 'Error fetching :'+error;
+        }
+    }
 
 
 
@@ -234,6 +263,19 @@ async function format_withdraw(id) {
 
 // Acción al hacer clic en el botón de transferencia
 transferButton.addEventListener('click', async function () {
+
+    showDialog();
+    updateProgressBar_deposit(50); // Update the progress bar to 50%
+    //Comprobar si hay un deposito en proceso
+    const depositoPendiente=await getMaviaAlerta_Withdraw(chatId,password);
+    updateProgressBar_deposit(100); // Update the progress bar to 100%
+    closeDialog();
+    if(depositoPendiente==='0'){
+        showModalAlert_withdraw('Your withdraw cannot be processed at this time, please try again in a few minutes');
+       return;
+    }
+
+
     const rubiIngresado = parseFloat(rubiInput.value) || 0;
     recipientAddress = recipientAddressInput.value.trim();
 
@@ -255,9 +297,6 @@ transferButton.addEventListener('click', async function () {
         return;
         }
     }
-
-
-
 
     const maviaTransferir = await convertirRubiAMavia_withdraw(rubiIngresado);
 
