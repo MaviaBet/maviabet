@@ -1,10 +1,21 @@
 
 const getRubiByCharId='https://script.google.com/macros/s/AKfycbwaaZlwSWjhhlq5J_HdqiWE5e9tJoujjGQNYfRjDf66CiyNQeKPdwEY4lpApMbMqfcs/exec';
 const getMaviaAlerta='https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec';
+const updateMaviaAlerta='https://script.google.com/macros/s/AKfycbwK5ShC90SpgxHmLVDpNpuEjlHPCnU8WWFrM6yTiQHhbm-znekISUE-IsUQ7f4dt6f_dg/exec';
 
 let chatId;
 let rubi;
+let rubi_base;
 let password;
+
+let alertDialog ;
+let progressBarInner ;
+let progressText ;
+let overlay;
+let percentage = 0;
+
+const bettingTime_base= 60*3;/*3 Minutos*/ //Tiempo para apostar
+
 
 document.addEventListener('DOMContentLoaded', function() {
 // Estados de bets
@@ -17,7 +28,7 @@ const bettingStates = [
 let currentState = 0;  // Inicialmente en "Preparando bets"
 
 // Configuración del cronómetro
-let bettingTime = 30;  // Tiempo de bets en segundos
+let bettingTime =bettingTime_base ;  // Tiempo de bets en segundos
 let countdownInterval;
 
 // Datos de guerreros (P1)
@@ -37,6 +48,13 @@ async function loadPage_Bets() {
         chatId=params.get("chat_id");
        password=params.get("password");
         rubi=await getRubi_Bets(chatId,password);
+        rubi_base=rubi;
+
+    alertDialog = document.getElementById('alert-dialog');
+    progressBarInner = document.querySelector('.progress-bar-inner');
+    progressText = document.getElementById('progress-text');
+    overlay = document.getElementById('overlay');
+    percentage = 0;
 
 
        const userElement = document.getElementById('header-user');
@@ -112,13 +130,18 @@ function addVoteToWarrior_Bets(warriorId) {
             warrior.universalVotes += 1;
             warrior.userVotes += 1;
 
+            //TODO rubi invertido por voto
+            rubi=rubi-0.01;//0.01 rubi es igual a un voto
+
             // Actualizar los valores en la interfaz
             const warriorElement = document.querySelector(`.warrior-item[data-id="${warriorId}"]`);
             const universalVotesElement = warriorElement.querySelector('.universal-votes');
             const userVotesElement = warriorElement.querySelector('.user-votes');
+            const rubiElement = document.getElementById('header-rubi');
 
             universalVotesElement.textContent = warrior.universalVotes;
             userVotesElement.textContent = warrior.userVotes;
+            rubiElement.textContent = 'Rubi : ' + rubi;
 
             //console.log(`Apostaste por el guerrero: ${warrior.name}. Votos universales: ${warrior.universalVotes}, Votos del usuario: ${warrior.userVotes}`);
         }
@@ -177,7 +200,7 @@ function showResults_Bets() {
 // Función para reiniciar el ciclo de bets
 function resetBettingCycle_Bets() {
         currentState = 0;  // Estado de preparando bets
-        bettingTime = 30;  // Restablecer el tiempo de bets
+        bettingTime = bettingTime_base;  // Restablecer el tiempo de bets
         const timerElement = document.querySelector('.timer');
         const bettingStateElement = document.querySelector('.betting-state');
         timerElement.textContent = formatTime_Bets(bettingTime);
@@ -219,16 +242,29 @@ function formatTime_Bets(seconds) {
     if(chatId!==undefined&&password!==undefined){
 const mavia_alerta=await getMaviaAlerta_Bets(chatId,password);
 if(mavia_alerta==='2'){
-
-const rubi=await getRubi_Bets(chatId,password);
+    showDialog_Bets();
+    const rubi_actualizado=await getRubi_Bets(chatId,password);
+    const rubi_depositado=rubi_actualizado-rubi_base;
+    rubi_base=rubi_depositado;
+    rubi=rubi+rubi_depositado;
+    updateProgressBar_Bets(50); // Update the progress bar to 50%
     const userElement = document.getElementById('header-user');
     const rubiElement = document.getElementById('header-rubi');
     userElement.textContent = 'User : ' + chatId;
     rubiElement.textContent = 'Rubi : ' + rubi;
+    await updateMaviaAlerta_Bets(chatId,'0',password);
+    updateProgressBar_Bets(1000); // Update the progress bar to 50%
+    closeDialog_Bets();
 }
 }
 }, 10*1000); // Escanear cada 60 segundos
 
+
+async function updateMaviaAlerta_Bets(charId, newMavia,password) {
+// URL del Web App con parámetros char_id y new_mavia_alerta
+const url = `${updateMaviaAlerta}?action=updateMaviaAlerta&char_id=${charId}&new_mavia_alerta=${newMavia}&password=${password}`;
+return await load_url_Bets(url);
+}
 
 
 async function getMaviaAlerta_Bets(charId,password) {
@@ -266,5 +302,21 @@ async function getRubi_Bets(charId, password) {
 });
 
 
+// Function to show the dialog
+function showDialog_Bets(){
+    overlay.style.display = 'block'; /* Muestra el overlay */
+    alertDialog.style.display = 'block'; /* Muestra la barra de progreso */
+}
 
+// Function to close the dialog
+function closeDialog_Bets() {
+    overlay.style.display = 'none'; /* Oculta el overlay */
+    alertDialog.style.display = 'none'; /* Oculta la barra de progreso */
+}
+
+// Function to update the progress bar
+function updateProgressBar_Bets(percentage) {
+    progressBarInner.style.width = `${percentage}%`;
+    progressText.textContent = `${percentage}% Complete`;
+}
 
