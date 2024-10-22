@@ -16,6 +16,11 @@ let percentage = 0;
 
 const bettingTime_base= 60*3;/*3 Minutos*/ //Tiempo para apostar
 
+let warriors;
+
+let timerElement;
+let bettingStateElement;
+
 
 document.addEventListener('DOMContentLoaded', function() {
 // Estados de bets
@@ -31,23 +36,22 @@ let currentState = 0;  // Inicialmente en "Preparando bets"
 let bettingTime =bettingTime_base ;  // Tiempo de bets en segundos
 let countdownInterval;
 
-// Datos de guerreros (P1)
-const warriors = [
-        { id: 1, name: 'Player 1', avatar: 'user_bets.png', universalVotes: 100, userVotes: 5 },
-        { id: 2, name: 'Player 2', avatar: 'user_bets.png', universalVotes: 200, userVotes: 3 },
-        { id: 3, name: 'Player 3', avatar: 'user_bets.png', universalVotes: 150, userVotes: 4 },
-        { id: 4, name: 'Player 4', avatar: 'user_bets.png', universalVotes: 300, userVotes: 7 },
-        { id: 5, name: 'Player 5', avatar: 'user_bets.png', universalVotes: 240, userVotes: 2 },
-        { id: 6, name: 'Player 6', avatar: 'user_bets.png', universalVotes: 110, userVotes: 1 },
-    ];
 
 // Función para cargar los datos en la página
 async function loadPage_Bets() {
 
+
+ warriors=await getWarriors();
+
         const params = new URLSearchParams(window.location.search);
         chatId=params.get("chat_id");
        password=params.get("password");
-        rubi=await getRubi_Bets(chatId,password);
+
+
+        //TODO TEST jejeje
+    rubi=await getRubi_Bets(chatId,password);
+    //rubi=1000;
+
         rubi_base=rubi;
 
     alertDialog = document.getElementById('alert-dialog');
@@ -66,23 +70,23 @@ async function loadPage_Bets() {
        warriorListContainer.innerHTML = ''; // Limpia la lista de guerreros
 
        // Cargar el cronómetro y estado de bets (Parte derecha)
-        const headerRight = document.createElement('div');
-        headerRight.classList.add('header-right');
+        ///const headerRight = document.createElement('div');
+        //headerRight.classList.add('header-right');
 
         // Cronómetro
-        const timerElement = document.createElement('div');
-        timerElement.classList.add('timer');
-        timerElement.textContent = formatTime_Bets(bettingTime);
-        headerRight.appendChild(timerElement);
+        timerElement = document.getElementById('timer_id');
+        //timerElement.classList.add('timer');
+        timerElement.innerHTML = formatTime_Bets(bettingTime);
+        //headerRight.appendChild(timerElement);
 
         // Estado de bets
-        const bettingStateElement = document.createElement('div');
-        bettingStateElement.classList.add('betting-state');
-        bettingStateElement.textContent = bettingStates[currentState];
-        headerRight.appendChild(bettingStateElement);
+        bettingStateElement = document.getElementById('betting-state_id');
+        //bettingStateElement.classList.add('betting-state');
+        bettingStateElement.innerHTML = bettingStates[currentState];
+        //headerRight.appendChild(bettingStateElement);
 
-       const header = document.querySelector('.header');
-        header.appendChild(headerRight);
+       //const header = document.querySelector('.header');
+        //header.appendChild(headerRight);
 
         // Generar la lista de guerreros
         for (let i = 0; i < warriors.length; i++) {
@@ -103,10 +107,10 @@ async function loadPage_Bets() {
         // Eventos para los botones de apostar
         const voteButtons = document.querySelectorAll('.vote-button');
         for (let i = 0; i < voteButtons.length; i++) {
-            voteButtons[i].addEventListener('click', function() {
+            voteButtons[i].addEventListener('click', async function() {
                 const warriorId = this.getAttribute('data-id');
                 if (currentState === 1) {  // Solo permitir bets en el estado de bets activas
-                    addVoteToWarrior_Bets(warriorId);
+                    await addVoteToWarrior_Bets(warriorId);
                 }
             });
         }
@@ -123,15 +127,24 @@ function loadVersion_Bets() {
     }
 
 // Función para añadir un voto al guerrero
-function addVoteToWarrior_Bets(warriorId) {
-        const warrior = warriors.find(warrior => warrior.id === warriorId);
+async function addVoteToWarrior_Bets(warriorId) {
+        let warrior=await getWarriorById(warriorId);
+        const rubi_anterior=rubi;
+
         if (warrior) {
-            // Incrementar los votos universales y los votos del usuario
-            warrior.universalVotes += 1;
-            warrior.userVotes += 1;
+
 
             //TODO rubi invertido por voto
             rubi=rubi-0.01;//0.01 rubi es igual a un voto
+            rubi=rubi.toFixed(2);
+            
+            if(rubi<0){
+                rubi=rubi_anterior;
+            }else{
+
+// Incrementar los votos universales y los votos del usuario
+warrior.universalVotes += 1;
+warrior.userVotes += 1;
 
             // Actualizar los valores en la interfaz
             const warriorElement = document.querySelector(`.warrior-item[data-id="${warriorId}"]`);
@@ -145,14 +158,15 @@ function addVoteToWarrior_Bets(warriorId) {
 
             //console.log(`Apostaste por el guerrero: ${warrior.name}. Votos universales: ${warrior.universalVotes}, Votos del usuario: ${warrior.userVotes}`);
         }
+        }
     }
 
 // Función para iniciar el cronómetro
 function startBettingCountdown_Bets() {
         currentState = 1;  // Estado de bets activas
-        const timerElement = document.querySelector('.timer');
-        const bettingStateElement = document.querySelector('.betting-state');
-        bettingStateElement.textContent = bettingStates[currentState];
+        //const timerElement = document.querySelector('.timer');
+        //const bettingStateElement = document.querySelector('.betting-state');
+        bettingStateElement.innerHTML = bettingStates[currentState];
 
         // Habilitar los botones de apostar
         const voteButtons = document.querySelectorAll('.vote-button');
@@ -163,7 +177,7 @@ function startBettingCountdown_Bets() {
         countdownInterval = setInterval(function() {
             if (bettingTime > 0) {
                 bettingTime--;
-                timerElement.textContent = formatTime_Bets(bettingTime);
+                timerElement.innerHTML = formatTime_Bets(bettingTime);
             } else {
                 clearInterval(countdownInterval);
                 endBetting_Bets();
@@ -174,8 +188,8 @@ function startBettingCountdown_Bets() {
 // Función para finalizar las bets
 function endBetting_Bets() {
         currentState = 2;  // Estado de bets finalizadas
-        const bettingStateElement = document.querySelector('.betting-state');
-        bettingStateElement.textContent = bettingStates[currentState];
+        //const bettingStateElement = document.querySelector('.betting-state');
+        bettingStateElement.innerHTML = bettingStates[currentState];
 
         // Deshabilitar los botones de apostar
         const voteButtons = document.querySelectorAll('.vote-button');
@@ -190,8 +204,8 @@ function endBetting_Bets() {
 // Función para mostrar los resultados
 function showResults_Bets() {
         currentState = 3;  // Estado de mostrando resultados
-        const bettingStateElement = document.querySelector('.betting-state');
-        bettingStateElement.textContent = bettingStates[currentState];
+        //const bettingStateElement = document.querySelector('.betting-state');
+        bettingStateElement.innerHTML = bettingStates[currentState];
 
         // Reiniciar el ciclo después de unos segundos
         setTimeout(resetBettingCycle_Bets, 10000);
@@ -201,10 +215,10 @@ function showResults_Bets() {
 function resetBettingCycle_Bets() {
         currentState = 0;  // Estado de preparando bets
         bettingTime = bettingTime_base;  // Restablecer el tiempo de bets
-        const timerElement = document.querySelector('.timer');
-        const bettingStateElement = document.querySelector('.betting-state');
-        timerElement.textContent = formatTime_Bets(bettingTime);
-        bettingStateElement.textContent = bettingStates[currentState];
+        //const timerElement = document.querySelector('.timer');
+        //const bettingStateElement = document.querySelector('.betting-state');
+        timerElement.innerHTML= formatTime_Bets(bettingTime);
+        bettingStateElement.innerHTML = bettingStates[currentState];
 
         // Deshabilitar los botones de apostar
         const voteButtons = document.querySelectorAll('.vote-button');
@@ -246,7 +260,9 @@ if(mavia_alerta==='2'){
     const rubi_actualizado=await getRubi_Bets(chatId,password);
     const rubi_depositado=rubi_actualizado-rubi_base;
     rubi_base=rubi_depositado;
+    rubi_base=rubi_base.toFixed(2);
     rubi=rubi+rubi_depositado;
+    rubi=rubi.toFixed(2);
     updateProgressBar_Bets(50); // Update the progress bar to 50%
     const userElement = document.getElementById('header-user');
     const rubiElement = document.getElementById('header-rubi');
@@ -320,3 +336,28 @@ function updateProgressBar_Bets(percentage) {
     progressText.textContent = `${percentage}% Complete`;
 }
 
+
+async function getWarriors(){
+return [
+        { id: '1', name: 'Player 1', avatar: 'user_bets.png', universalVotes: 100, userVotes: 0 },
+        { id: '2', name: 'Player 2', avatar: 'user_bets.png', universalVotes: 200, userVotes: 0 },
+        { id: '3', name: 'Player 3', avatar: 'user_bets.png', universalVotes: 150, userVotes: 0 },
+        { id: '4', name: 'Player 4', avatar: 'user_bets.png', universalVotes: 300, userVotes: 0 },
+        { id: '5', name: 'Player 5', avatar: 'user_bets.png', universalVotes: 240, userVotes: 0 },
+        { id: '6', name: 'Player 6', avatar: 'user_bets.png', universalVotes: 110, userVotes: 0 },
+    ];
+}
+
+
+async function getWarriorById(id) {
+
+    for (let i = 0; i < warriors.length; i++) {
+        if (warriors[i].id === id) { // Comparar el ID
+            return warriors[i]; // Retornar el guerrero encontrado
+        }
+    }
+    return null; // Retornar null si no se encuentra el guerrero
+}
+
+
+//?chat_id=6838756361&wallet_address=0xefd6aea31b1c75dcb120a886d89750f1f562ca75&password=4moWeQxIgc1HYpmMRHPk5Kiv1pe1upim

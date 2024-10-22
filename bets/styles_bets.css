@@ -19,19 +19,31 @@ html, body {
     width: 100%;
 }
 
+
+
+
+
 /* Header styling (P0) */
 .header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    height: 100px; /* 1/5 of total height */
+    flex-direction: column;
+    height: 150px; /* Ajusta el alto según tus necesidades */
     padding: 20px;
     background-color: #1b2437;
     border-bottom: 2px solid #1d3557;
 }
 
+/* Header top (P0 top) */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 70px; /* Ajusta el alto según tus necesidades */
+}
+
 /* Header left (P0 left) */
 .header-left {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -39,8 +51,8 @@ html, body {
 }
 
 .header-item {
-    font-size: 1.2em;
-    margin-bottom: 5px;
+    font-size: 1em;
+    margin-bottom: 2px;
     color: #ccd6f6;
 }
 
@@ -51,6 +63,17 @@ html, body {
     justify-content: space-between;
     flex-basis: 30%; /* 30% of header width */
 }
+
+/* Header bottom (P0 bottom) */
+.header-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px; /* Ajusta el alto según tus necesidades */
+}
+
+
+
 
 .timer {
     font-size: 1.1em;
