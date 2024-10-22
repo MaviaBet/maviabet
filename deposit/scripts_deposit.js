@@ -126,22 +126,33 @@ if(maviaAmount===''){
 }
 let valorNumerico = parseFloat(maviaAmount);
 
-if (!isNaN(valorNumerico) && valorNumerico === 0) {
-  console.log("El valor es 0");
-} else {
-    const qrData = updateQR_Deposit(); // Asegúrate de que se genera el QR
-    showDialog_deposit();
-    updateProgressBar_deposit(50); // Update the progress bar to 50%
-    //Comprobar si hay un deposito en proceso
-    const depositoPendiente=await getMaviaAlerta_Deposit(chatId,password);
-    updateProgressBar_deposit(100); // Update the progress bar to 100%
-    closeDialog_deposit();
+if(!isNaN(valorNumerico) && valorNumerico === 0) {
+console.log("El valor es 0");
+}else{
+const qrData = updateQR_Deposit(); // Asegúrate de que se genera el QR
+showDialog_deposit();
+updateProgressBar_deposit(50); // Update the progress bar to 50%
+//Comprobar si hay un deposito en proceso
+const depositoPendiente=await getMaviaAlerta_Deposit(chatId,password);
+updateProgressBar_deposit(75); // Update the progress bar to 100%
+    
 div_log.innerHTML =depositoPendiente;
-        if(depositoPendiente==='0'){
-            showModal_Deposit(qrData); // Pasa el qrData al modal
-        }else{
-            showModalAlert_deposit('Your deposit cannot be processed at this time, please try again in a few minutes');
-        }
+if(depositoPendiente==='0'){
+updateProgressBar_deposit(100); // Update the progress bar to 100%
+closeDialog_deposit();
+showModal_Deposit(qrData); // Pasa el qrData al modal
+}else{
+if(depositoPendiente==='2'){
+await updateMaviaAlerta_Deposit(chatId,'0',password);
+updateProgressBar_deposit(100); // Update the progress bar to 100%
+closeDialog_deposit();
+showModal_Deposit(qrData); // Pasa el qrData al modal
+}else{
+updateProgressBar_deposit(100); // Update the progress bar to 100%
+closeDialog_deposit();
+showModalAlert_deposit('Your deposit cannot be processed at this time, please try again in a few minutes');
+}
+}
 }
 }
 
