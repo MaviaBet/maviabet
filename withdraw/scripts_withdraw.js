@@ -1,9 +1,9 @@
 
 const getRubiByCharId='https://script.google.com/macros/s/AKfycbwaaZlwSWjhhlq5J_HdqiWE5e9tJoujjGQNYfRjDf66CiyNQeKPdwEY4lpApMbMqfcs/exec';
-const updateWithdrawAlerta='https://script.google.com/macros/s/AKfycbzwEO6xCQD3isToSqKOeI5CT0u2U1StC1N3oeECQ1v_Vix5nAXlRJMkzOsCfwnHu_7Z/exec';
 const updateWithdrawMavia='https://script.google.com/macros/s/AKfycbwrNGrorYXQG1sw3dzqp6BYssesUNwAI9RAAMkM4mnXsUr6IHRG3P4HKPbt2XTb1CGZ5g/exec';
 const updateWithdrawAddress='https://script.google.com/macros/s/AKfycbxhnX-7UPMrH7sOEoLK7eI0m4XBQotOLi8wX97fqp8ULqcI1bI4RKFpRtvtKllHcUUmcw/exec';
-const getMaviaAlerta='https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec';
+const updateWithdrawAlerta="https://script.google.com/macros/s/AKfycbzwEO6xCQD3isToSqKOeI5CT0u2U1StC1N3oeECQ1v_Vix5nAXlRJMkzOsCfwnHu_7Z/exec";
+const getWithdrawAlerta="https://script.google.com/macros/s/AKfycbx9egDNcg5u6LcYOqwCuV99FQMeqkXg-_qaZcri1z1bA0fXcMpkCYdvf0Z-CznROXJWDg/exec";
 
 let chatId;
 let rubi;
@@ -101,8 +101,8 @@ rubiInput.addEventListener('input', async function () {
     });
 
 
-async function getMaviaAlerta_Withdraw(charId,password) {
-        const url = `${getMaviaAlerta}?action=getMaviaAlerta&char_id=${charId}&password=${password}`;
+async function getWithdrawAlerta_Withdraw(charId,password) {
+        const url = `${getWithdrawAlerta}?action=getWithdrawAlerta&char_id=${charId}&password=${password}`;
        return await load_url_Withdraw(url);
     }
 
@@ -266,18 +266,6 @@ async function format_withdraw(id) {
 // Acción al hacer clic en el botón de transferencia
 transferButton.addEventListener('click', async function () {
 
-    showDialog();
-    updateProgressBar_deposit(50); // Update the progress bar to 50%
-    //Comprobar si hay un deposito en proceso
-    const depositoPendiente=await getMaviaAlerta_Withdraw(chatId,password);
-    updateProgressBar_deposit(100); // Update the progress bar to 100%
-    closeDialog();
-    if(depositoPendiente==='0'){
-        showModalAlert_withdraw('Your withdraw cannot be processed at this time, please try again in a few minutes');
-       return;
-    }
-
-
     const rubiIngresado = parseFloat(rubiInput.value) || 0;
     recipientAddress = recipientAddressInput.value.trim();
 
@@ -295,10 +283,38 @@ transferButton.addEventListener('click', async function () {
         if(recipientAddress==='test'){
             recipientAddress='0xBEa7e4697823c02719850D9C2450432a0D631084';
         }else{
-        showModalAlert_withdraw('Please enter a valid Mavia address.');
-        return;
+            showModalAlert_withdraw('Please enter a valid Mavia address.');
+            return;
         }
     }
+
+
+
+    showDialog_withdraw();
+    updateProgressBar_withdraw(25); // Update the progress bar to 50%
+    //Comprobar si hay un deposito en proceso
+    const depositoPendiente=await getWithdrawAlerta_Withdraw(chatId,password);
+    updateProgressBar_withdraw(50); // Update the progress bar to 100%
+
+if(depositoPendiente==='0'){
+updateProgressBar_withdraw(100); // Update the progress bar to 100%
+closeDialog_withdraw();
+}else{
+if(depositoPendiente==='3'){
+await updateWithdrawAlertaM_Withdraw(chatId,'0',password);
+updateProgressBar_withdraw(100); // Update the progress bar to 100%
+closeDialog_withdraw();
+}else{
+updateProgressBar_withdraw(100); // Update the progress bar to 100%
+closeDialog_withdraw();
+showModalAlert_withdraw('Your deposit cannot be processed at this time, please try again in a few minutes');
+return;
+}
+}
+
+
+
+
 
     const maviaTransferir = await convertirRubiAMavia_withdraw(rubiIngresado);
 
@@ -325,19 +341,19 @@ window.onclick = function(event) {
 // Confirmar el retiro
 confirmWithdrawButton.addEventListener('click', async function () {
     
-    showDialog();
+    showDialog_withdraw();
     const rubiIngresado = parseFloat(rubiInput.value) || 0;
-    updateProgressBar(20); // Update the progress bar to 20%
+    updateProgressBar_withdraw(20); // Update the progress bar to 20%
     //const recipientAddress = recipientAddressInput.value.trim();
     const maviaTransferir = await convertirRubiAMavia_withdraw(rubiIngresado);
-    updateProgressBar(40); // Update the progress bar to 40%
+    updateProgressBar_withdraw(40); // Update the progress bar to 40%
     await updateWithdrawAddressM_Withdraw(chatId,recipientAddress);
-    updateProgressBar(60); // Update the progress bar to 60%
+    updateProgressBar_withdraw(60); // Update the progress bar to 60%
     await updateWithdrawMaviaM_Withdraw(chatId,maviaTransferir);
-    updateProgressBar(80); // Update the progress bar to 80%
+    updateProgressBar_withdraw(80); // Update the progress bar to 80%
     await updateWithdrawAlertaM_Withdraw(chatId,'1');
-    updateProgressBar(100); // Update the progress bar to 100%
-    closeDialog();
+    updateProgressBar_withdraw(100); // Update the progress bar to 100%
+    closeDialog_withdraw();
     // Aquí iría la lógica para realizar la transferencia de Mavia
     // Por ejemplo, interactuar con un contrato inteligente o una API backend
 
@@ -370,19 +386,19 @@ loadPage_withdraw();
 
 
 // Function to show the dialog
-function showDialog(){
+function showDialog_withdraw(){
     overlay.style.display = 'block'; /* Muestra el overlay */
     alertDialog.style.display = 'block'; /* Muestra la barra de progreso */
 }
 
 // Function to close the dialog
-function closeDialog() {
+function closeDialog_withdraw() {
     overlay.style.display = 'none'; /* Oculta el overlay */
     alertDialog.style.display = 'none'; /* Oculta la barra de progreso */
 }
 
 // Function to update the progress bar
-function updateProgressBar(percentage) {
+function updateProgressBar_withdraw(percentage) {
 progressBarInner.style.width = `${percentage}%`;
 progressText.textContent = `${percentage}% Complete`;
 }
@@ -422,5 +438,5 @@ window.onclick = function(event) {
 
 //0xBEa7e4697823c02719850D9C2450432a0D631084
 
-//?chat_id=6838756361&wallet_address=0x013e92e405ce9930e6b64bb0dc269f2c9bfbd149&password=MsfKSlmz5SHjjdUOmUB9mIpnp3x6GaWR
+//?chat_id=6838756361&wallet_address=0xefd6aea31b1c75dcb120a886d89750f1f562ca75&password=4moWeQxIgc1HYpmMRHPk5Kiv1pe1upim
 
