@@ -2,20 +2,24 @@
 const get_transactions='https://script.google.com/macros/s/AKfycbw3nT2CPyHuB4z05ymar7DF3KP-qR6pHn7Wvhp6P9k4TzWjelRHv7_momcVVrsMk_T5/exec';
 const getStatusGoogleDrive='https://script.google.com/macros/s/AKfycbyQ7yYShnu8NwmEw3CC4tTFupHhB6382P2WiOaObpf8BwKaC3KfWlGK7OJzxI9ffeRk/exec';
 
-// Borramos el cache y demás para que sea como la primera vez que se abrió la página
-window.onload = function() {
-    localStorage.clear();
-    sessionStorage.clear();
-    // noinspection JSIgnoredPromiseFromCall
-    load_transactions();
-    //history.clearStorage();
-};
-
 let chat_id;
 let password;
 let walletAddress;
 let myAddress;
 //let div_log;
+
+let alertDialog ;
+let closeBtn;
+let progressBarInner ;
+let progressText ;
+let overlay;
+let porciento_total;
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    localStorage.clear();
+    sessionStorage.clear();
+    load_transactions();
 
 async function load_transactions(){
 
@@ -25,40 +29,53 @@ password=params.get("password");
 walletAddress=params.get("wallet_address");
 myAddress=params.get("my_address");
 
+
+    alertDialog = document.getElementById('alert-dialog');
+    closeBtn = document.getElementById('close-btn');
+    progressBarInner = document.querySelector('.progress-bar-inner');
+    progressText = document.getElementById('progress-text');
+    overlay = document.getElementById('overlay');
+
 //div_log= document.getElementById('log');
 
 // Creamos la lista de transacciones
 const transactionList = document.getElementById('transaction-list');
 
+showDialog_transactions();
+await updateProgressBar_transactions(5); // Update the progress bar to 50%
+
 const transactions=await getTransactions_transactions(chat_id,password);
+await updateProgressBar_transactions(10); // Update the progress bar to 50%
+
 let hashes = transactions.split(",");
 hashes = hashes.reverse();
 
-//const ids = [0, 1, 2];
-//const types = ['deposit', 'deposit', 'withdraw'];
-//const dates = ['2022-01-01', '2022-01-02', '2022-01-02'];
-//const statuses = ['pendiente', 'completado', 'fallido'];
-//const hashes = ['0x1234567890abcdef', '0x234567890abcdef1', '0x234567890abcdef1'];
-//const froms = ['0x1234567890abcdef', '0x234567890abcdef1', '0x234567890abcdef1'];
-//const tos = ['0x9876543210abcdef', '0x1234567890abcdef', '0x1234567890abcdef'];
-//const amounts = [1.23, 4.56, 6.23];
-
 const transactions_list = [];
 
+const hashes_length=hashes.length;
+const i0=90;
+const i1=i0/hashes_length;//Porciento por hash
+//let i2=i1/2;//Porciento en 2 pasos por hash
+//i2=i2.toFixed(2);
+porciento_total=10;
+
 for (let i = 0; i < hashes.length; i++) {
-
-
+//div_log.innerHTML ='A : '+i+'/'+hashes_length;
 const transactions_data=hashes[i];//await getTransactionsData(chat_id,password,hash);
 let datas = transactions_data.split(".");
 
 let hash_=datas[0];
 let date_ = await getDate_transactions(datas[1]);
+
 let status_=await getStatusGoogleDriveM_transactions(chat_id,password,hash_);
+porciento_total=porciento_total+i1;
+
+updateProgressBar_transactions(porciento_total); // Update the progress bar to 50%
+
 let from_=datas[2];
 let to__=datas[3];
 let amount_=datas[4]/Math.pow(10, 18);
 let type_;
-
 if(myAddress.toLowerCase()===from_.toLowerCase()){
 type_='withdraw';
 }else{
@@ -75,9 +92,12 @@ type_='deposit';
         to_: to__,
         amount: amount_
     };
+
 }
 
 await createTransactionList_transactions();
+
+closeDialog_transactions();
 
 // Creamos la lista de transacciones
     async function createTransactionList_transactions() {
@@ -220,6 +240,28 @@ async function getDate_transactions(data) {
     });
 }
 
+
+
+// Function to show the dialog
+function showDialog_transactions(){
+    overlay.style.display = 'block'; /* Muestra el overlay */
+    alertDialog.style.display = 'block'; /* Muestra la barra de progreso */
+}
+
+// Function to close the dialog
+function closeDialog_transactions() {
+    overlay.style.display = 'none'; /* Oculta el overlay */
+    alertDialog.style.display = 'none'; /* Oculta la barra de progreso */
+}
+
+// Function to update the progress bar
+function updateProgressBar_transactions(percentage) {
+    progressBarInner.style.width = `${percentage}%`;
+    progressText.textContent = `${percentage}% Complete`;
+}
+
+});
+
 // Ejemplo de uso
 //const montoTransferido = 800000000000000; // Monto en formato de entero
 //const montoDecimal = convertirMonto(montoTransferido);
@@ -233,4 +275,4 @@ async function getDate_transactions(data) {
 //}
 
 
-//?chat_id=6838756361&wallet_address=0xe7f7b219fea99ec4b351be88bc8b6cf5e1a5d0ba&my_address=0x55F701D40222b645bAD3778079CC45B81B97D568&password=UGbeeCeyivDzUp2bOoHdIhCcDFXoz8An
+//?chat_id=6838756361&wallet_address=0xefd6aea31b1c75dcb120a886d89750f1f562ca75&my_address=0x55F701D40222b645bAD3778079CC45B81B97D568&password=4moWeQxIgc1HYpmMRHPk5Kiv1pe1upim
