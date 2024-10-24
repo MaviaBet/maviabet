@@ -47,6 +47,16 @@ await updateProgressBar_transactions(5); // Update the progress bar to 50%
 const transactions=await getTransactions_transactions(chat_id,password);
 await updateProgressBar_transactions(10); // Update the progress bar to 50%
 
+ if(transactions==='999'||
+  transactions==='888'||
+  transactions==='Invalid action or missing parameters'||
+  transactions==='Char ID not found'){
+     await updateProgressBar_transactions(100); // Update the progress bar to 50%
+     closeDialog_transactions();
+     return;
+ }
+
+
 let hashes = transactions.split(",");
 hashes = hashes.reverse();
 
