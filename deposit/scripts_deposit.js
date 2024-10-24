@@ -1,7 +1,7 @@
 
 const updateMaviaAlerta='https://script.google.com/macros/s/AKfycbwK5ShC90SpgxHmLVDpNpuEjlHPCnU8WWFrM6yTiQHhbm-znekISUE-IsUQ7f4dt6f_dg/exec';
 const getMaviaAlerta='https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec';
-
+const getWithdrawAlerta="https://script.google.com/macros/s/AKfycbx9egDNcg5u6LcYOqwCuV99FQMeqkXg-_qaZcri1z1bA0fXcMpkCYdvf0Z-CznROXJWDg/exec";
 
 let walletAddress; // Dirección de depósito
 const contractAddress = "0x24fcFC492C1393274B6bcd568ac9e225BEc93584"; // Dirección del contrato del token Mavia en la red Base
@@ -17,7 +17,7 @@ let progressText ;
 let overlay;
 let percentage = 0;
 
-let div_log;
+//let div_log;
 
 //chat_id=1234567&wallet_address=0x123456789012345678
 // Llamar a la función initialize_Deposit al cargar la página
@@ -45,7 +45,7 @@ progressText = document.getElementById('progress-text');
 overlay = document.getElementById('overlay');
 percentage = 0;
 
-div_log= document.getElementById('log');
+//div_log= document.getElementById('log');
 
     let formattedWalletAddress;
     const chatIdElement = document.getElementById("chat_id");
@@ -131,27 +131,25 @@ console.log("El valor es 0");
 }else{
 const qrData = updateQR_Deposit(); // Asegúrate de que se genera el QR
 showDialog_deposit();
-updateProgressBar_deposit(50); // Update the progress bar to 50%
+updateProgressBar_deposit(25); // Update the progress bar to 50%
 //Comprobar si hay un deposito en proceso
 const depositoPendiente=await getMaviaAlerta_Deposit(chatId,password);
-updateProgressBar_deposit(75); // Update the progress bar to 100%
-    
-div_log.innerHTML =depositoPendiente;
+updateProgressBar_deposit(50); // Update the progress bar to 100%
+//div_log.innerHTML =depositoPendiente;
 if(depositoPendiente==='0'){
+const withdrawAlerta=await getWithdrawAlerta_Deposit(chatId,password);
 updateProgressBar_deposit(100); // Update the progress bar to 100%
+if(withdrawAlerta==='0'){
 closeDialog_deposit();
 showModal_Deposit(qrData); // Pasa el qrData al modal
 }else{
-if(depositoPendiente==='2'){
-await updateMaviaAlerta_Deposit(chatId,'0',password);
-updateProgressBar_deposit(100); // Update the progress bar to 100%
 closeDialog_deposit();
-showModal_Deposit(qrData); // Pasa el qrData al modal
-}else{
-updateProgressBar_deposit(100); // Update the progress bar to 100%
-closeDialog_deposit();
-showModalAlert_deposit('Your deposit cannot be processed at this time, please try again in a few minutes');
+showModalAlert_deposit('Your deposit cannot be processed at this time, you have a withdrawal in process, please try again in a few minutes');
 }
+}else{
+updateProgressBar_deposit(100); // Update the progress bar to 100%
+closeDialog_deposit();
+showModalAlert_deposit('Your deposit cannot be processed at this time, you have a deposit in process, please try again in a few minutes');
 }
 }
 }
@@ -252,7 +250,9 @@ progressText.textContent = `${percentage}% Complete`;
 }
 
 
-//?chat_id=6838756361&wallet_address=0x013e92e405ce9930e6b64bb0dc269f2c9bfbd149&password=MsfKSlmz5SHjjdUOmUB9mIpnp3x6GaWR
+async function getWithdrawAlerta_Deposit(charId,password) {
+    const url = `${getWithdrawAlerta}?action=getWithdrawAlerta&char_id=${charId}&password=${password}`;
+    return await load_url_Deposit(url);
+}
 
-//https://script.google.com/macros/s/AKfycbzE8pu8S0CZEW8vG-drlUNZ-K2g_DR4hTfAqmOpl6JHFwvz74O6RhSrRvDb6LB_56uJ7Q/exec?action=getMaviaAlerta&char_id=6838756361&password=MsfKSlmz5SHjjdUOmUB9mIpnp3x6GaWR
-//https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec?action=getMaviaAlerta&char_id=6838756361&password=MsfKSlmz5SHjjdUOmUB9mIpnp3x6GaWR
+//?chat_id=6838756361&wallet_address=0x013e92e405ce9930e6b64bb0dc269f2c9bfbd149&password=MsfKSlmz5SHjjdUOmUB9mIpnp3x6GaWR
