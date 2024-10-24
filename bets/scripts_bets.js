@@ -44,25 +44,34 @@ document.addEventListener('DOMContentLoaded', function() {
  async function loadPage_Bets() {
   // log=document.getElementById('log');
 
+  alertDialog = document.getElementById('alert-dialog');
+  progressBarInner = document.querySelector('.progress-bar-inner');
+  progressText = document.getElementById('progress-text');
+  overlay = document.getElementById('overlay');
+  percentage = 0;
+
+  showDialog_Bets();
+  updateProgressBar_Bets(10);
+
   const params = new URLSearchParams(window.location.search);
   chatId=params.get("chat_id");
   password=params.get("password");
 
   const withdrawAlerta=await getWithdrawAlerta_Bets(chatId,password);
+  updateProgressBar_Bets(20);
   if(withdrawAlerta==='0') {
    const mavia_alerta = await getMaviaAlerta_Bets(chatId, password);
+   updateProgressBar_Bets(30);
    if(mavia_alerta==='0'){
 
     warriors = await getWarriors(chatId, password);
+    updateProgressBar_Bets(40);
     rubi = await getRubi_Bets(chatId, password);
+    updateProgressBar_Bets(50);
 
     rubi_base = rubi;
 
-    alertDialog = document.getElementById('alert-dialog');
-    progressBarInner = document.querySelector('.progress-bar-inner');
-    progressText = document.getElementById('progress-text');
-    overlay = document.getElementById('overlay');
-    percentage = 0;
+
 
     const userElement = document.getElementById('header-user');
     const rubiElement = document.getElementById('header-rubi');
@@ -89,13 +98,14 @@ document.addEventListener('DOMContentLoaded', function() {
      warriorItem.innerHTML = `
                 <div><img class="warrior-avatar" src="${warrior.avatar}" alt="-"></div>
                 <div class="warrior-name">${await ajustarWarriorName(warrior.name)}</div>
-                <div class="universal-votes">${await ajustarVotos(warrior.universalVotes)}</div>
                 <div class="user-votes">${await ajustarVotos(warrior.userVotes)}</div>
                 <div><button class="vote-button" data-id="${warrior.id}" disabled>Apostar</button></div>
             `;
+     //TODO -> futuro <div class="universal-votes">${await ajustarVotos(warrior.universalVotes)}</div>
      warriorListContainer.appendChild(warriorItem);
     }
 
+    updateProgressBar_Bets(60);
     // Eventos para los botones de apostar
     const voteButtons = document.querySelectorAll('.vote-button');
     for (let i = 0; i < voteButtons.length; i++) {
@@ -106,7 +116,12 @@ document.addEventListener('DOMContentLoaded', function() {
       }
      });
     }
+    updateProgressBar_Bets(80);
     await loadVersion_Bets();
+    updateProgressBar_Bets(100);
+    closeDialog_Bets();
+
+
     // Iniciar el ciclo de bets
     setTimeout(startBettingCountdown_Bets, 10000);  // Simulación de preparación durante 3 segundos
 
@@ -157,11 +172,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Actualizar los valores en la interfaz
     const warriorElement = document.querySelector(`.warrior-item[data-id="${warriorId}"]`);
-    const universalVotesElement = warriorElement.querySelector('.universal-votes');
+    //TODO -> FUTURO const universalVotesElement = warriorElement.querySelector('.universal-votes');
     const userVotesElement = warriorElement.querySelector('.user-votes');
     const rubiElement = document.getElementById('header-rubi');
 // Uso en el código
-    universalVotesElement.innerHTML = await ajustarVotos(warrior.universalVotes);
+    //TODO -> FUTURO universalVotesElement.innerHTML = await ajustarVotos(warrior.universalVotes);
     userVotesElement.innerHTML = await ajustarVotos(warrior.userVotes);
     rubiElement.textContent = 'Rubi : ' + rubi;
 
