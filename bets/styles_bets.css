@@ -90,6 +90,14 @@ html, body {
     color: #a8dadc;
 }
 
+
+
+
+
+
+
+
+
 /* Warrior list styling (P1) */
 .warrior-list {
     flex: 1; /* 4/5 of total height */
@@ -129,11 +137,18 @@ html, body {
 }
 
 /* Styling for universal votes and user votes */
+.votes-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinea los votos al final */
+    flex-grow: 1;
+}
+
 .universal-votes, .user-votes {
     font-size: 1em;
-    flex-grow: 1;
     text-align: center;
     color: #a8dadc;
+    margin: 0 10px; /* Espaciado entre votos */
 }
 
 /* Vote button */
@@ -166,10 +181,14 @@ html, body {
         flex-wrap: wrap;
     }
 
-    .warrior-name, .universal-votes, .user-votes {
+    .warrior-name {
         margin-left: 0;
         flex-grow: 1;
         text-align: center;
+    }
+
+    .votes-container {
+        justify-content: center; /* Centra los votos en pantallas pequeñas */
     }
 
     .vote-button {
@@ -177,6 +196,17 @@ html, body {
         margin-top: 10px;
     }
 }
+
+
+.vote-zero {
+    color: rgba(168, 221, 220, 0.3); /* Color con opacidad */
+    font-weight: lighter; /* Fuente más delgada */
+}
+
+
+
+
+
 .version {
     font-size: 12px;      /* Tamaño de fuente pequeño */
     color: #C1C8D0;       /* Color gris claro */
@@ -243,4 +273,65 @@ html, body {
 
 .close-btn:hover {
     color: #e63946; /* red-orange */
+}
+
+
+
+
+
+
+
+
+/* Estilos del modal */
+.modal_alert {
+    display: none; /* Inicialmente oculto */
+    position: fixed; /* Posición fija para cubrir toda la pantalla */
+    z-index: 1; /* Asegura que el modal esté por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo de la pantalla */
+    height: 100%; /* Alto completo de la pantalla */
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+}
+
+/* Estilo para el contenido del modal */
+.modal_alert-content {
+    background-color: #1D2A44; /* Fondo azul oscuro para el contenido del modal */
+    color: #FFFFFF; /* Texto blanco */
+    margin: 10% auto; /* Centrado verticalmente */
+    padding: 20px;
+    border: 2px solid #888; /* Borde gris claro */
+    width: 80%; /* Ancho del modal */
+    max-width: 400px; /* Ancho máximo */
+    text-align: center; /* Centrado de texto */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/* Estilos para el botón de cerrar */
+.close_alert {
+    color: #aaa; /* Color gris claro */
+    float: right; /* Alineado a la derecha */
+    font-size: 28px; /* Tamaño grande */
+    font-weight: bold; /* Negrita */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+.close_alert:hover,
+.close_alert:focus {
+    color: white; /* Cambia a blanco al hacer hover */
+    text-decoration: none; /* Sin subrayado */
+}
+
+/* Estilos para el botón de confirmar en el modal */
+.modal_alert-content .button {
+    background-color: #316DD1; /* Azul brillante para el botón */
+    margin-top: 1rem; /* Espacio superior */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+.modal_alert-content .button:hover {
+    background-color: #3A7FE5; /* Azul más brillante al hacer hover */
 }

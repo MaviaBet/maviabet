@@ -9,6 +9,8 @@
 <body>
 <div class="container">
 
+<!--div id="log">...</div-->
+
 <div class="header">
   <div class="header-top">
     <div class="header-left">
@@ -44,6 +46,17 @@
 <!--Para que el usuario no interactue con la web-->
 <div class="overlay" id="overlay"></div>
 <!--Barra de progreso-->
+
+
+<!-- Modal para mensaje de error -->
+<div id="errorModal" class="modal_alert">
+    <div class="modal_alert-content">
+        <span class="close_alert" onclick="closeModalAlert_Bets()">&times;</span>
+        <h3>!Alert</h3>
+        <p id="modalMessage"></p> <!-- Mensaje dinámico -->
+        <button class="button" onclick="closeModalAlert_Bets()">OK</button>
+    </div>
+</div>
 
 
 <script src="scripts_bets.js"></script>
