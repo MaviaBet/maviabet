@@ -109,7 +109,6 @@ html, body {
 /* Warrior item style */
 .warrior-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #1d3557;
@@ -117,6 +116,8 @@ html, body {
     background-color: #1b2437;
     border-radius: 8px;
     color: #f1faee;
+    width: 100%; /* Asegura que el item ocupe all ancho disponible */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
 }
 
 /* Adjusting avatar and name inline */
@@ -130,7 +131,7 @@ html, body {
 .warrior-name {
     font-size: 1.1em;
     margin-left: 15px;
-    flex-grow: 2;
+    flex-grow: 1; /* Permite que el nombre ocupe el espacio restante */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -141,7 +142,6 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: flex-end; /* Alinea los votos al final */
-    flex-grow: 1;
 }
 
 .universal-votes, .user-votes {
@@ -177,25 +177,26 @@ html, body {
     }
 
     .warrior-item {
-        height: auto;
-        flex-wrap: wrap;
+        flex-wrap: nowrap; /* Asegura que los items no se envuelvan */
+        height: auto; /* Permite que la altura se ajuste automáticamente */
     }
 
     .warrior-name {
-        margin-left: 0;
-        flex-grow: 1;
-        text-align: center;
+        margin-left: 10px; /* Ajusta el margen para que se vea mejor */
+        text-align: left; /* Alinea el texto a la izquierda */
     }
 
     .votes-container {
-        justify-content: center; /* Centra los votos en pantallas pequeñas */
+        justify-content: flex-end; /* Mantiene la alineación a la derecha en pantallas pequeñas */
     }
 
     .vote-button {
-        width: 100%;
-        margin-top: 10px;
+        width: auto; /* Permite que el botón mantenga su tamaño natural */
+        margin-top: 0; /* Elimina el margen superior */
     }
 }
+
+
 
 
 .vote-zero {
