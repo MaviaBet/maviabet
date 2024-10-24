@@ -307,7 +307,7 @@ closeDialog_withdraw();
 }else{
 updateProgressBar_withdraw(100); // Update the progress bar to 100%
 closeDialog_withdraw();
-showModalAlert_withdraw('Your deposit cannot be processed at this time, please try again in a few minutes');
+showModalAlert_withdraw('Your withdraw cannot be processed at this time, please try again in a few minutes');
 return;
 }
 }
