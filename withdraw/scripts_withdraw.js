@@ -4,6 +4,7 @@ const updateWithdrawMavia='https://script.google.com/macros/s/AKfycbwrNGrorYXQG1
 const updateWithdrawAddress='https://script.google.com/macros/s/AKfycbxhnX-7UPMrH7sOEoLK7eI0m4XBQotOLi8wX97fqp8ULqcI1bI4RKFpRtvtKllHcUUmcw/exec';
 const updateWithdrawAlerta="https://script.google.com/macros/s/AKfycbzwEO6xCQD3isToSqKOeI5CT0u2U1StC1N3oeECQ1v_Vix5nAXlRJMkzOsCfwnHu_7Z/exec";
 const getWithdrawAlerta="https://script.google.com/macros/s/AKfycbx9egDNcg5u6LcYOqwCuV99FQMeqkXg-_qaZcri1z1bA0fXcMpkCYdvf0Z-CznROXJWDg/exec";
+const getMaviaAlerta='https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec';
 
 let chatId;
 let rubi;
@@ -293,23 +294,27 @@ transferButton.addEventListener('click', async function () {
     showDialog_withdraw();
     updateProgressBar_withdraw(25); // Update the progress bar to 50%
     //Comprobar si hay un deposito en proceso
-    const depositoPendiente=await getWithdrawAlerta_Withdraw(chatId,password);
-    updateProgressBar_withdraw(50); // Update the progress bar to 100%
+const withdrawAlerta=await getWithdrawAlerta_Withdraw(chatId,password);
+updateProgressBar_withdraw(50); // Update the progress bar to 100%
 
+if(withdrawAlerta==='0'){
+
+const depositoPendiente=await getMaviaAlerta_Withdraw(chatId,password);
 if(depositoPendiente==='0'){
-updateProgressBar_withdraw(100); // Update the progress bar to 100%
-closeDialog_withdraw();
-}else{
-if(depositoPendiente==='3'){
-await updateWithdrawAlertaM_Withdraw(chatId,'0',password);
+
 updateProgressBar_withdraw(100); // Update the progress bar to 100%
 closeDialog_withdraw();
 }else{
 updateProgressBar_withdraw(100); // Update the progress bar to 100%
 closeDialog_withdraw();
-showModalAlert_withdraw('Your withdraw cannot be processed at this time, please try again in a few minutes');
+showModalAlert_withdraw('Your withdraw cannot be processed at this time, you have a deposit in process, please try again in a few minutes');
 return;
 }
+}else{
+updateProgressBar_withdraw(100); // Update the progress bar to 100%
+closeDialog_withdraw();
+showModalAlert_withdraw('Your withdraw cannot be processed at this time, you have a withdrawal in process, please try again in a few minutes');
+return;
 }
 
 
@@ -434,7 +439,31 @@ window.onclick = function(event) {
 };
 
 
+async function getMaviaAlerta_Withdraw(charId,password) {
+ const url = `${getMaviaAlerta}?action=getMaviaAlerta&char_id=${charId}&password=${password}`;
+ return await load_url_withdraw(url);
+}
 
+
+async function load_url_withdraw(url){
+ try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'text/plain', // O 'application/json' si es JSON
+                },
+            });
+            if (!response.ok) {
+                console.error(`HTTP error! Status : ${response.status}`);
+                return `HTTP error! Status : ${response.status}`;
+            }
+            // O .json() si es JSON
+            return await response.text();
+        } catch (error) {
+            console.error('Error fetching :', error);
+            return 'Error fetching :'+error;
+        }
+    }
 
 //0xBEa7e4697823c02719850D9C2450432a0D631084
 
