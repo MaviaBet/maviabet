@@ -3,8 +3,12 @@ const getRubiByCharId='https://script.google.com/macros/s/AKfycbwaaZlwSWjhhlq5J_
 const getMaviaAlerta='https://script.google.com/macros/s/AKfycbzwxzuDlvXvaB5PyBm4VjAriOFvG2_gunc3kA37UqbBC0xDWFisWFVkZGj1XaVyCVvl/exec';
 const getPlayersTop10="https://script.google.com/macros/s/AKfycbx-qZDfK87hipYeeMgD2AF9XZLODSPf9Z963ulghSEnsybify0DvFScmFMXux4Lquok/exec";
 const getWithdrawAlerta="https://script.google.com/macros/s/AKfycbx9egDNcg5u6LcYOqwCuV99FQMeqkXg-_qaZcri1z1bA0fXcMpkCYdvf0Z-CznROXJWDg/exec";
+const getSendBetsAlerta='https://script.google.com/macros/s/AKfycbxNSE1Xa4HWrTxLZ4aR2FWhbFgeYKfYUOgx_4qt73_doYJHmJ97cI-CxsUTYcn9fe-w/exec';
+const sendBetsAlerta='https://script.google.com/macros/s/AKfycbyIkLgIrRwpFyBZlfHAcP3ORdjt3vn23Mj1t_0VabGvizyJSH_NMxvb0javLjTNTAciVg/exec';
+const sendBets='https://script.google.com/macros/s/AKfycbw0lQg-ZylrZHsLeBNbcOdWi5FFAyPFOuIErMYt9QZIByXtJDs6dm3SF91Luw-qKa6ovw/exec';
 
 const rubi_por_voto=0.01;
+let rubi_por_voto_multiplicador=1;
 
 let chatId;
 let rubi;
@@ -24,6 +28,9 @@ let warriors;
 let timerElement;
 let bettingStateElement;
 
+let bottomMultiplicador;
+let bottomSendBets;
+
 //let log;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -42,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Función para cargar los datos en la página
  async function loadPage_Bets() {
-  // log=document.getElementById('log');
+  //log=document.getElementById('log');
 
   alertDialog = document.getElementById('alert-dialog');
   progressBarInner = document.querySelector('.progress-bar-inner');
@@ -64,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
    updateProgressBar_Bets(30);
    if(mavia_alerta==='0'){
 
-    warriors = await getWarriors(chatId, password);
+    warriors = await getWarriors_Bets(chatId, password);
     updateProgressBar_Bets(40);
     rubi = await getRubi_Bets(chatId, password);
     updateProgressBar_Bets(50);
@@ -89,6 +96,57 @@ document.addEventListener('DOMContentLoaded', function() {
     bettingStateElement = document.getElementById('betting-state_id');
     bettingStateElement.innerHTML = bettingStates[currentState];
 
+    bottomMultiplicador=document.getElementById('bottom-multiplicador');
+    bottomMultiplicador.innerHTML =`x${rubi_por_voto_multiplicador}`;
+
+    bottomMultiplicador.addEventListener('click', async function () {
+     if(rubi_por_voto_multiplicador===1){rubi_por_voto_multiplicador=5;}else{
+      if(rubi_por_voto_multiplicador===5){rubi_por_voto_multiplicador=10;}else{
+      if(rubi_por_voto_multiplicador===10){rubi_por_voto_multiplicador=25;}else{
+       if(rubi_por_voto_multiplicador===25){rubi_por_voto_multiplicador=50;}else{
+        if(rubi_por_voto_multiplicador===50){rubi_por_voto_multiplicador=100;}else{
+       rubi_por_voto_multiplicador=1;
+     }}}}}
+
+     bottomMultiplicador.innerHTML =`x${rubi_por_voto_multiplicador}`;
+     });
+
+    bottomSendBets=document.getElementById('bottom-send-bets');
+    bottomSendBets.addEventListener('click', async function () {
+     showDialog_Bets();
+     const sendBetsAlerta=await getSendBetsAlertaM_Bets(chatId,password);
+     //log.innerHTML='sendBetsAlerta : '+sendBetsAlerta;
+     if(sendBetsAlerta==='0'){
+     updateProgressBar_Bets(10);
+const warrior1 = await getWarriorById_Bets('1'); // Obtén el guerrero
+const bet1 = warrior1 ? warrior1.userVotes : 0; // Verifica si el guerrero fue encontrado
+     updateProgressBar_Bets(20);
+      const warrior2 = await getWarriorById_Bets('2'); // Obtén el guerrero
+      const bet2 = warrior2 ? warrior2.userVotes : 0; // Verifica si el guerrero fue encontrado
+     updateProgressBar_Bets(30);
+      const warrior3 = await getWarriorById_Bets('3'); // Obtén el guerrero
+      const bet3 = warrior3 ? warrior3.userVotes : 0; // Verifica si el guerrero fue encontrado
+      updateProgressBar_Bets(40);
+      const warrior4 = await getWarriorById_Bets('4'); // Obtén el guerrero
+      const bet4 = warrior4 ? warrior4.userVotes : 0; // Verifica si el guerrero fue encontrado
+      updateProgressBar_Bets(50);
+      const warrior5 = await getWarriorById_Bets('5'); // Obtén el guerrero
+      const bet5 = warrior5 ? warrior5.userVotes : 0; // Verifica si el guerrero fue encontrado
+      updateProgressBar_Bets(60);
+     await sendBetsM_Bets(chatId,password,`${bet1}_${bet2}_${bet3}_${bet4}_${bet5}`);
+     updateProgressBar_Bets(80);
+     await resetearVotos_Bets();
+     updateProgressBar_Bets(90);
+     await sendBetsAlertaM_Bets(chatId,password,'1');
+     updateProgressBar_Bets(100);
+     closeDialog_Bets();
+     showModalAlert_Bets('Bets submitted');
+     }else{
+      closeDialog_Bets();
+      showModalAlert_Bets('Processing bets');
+     }
+    });
+
     // Generar la lista de guerreros
     for (let i = 0; i < warriors.length; i++) {
      const warrior = warriors[i];
@@ -97,9 +155,9 @@ document.addEventListener('DOMContentLoaded', function() {
      warriorItem.setAttribute('data-id', warrior.id);
      warriorItem.innerHTML = `
                 <div><img class="warrior-avatar" src="${warrior.avatar}" alt="-"></div>
-                <div class="warrior-name">${await ajustarWarriorName(warrior.name)}</div>
-                <div class="user-votes">${await ajustarVotos(warrior.userVotes)}</div>
-                <div><button class="vote-button" data-id="${warrior.id}" disabled>Apostar</button></div>
+                <div class="warrior-name">${await ajustarWarriorName_Bets(warrior.name)}</div>
+                <div class="user-votes">${await ajustarVotos_Bets(warrior.userVotes)}</div>
+                <div><button class="vote-button" data-id="${warrior.id}" disabled>Bet</button></div>
             `;
      //TODO -> futuro <div class="universal-votes">${await ajustarVotos(warrior.universalVotes)}</div>
      warriorListContainer.appendChild(warriorItem);
@@ -152,14 +210,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Función para añadir un voto al guerrero
  async function addVoteToWarrior_Bets(warriorId) {
-  let warrior=await getWarriorById(warriorId);
+  let warrior=await getWarriorById_Bets(warriorId);
   const rubi_anterior=rubi;
 
   if (warrior) {
 
 
    //TODO RUBI POR CADA VOTO
-   rubi=rubi-rubi_por_voto;//0.01 rubi es igual a un voto
+   rubi=rubi-(rubi_por_voto*rubi_por_voto_multiplicador);//0.01 rubi es igual a un voto
    rubi=rubi.toFixed(2);
 
    if(rubi<0){
@@ -167,8 +225,8 @@ document.addEventListener('DOMContentLoaded', function() {
    }else{
 
 // Incrementar los votos universales y los votos del usuario
-    warrior.universalVotes += 1;
-    warrior.userVotes += 1;
+    warrior.universalVotes = warrior.universalVotes+rubi_por_voto_multiplicador;
+    warrior.userVotes = warrior.userVotes+rubi_por_voto_multiplicador;
 
     // Actualizar los valores en la interfaz
     const warriorElement = document.querySelector(`.warrior-item[data-id="${warriorId}"]`);
@@ -177,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const rubiElement = document.getElementById('header-rubi');
 // Uso en el código
     //TODO -> FUTURO universalVotesElement.innerHTML = await ajustarVotos(warrior.universalVotes);
-    userVotesElement.innerHTML = await ajustarVotos(warrior.userVotes);
+    userVotesElement.innerHTML = await ajustarVotos_Bets(warrior.userVotes);
     rubiElement.textContent = 'Rubi : ' + rubi;
 
    }
@@ -231,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
  }
 
 // Función para reiniciar el ciclo de bets
- function resetBettingCycle_Bets() {
+ async function resetBettingCycle_Bets() {
   currentState = 0;  // Estado de preparando bets
   bettingTime = bettingTime_base;  // Restablecer el tiempo de bets
   timerElement.innerHTML= formatTime_Bets(bettingTime);
@@ -252,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
  loadPage_Bets();
 
 
- function formatTime_Bets(seconds) {
+function formatTime_Bets(seconds) {
   // Calcula horas, minutos y segundos
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -322,8 +380,8 @@ document.addEventListener('DOMContentLoaded', function() {
  }
 
 
- async function getWarriors(chatId,password){
-  await loadWarriorsData(chatId,password);
+ async function getWarriors_Bets(chatId,password){
+  await loadWarriorsData_Bets(chatId,password);
   return [
    { id: '1', name: warrior_data_name_1, avatar: warrior_data_avatar_1, universalVotes: 0, userVotes: 0 },
    { id: '2', name: warrior_data_name_2, avatar: warrior_data_avatar_2, universalVotes: 0, userVotes: 0 },
@@ -335,10 +393,10 @@ document.addEventListener('DOMContentLoaded', function() {
  }
 
 
- async function getWarriorById(id) {
+ async function getWarriorById_Bets(id) {
 
   for (let i = 0; i < warriors.length; i++) {
-   if (warriors[i].id === id) { // Comparar el ID
+   if (warriors[i].id === `${id}`) { // Comparar el ID
     return warriors[i]; // Retornar el guerrero encontrado
    }
   }
@@ -359,8 +417,8 @@ document.addEventListener('DOMContentLoaded', function() {
  let warrior_data_avatar_5;
 
 
- async function loadWarriorsData(chatId,password){
-  const playersTop10=await getPlayersTop10M(chatId,password);
+ async function loadWarriorsData_Bets(chatId,password){
+  const playersTop10=await getPlayersTop10M_Bets(chatId,password);
 //log.innerHTML=playersTop10;
   const separacion='Vs8GaPUY0Sz2c8zbnWijaWh';
   const lista_warriors=playersTop10.split(separacion);
@@ -419,13 +477,13 @@ document.addEventListener('DOMContentLoaded', function() {
 ///////////////////////////////////////
  }
 
- async function getPlayersTop10M(charId, password) {
+ async function getPlayersTop10M_Bets(charId, password) {
   const url = `${getPlayersTop10}?action=getPlayersTop10&char_id=${charId}&password=${password}`;
   return await load_url_Bets(url);
  }
 
 
- async function ajustarWarriorName(name) {
+ async function ajustarWarriorName_Bets(name) {
   // Si el nombre es más largo que 12 caracteres, lo truncamos a 12 caracteres
   if (name.length > 12) {
    return name.substring(0, 12);
@@ -442,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
- async function ajustarVotosA(votos) {
+ async function ajustarVotosA_Bets(votos) {
   // Convertir el voto a cadena
   const votos_s = votos.toString();
 
@@ -460,9 +518,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
  }
 
- async function ajustarVotos(votos) {
+ async function ajustarVotos_Bets(votos) {
   // Asegúrate de que votos sea un número
-  let votosDisplay = await ajustarVotosA(votos); // Llama a ajustarVotosA para obtener el formato adecuado
+  let votosDisplay = await ajustarVotosA_Bets(votos); // Llama a ajustarVotosA para obtener el formato adecuado
 
   // Manejar los ceros a la izquierda
   // Envuelve solo los ceros a la izquierda
@@ -474,6 +532,33 @@ document.addEventListener('DOMContentLoaded', function() {
   return await load_url_Bets(url);
  }
 
+
+ async function getSendBetsAlertaM_Bets(charId,password) {
+  // URL del Web App con parámetros char_id y new_mavia_alerta
+  const url = `${getSendBetsAlerta}?action=getSendBetsAlerta&char_id=${charId}&password=${password}`;
+return await load_url_Bets(url);
+ }
+
+ async function sendBetsAlertaM_Bets(charId,password,betsAlerta) {
+  // URL del Web App con parámetros char_id y new_mavia_alerta
+  const url = `${sendBetsAlerta}?action=updateSendBetsAlerta&char_id=${charId}&betsAlerta=${betsAlerta}&password=${password}`;
+ return await load_url_Bets(url);
+ }
+
+ async function sendBetsM_Bets(charId,password,bets) {
+  // URL del Web App con parámetros char_id y new_mavia_alerta
+  const url = `${sendBets}?action=updateSendBets&char_id=${charId}&bets=${bets}&password=${password}`;
+return await load_url_Bets(url);
+ }
+
+
+ async function resetearVotos_Bets(){
+  for(let id=1;id<6;id++){
+  const warriorElement = document.querySelector(`.warrior-item[data-id="${id}"]`);
+  const userVotesElement = warriorElement.querySelector('.user-votes');
+  userVotesElement.innerHTML = await ajustarVotos_Bets(0);
+  }
+ }
 
 });
 
@@ -492,5 +577,7 @@ function closeModalAlert_Bets() {
 }
 
 
-//?chat_id=6838756361&wallet_address=0xefd6aea31b1c75dcb120a886d89750f1f562ca75&password=4moWeQxIgc1HYpmMRHPk5Kiv1pe1upim
+
+
+//?chat_id=6838756361&wallet_address=0x0b1a0d9fffa4e63c2e6563f8ffbc491feb44fc27&password=YDebAJfFRLCrYQK9K5ocELZyb3VXYbox
 

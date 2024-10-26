@@ -64,12 +64,47 @@ html, body {
     flex-basis: 30%; /* 30% of header width */
 }
 
-/* Header bottom (P0 bottom) */
 .header-bottom {
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Cambia a space-between para alinear el contenido */
     align-items: center;
     height: 80px; /* Ajusta el alto según tus necesidades */
+    padding: 0 20px; /* Añade un poco de padding para que no esté pegado a los bordes */
+}
+
+.green-button {
+    background-color: #28a745; /* Color verde */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    font-size: 16px; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Transición suave para el hover */
+}
+
+.green-button:hover {
+    background-color: #218838; /* Color verde más oscuro al pasar el ratón */
+}
+
+
+
+.blue-button {
+    background-color: #3A7FE5; /* Color verde */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    width: 33.33%; /* 1/3 del ancho de la pantalla */
+    padding: 10px 20px;
+    align-self: center; /* Centra el botón horizontalmente */
+    margin: 10px 0; /* Espaciado vertical */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    font-size: 16px; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Transición suave para el hover */
+}
+
+.blue-button:hover {
+    background-color: #316Dc0; /* Color verde más oscuro al pasar el ratón */
 }
 
 
@@ -104,6 +139,7 @@ html, body {
     padding: 20px;
     overflow-y: auto;
     background-color: #0f1624;
+
 }
 
 /* Warrior item style */
