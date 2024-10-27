@@ -137,7 +137,7 @@ updateProgressBar_deposit(25); // Update the progress bar to 50%
 const depositoPendiente=await getMaviaAlerta_Deposit(chatId,password);
 updateProgressBar_deposit(50); // Update the progress bar to 100%
 //div_log.innerHTML =depositoPendiente;
-if(depositoPendiente==='0'){
+if(depositoPendiente==='0'||depositoPendiente==='1'){
 const withdrawAlerta=await getWithdrawAlerta_Deposit(chatId,password);
 updateProgressBar_deposit(100); // Update the progress bar to 100%
 if(withdrawAlerta==='0'){
