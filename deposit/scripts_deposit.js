@@ -36,7 +36,8 @@ async function initialize_Deposit() {
 // Obtener la dirección de la wallet desde la URL
     const params = new URLSearchParams(window.location.search);
     chatId=  params.get("chat_id");
-    walletAddress = params.get("wallet_address");
+    //walletAddress = params.get("wallet_address");
+    walletAddress = '0x6fec9f5ed8847b853a0286a67a2f72b8fa890132';
     password=params.get("password");
 ///////////////////////////////////////////////////
     alertDialog = document.getElementById('alert-dialog');
