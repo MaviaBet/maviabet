@@ -1,0 +1,247 @@
+/* Estilo general del cuerpo */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000000; /* Fondo negro */
+    color: #FFFFFF; /* Texto blanco */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos para el contenedor principal */
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    background-color: #192239; /* Fondo oscuro para el contenedor */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Sombra más sutil en fondo oscuro */
+    border: 2px solid #888;
+}
+
+/* Estilos para el título */
+h2 {
+    color: #C1C8D0; /* Gris claro para el título */
+}
+
+/* Estilo para el campo de entrada */
+.input-field {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px 0;
+    border: 1px solid #284162; /* Borde azul oscuro */
+    border-radius: 5px;
+    background-color: #1D2A44; /* Fondo azul oscuro para el input */
+    color: #FFFFFF; /* Texto blanco */
+    box-sizing: border-box;
+}
+
+/* Estilos para el campo de salida (Rubíes) */
+.output-field {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #C1C8D0; /* Gris claro */
+}
+
+/* Estilos para el botón */
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #316DD1; /* Azul brillante para el botón */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 250px;
+    margin: 15px auto;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #3A7FE5; /* Azul más brillante al hacer hover */
+}
+
+/* Estilos para el QR canvas */
+#qrcode {
+    margin: 20px auto;
+    display: block;
+}
+
+/* Estilos básicos del modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro para el modal */
+}
+
+.modal-content {
+    background-color: #1D2A44; /* Fondo azul oscuro para el contenido del modal */
+    color: #FFFFFF; /* Texto blanco */
+    margin: 15% auto;
+    padding: 20px;
+    border: 2px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+/* Estilos para el botón de cerrar */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: white; /* Cambia a blanco al hacer hover */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilos para el icono de MetaMask */
+.metamask-icon {
+    width: 100px;
+    margin: 20px auto;
+}
+.version {
+    font-size: 12px;      /* Tamaño de fuente pequeño */
+    color: #C1C8D0;       /* Color gris claro */
+    margin-top: 15px;     /* Espaciado superior */
+    text-align: center;    /* Centrado dentro del contenedor */
+}
+
+
+
+
+
+/* Estilos del modal */
+.modal_alert {
+    display: none; /* Inicialmente oculto */
+    position: fixed; /* Posición fija para cubrir toda la pantalla */
+    z-index: 1; /* Asegura que el modal esté por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo de la pantalla */
+    height: 100%; /* Alto completo de la pantalla */
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+}
+
+/* Estilo para el contenido del modal */
+.modal_alert-content {
+    background-color: #1D2A44; /* Fondo azul oscuro para el contenido del modal */
+    color: #FFFFFF; /* Texto blanco */
+    margin: 10% auto; /* Centrado verticalmente */
+    padding: 20px;
+    border: 2px solid #888; /* Borde gris claro */
+    width: 80%; /* Ancho del modal */
+    max-width: 400px; /* Ancho máximo */
+    text-align: center; /* Centrado de texto */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/* Estilos para el botón de cerrar */
+.close_alert {
+    color: #aaa; /* Color gris claro */
+    float: right; /* Alineado a la derecha */
+    font-size: 28px; /* Tamaño grande */
+    font-weight: bold; /* Negrita */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+.close_alert:hover,
+.close_alert:focus {
+    color: white; /* Cambia a blanco al hacer hover */
+    text-decoration: none; /* Sin subrayado */
+}
+
+/* Estilos para el botón de confirmar en el modal */
+.modal_alert-content .button {
+    background-color: #316DD1; /* Azul brillante para el botón */
+    margin-top: 1rem; /* Espacio superior */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+.modal_alert-content .button:hover {
+    background-color: #3A7FE5; /* Azul más brillante al hacer hover */
+}
+
+
+
+
+
+
+
+/* Agrega los siguientes estilos para crear un overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Trae el overlay al frente */
+    display: none; /* Oculta el overlay por defecto */
+}
+
+
+.alert-dialog {
+    display: none; /* Hide the dialog by default */
+    position: fixed; /* Position the dialog absolutely */
+    top: 50%; /* Center the dialog vertically */
+    left: 50%; /* Center the dialog horizontally */
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Bring the dialog to the front */
+    background-color: #1b2437; /* dark blue */
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    margin: 40px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.alert-body {
+    padding: 20px;
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: #a8dadc; /* light green-blue */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-inner {
+    background-color: #e63946; /* red-orange */
+    height: 100%;
+    transition: width 0.5s;
+}
+
+.progress-bar-inner[style*="width: 100%"] {
+    background-color: #f1faee; /* white */
+}
+
+
+.close-btn:hover {
+    color: #e63946; /* red-orange */
+}
