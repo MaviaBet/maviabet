@@ -1,0 +1,204 @@
+/* General styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background-color: #0f1624;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+
+/* Warrior list styling */
+.warrior-list {
+    flex: 1; /* 4/5 of total height */
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #0f1624;
+}
+
+/* Warrior item style */
+.warrior-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #1d3557;
+    margin-bottom: 5px;
+    background-color: #1b2437;
+    border-radius: 8px;
+    color: #f1faee;
+}
+
+/* Transaction item style */
+.transaction-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    border-bottom: 1px solid #1d3557;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-item span {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: #ccd6f6;
+}
+
+.transaction-item .transfer-id {
+    color: #a8dadc; /* Color para el ID de la transferencia */
+}
+
+.transaction-item .date {
+    color: #66d9ef; /* Color para la fecha */
+}
+
+.transaction-item .status {
+    color: #f7dc6f; /* Color para el estatus */
+}
+
+.transaction-item .hash {
+    /*color: #8bc34a; /* Color para el hash */
+    color: #66d9ef; /* Color para la fecha */
+}
+
+.transaction-item .from {
+   /* color: #4CAF50; /* Color para la dirección from */
+    color: #66d9ef; /* Color para la fecha */
+}
+
+.transaction-item .to {
+    /*color: #9C27B0; /* Color para la dirección to */
+    color: #66d9ef; /* Color para la fecha */
+}
+
+.transaction-item .amount {
+    /*color: #E91E63; /* Color para el monto transferido */
+    color: #66d9ef; /* Color para la fecha */
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+    .header-left, .header-right {
+        flex-basis: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .warrior-item {
+        height: auto;
+        flex-wrap: wrap;
+    }
+
+    .warrior-name, .universal-votes, .user-votes {
+        margin-left: 0;
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .vote-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+.version {
+    font-size: 12px;      /* Tamaño de fuente pequeño */
+    color: #C1C8D0;       /* Color gris claro */
+    margin-top: 15px;     /* Espaciado superior */
+    text-align: center;    /* Centrado dentro del contenedor */
+}
+
+
+
+.copy-button {
+    background-color: transparent;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.copy-icon {
+    width: 16px;
+    height: 16px;
+}
+
+
+.label {
+    color: #FF5733; /* Cambia este color según tus preferencias */
+    font-weight: bold; /* Opcional: para hacer el texto más destacado */
+}
+
+
+
+
+
+/* Agrega los siguientes estilos para crear un overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Trae el overlay al frente */
+    display: none; /* Oculta el overlay por defecto */
+}
+
+
+.alert-dialog {
+    display: none; /* Hide the dialog by default */
+    position: fixed; /* Position the dialog absolutely */
+    top: 50%; /* Center the dialog vertically */
+    left: 50%; /* Center the dialog horizontally */
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Bring the dialog to the front */
+    background-color: #1b2437; /* dark blue */
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    margin: 40px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.alert-body {
+    padding: 20px;
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: #a8dadc; /* light green-blue */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-inner {
+    background-color: #e63946; /* red-orange */
+    height: 100%;
+    transition: width 0.5s;
+}
+
+.progress-bar-inner[style*="width: 100%"] {
+    background-color: #f1faee; /* white */
+}
+
+
+.close-btn:hover {
+    color: #e63946; /* red-orange */
+}

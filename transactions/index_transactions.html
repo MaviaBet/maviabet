@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de transacciones</title>
+    <link rel="stylesheet" href="styles_transactions.css">
+</head>
+<body>
+<!--div id="log">...</div-->
+<div class="container">
+
+
+    <div class="warrior-list" id="transaction-list"></div>
+
+</div>
+
+
+<!--Barra de progreso-->
+<div class="alert-dialog" id="alert-dialog">
+    <div class="alert-body">
+        <div class="progress-bar">
+            <div class="progress-bar-inner" style="width: 0%;"></div>
+        </div>
+        <p id="progress-text">0% Complete</p>
+    </div>
+</div>
+<!--Para que el usuario no interactue con la web-->
+<div class="overlay" id="overlay"></div>
+<!--Barra de progreso-->
+
+
+<script src="scripts_transactions.js"></script>
+</body>
+</html>
