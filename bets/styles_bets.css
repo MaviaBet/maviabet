@@ -1,0 +1,374 @@
+/* General styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background-color: #0f1624;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+
+/* Header styling (P0) */
+.header {
+    display: flex;
+    flex-direction: column;
+    height: 150px; /* Ajusta el alto según tus necesidades */
+    padding: 20px;
+    background-color: #1b2437;
+    border-bottom: 2px solid #1d3557;
+}
+
+/* Header top (P0 top) */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 70px; /* Ajusta el alto según tus necesidades */
+}
+
+/* Header left (P0 left) */
+.header-left {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-basis: 70%; /* 70% of header width */
+}
+
+.header-item {
+    font-size: 1em;
+    margin-bottom: 2px;
+    color: #ccd6f6;
+}
+
+/* Timer and betting state (P0 right) */
+.header-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-basis: 30%; /* 30% of header width */
+}
+
+.header-bottom {
+    display: flex;
+    justify-content: space-between; /* Cambia a space-between para alinear el contenido */
+    align-items: center;
+    height: 80px; /* Ajusta el alto según tus necesidades */
+    padding: 0 20px; /* Añade un poco de padding para que no esté pegado a los bordes */
+}
+
+.green-button {
+    background-color: #28a745; /* Color verde */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    font-size: 16px; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Transición suave para el hover */
+}
+
+.green-button:hover {
+    background-color: #218838; /* Color verde más oscuro al pasar el ratón */
+}
+
+
+
+.blue-button {
+    background-color: #3A7FE5; /* Color verde */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    width: 33.33%; /* 1/3 del ancho de la pantalla */
+    padding: 10px 20px;
+    align-self: center; /* Centra el botón horizontalmente */
+    margin: 10px 0; /* Espaciado vertical */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    font-size: 16px; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Transición suave para el hover */
+}
+
+.blue-button:hover {
+    background-color: #316Dc0; /* Color verde más oscuro al pasar el ratón */
+}
+
+
+
+
+.timer {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    background-color: #2a3f5f;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    color: #ccd6f6;
+}
+
+.betting-state {
+    font-size: 1em;
+    color: #a8dadc;
+}
+
+
+
+
+
+
+
+
+
+/* Warrior list styling (P1) */
+.warrior-list {
+    flex: 1; /* 4/5 of total height */
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #0f1624;
+
+}
+
+/* Warrior item style */
+.warrior-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #1d3557;
+    margin-bottom: 5px;
+    background-color: #1b2437;
+    border-radius: 8px;
+    color: #f1faee;
+    width: 100%; /* Asegura que el item ocupe all ancho disponible */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+}
+
+/* Adjusting avatar and name inline */
+.warrior-avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.warrior-name {
+    font-size: 1.1em;
+    margin-left: 15px;
+    flex-grow: 1; /* Permite que el nombre ocupe el espacio restante */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Styling for universal votes and user votes */
+.votes-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinea los votos al final */
+}
+
+.universal-votes, .user-votes {
+    font-size: 1em;
+    text-align: center;
+    color: #a8dadc;
+    margin: 0 10px; /* Espaciado entre votos */
+}
+
+/* Vote button */
+.vote-button {
+    background-color: #e63946;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+.vote-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+    .header-left, .header-right {
+        flex-basis: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .warrior-item {
+        flex-wrap: nowrap; /* Asegura que los items no se envuelvan */
+        height: auto; /* Permite que la altura se ajuste automáticamente */
+    }
+
+    .warrior-name {
+        margin-left: 10px; /* Ajusta el margen para que se vea mejor */
+        text-align: left; /* Alinea el texto a la izquierda */
+    }
+
+    .votes-container {
+        justify-content: flex-end; /* Mantiene la alineación a la derecha en pantallas pequeñas */
+    }
+
+    .vote-button {
+        width: auto; /* Permite que el botón mantenga su tamaño natural */
+        margin-top: 0; /* Elimina el margen superior */
+    }
+}
+
+
+
+
+.vote-zero {
+    color: rgba(168, 221, 220, 0.3); /* Color con opacidad */
+    font-weight: lighter; /* Fuente más delgada */
+}
+
+
+
+
+
+.version {
+    font-size: 12px;      /* Tamaño de fuente pequeño */
+    color: #C1C8D0;       /* Color gris claro */
+    margin-top: 15px;     /* Espaciado superior */
+    text-align: center;    /* Centrado dentro del contenedor */
+}
+
+
+
+
+
+
+
+
+/* Agrega los siguientes estilos para crear un overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Trae el overlay al frente */
+    display: none; /* Oculta el overlay por defecto */
+}
+
+
+.alert-dialog {
+    display: none; /* Hide the dialog by default */
+    position: fixed; /* Position the dialog absolutely */
+    top: 50%; /* Center the dialog vertically */
+    left: 50%; /* Center the dialog horizontally */
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Bring the dialog to the front */
+    background-color: #1b2437; /* dark blue */
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    margin: 40px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.alert-body {
+    padding: 20px;
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: #a8dadc; /* light green-blue */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-inner {
+    background-color: #e63946; /* red-orange */
+    height: 100%;
+    transition: width 0.5s;
+}
+
+.progress-bar-inner[style*="width: 100%"] {
+    background-color: #f1faee; /* white */
+}
+
+
+.close-btn:hover {
+    color: #e63946; /* red-orange */
+}
+
+
+
+
+
+
+
+
+/* Estilos del modal */
+.modal_alert {
+    display: none; /* Inicialmente oculto */
+    position: fixed; /* Posición fija para cubrir toda la pantalla */
+    z-index: 1; /* Asegura que el modal esté por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo de la pantalla */
+    height: 100%; /* Alto completo de la pantalla */
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+}
+
+/* Estilo para el contenido del modal */
+.modal_alert-content {
+    background-color: #1D2A44; /* Fondo azul oscuro para el contenido del modal */
+    color: #FFFFFF; /* Texto blanco */
+    margin: 10% auto; /* Centrado verticalmente */
+    padding: 20px;
+    border: 2px solid #888; /* Borde gris claro */
+    width: 80%; /* Ancho del modal */
+    max-width: 400px; /* Ancho máximo */
+    text-align: center; /* Centrado de texto */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/* Estilos para el botón de cerrar */
+.close_alert {
+    color: #aaa; /* Color gris claro */
+    float: right; /* Alineado a la derecha */
+    font-size: 28px; /* Tamaño grande */
+    font-weight: bold; /* Negrita */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+.close_alert:hover,
+.close_alert:focus {
+    color: white; /* Cambia a blanco al hacer hover */
+    text-decoration: none; /* Sin subrayado */
+}
+
+/* Estilos para el botón de confirmar en el modal */
+.modal_alert-content .button {
+    background-color: #316DD1; /* Azul brillante para el botón */
+    margin-top: 1rem; /* Espacio superior */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+.modal_alert-content .button:hover {
+    background-color: #3A7FE5; /* Azul más brillante al hacer hover */
+}

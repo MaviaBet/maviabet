@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bets</title>
+    <link rel="stylesheet" href="styles_bets.css">
+</head>
+<body>
+<div class="container">
+
+<!--div id="log">...</div-->
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-left">
+      <div id="header-user" class="header-item"></div>
+      <div id="header-rubi" class="header-item"></div>
+    </div>
+    <div class="header-right">
+        <div id="timer_id" class="timer"></div>
+    </div>
+  </div>
+    <div class="header-bottom">
+        <div id="betting-state_id" class="betting-state">...</div>
+        <button id="bottom-multiplicador" class="green-button">...</button>
+    </div>
+</div>
+
+
+<div class="warrior-list"></div>
+
+<button id="bottom-send-bets" class="blue-button">Send Bets</button>
+
+<div id="version" class="version"></div>
+</div>
+
+
+<!--Barra de progreso-->
+<div class="alert-dialog" id="alert-dialog">
+    <p id="progress-title">Loading...</p>
+    <div class="alert-body">
+        <div class="progress-bar">
+            <div class="progress-bar-inner" style="width: 0%;"></div>
+        </div>
+
+        <p id="progress-text">0% Complete</p>
+    </div>
+</div>
+<!--Para que el usuario no interactue con la web-->
+<div class="overlay" id="overlay"></div>
+<!--Barra de progreso-->
+
+
+<!-- Modal para mensaje de error -->
+<div id="errorModal" class="modal_alert">
+    <div class="modal_alert-content">
+        <span class="close_alert" onclick="closeModalAlert_Bets()">&times;</span>
+        <h3>!Alert</h3>
+        <p id="modalMessage"></p> <!-- Mensaje dinámico -->
+        <button class="button" onclick="closeModalAlert_Bets()">OK</button>
+    </div>
+</div>
+
+
+<script src="scripts_bets.js"></script>
+</body>
+</html>
